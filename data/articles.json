@@ -3,6 +3,43 @@
   "updated": "2026-07-21",
   "articles": [
     {
+      "id": 8,
+      "slug": "sell-garden-produce-uk",
+      "title": "Selling Your Garden Produce in the UK: The Rules and the Money",
+      "category": "side-hustles",
+      "status": "published",
+      "date": "2026-07-21",
+      "metaTitle": "Selling Your Garden Produce in the UK: The Rules and the Money",
+      "metaDescription": "What you can legally sell from your garden or allotment in the UK, when you must register as a food business, and what surplus veg, eggs and jam actually earn.",
+      "coverImage": "https://images.pexels.com/photos/2255935/pexels-photo-2255935.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending studio run",
+      "factsCheckedOn": "2026-07-21",
+      "lastReviewed": "2026-07-21",
+      "trackingNotes": "Live. Balances Side Hustles pillar (now 2). Key facts: primary vs processed split, <50 birds farm gate rule, eggs 28 day BB / 21 day sale, food business registration free + 28 days notice. Differentiator: honest money figures (£200-400/yr veg, £15-25/mo eggs) where competitors imply big income.",
+      "earningPlan": [
+        {
+          "route": "Seeds and garden supplies affiliate (Amazon UK, Suttons, Thompson & Morgan)",
+          "status": "possible",
+          "detail": "Article ends by saying seedlings and plants sell better than veg. Natural link point for seed suppliers. UK garden retailers run affiliate programs open to small sites."
+        },
+        {
+          "route": "Preserving and labelling kit affiliate (jars, labels, thermometers via Amazon UK)",
+          "status": "possible",
+          "detail": "Jam section needs jars and correct labels. Specific product need, high intent."
+        },
+        {
+          "route": "Digital product: UK food labelling template pack",
+          "status": "later",
+          "detail": "Allergen labelling is the part people get wrong. A simple compliant label template could sell for a few pounds, and doubles as an email list magnet."
+        },
+        {
+          "route": "Display ads",
+          "status": "later",
+          "detail": "Site-wide plan: after 20+ articles."
+        }
+      ]
+    },
+    {
       "id": 7,
       "slug": "vpn-uk-what-you-need",
       "title": "VPN in the UK: What You Actually Need and What You Do Not",
