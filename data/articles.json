@@ -3,6 +3,43 @@
   "updated": "2026-07-21",
   "articles": [
     {
+      "id": 9,
+      "slug": "password-manager-uk",
+      "title": "Password Managers: The Free One Is Probably Enough",
+      "category": "tools-reviews",
+      "status": "published",
+      "date": "2026-07-21",
+      "metaTitle": "Password Managers: The Free One Is Probably Enough",
+      "metaDescription": "What a password manager does, why the free versions are good enough for most UK households, and when paying two or three pounds a month is actually worth it.",
+      "coverImage": "https://images.pexels.com/photos/5474298/pexels-photo-5474298.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending studio run",
+      "factsCheckedOn": "2026-07-21",
+      "lastReviewed": "2026-07-21",
+      "trackingNotes": "Live. Tools pillar now 2. Prices July 2026: Bitwarden free unlimited, family ~£40/yr for 6, 1Password ~£48/yr single no free tier, Proton Pass strong free tier. Recheck yearly. Differentiator: leads with the FREE recommendation, which review sites avoid because free pays no commission. Long term trust play.",
+      "earningPlan": [
+        {
+          "route": "Bitwarden / 1Password / Proton Pass affiliate",
+          "status": "possible",
+          "detail": "All three run affiliate programs. Lower per-signup than VPN (roughly £5-20) but recurring in some cases. Honest framing means fewer clicks but far better conversion from readers who genuinely upgrade to family plans."
+        },
+        {
+          "route": "Family plan angle",
+          "status": "possible",
+          "detail": "The paid recommendation in this article is the family plan, which is where the commission actually is. Article recommends it only where it genuinely fits, which keeps it honest."
+        },
+        {
+          "route": "Companion article: how to check if your data was breached",
+          "status": "later",
+          "detail": "Have I Been Pwned angle. Same audience, natural next step, more affiliate surface for security tools."
+        },
+        {
+          "route": "Display ads",
+          "status": "later",
+          "detail": "Site-wide plan: after 20+ articles."
+        }
+      ]
+    },
+    {
       "id": 8,
       "slug": "sell-garden-produce-uk",
       "title": "Selling Your Garden Produce in the UK: The Rules and the Money",
