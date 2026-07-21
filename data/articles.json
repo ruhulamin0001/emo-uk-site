@@ -3,6 +3,43 @@
   "updated": "2026-07-21",
   "articles": [
     {
+      "id": 5,
+      "slug": "coffee-at-home-savings-uk",
+      "title": "Coffee at Home: How Much a Daily Flat White Really Costs You",
+      "category": "save-money",
+      "status": "published",
+      "date": "2026-07-21",
+      "metaTitle": "Coffee at Home: How Much a Daily Flat White Really Costs You",
+      "metaDescription": "A shop flat white costs around £4.35 in the UK. The same drink at home costs about 40p. Here is the real yearly difference and the kit you actually need.",
+      "coverImage": "https://images.pexels.com/photos/302899/pexels-photo-302899.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending studio run",
+      "factsCheckedOn": "2026-07-21",
+      "lastReviewed": "2026-07-21",
+      "trackingNotes": "Live. Costa flat white £4.35 July 2026, recheck yearly. Links to articles 2 and 4.",
+      "earningPlan": [
+        {
+          "route": "Amazon UK Associates (AeroPress, moka pot, frother)",
+          "status": "possible",
+          "detail": "Article names exact kit under £50. Amazon UK Associates is open to small sites and approval is realistic now. Highest intent product mentions on the site so far."
+        },
+        {
+          "route": "Coffee subscription affiliate (Pact, Grind, Balance)",
+          "status": "possible",
+          "detail": "UK bean subscriptions run affiliate or refer-a-friend schemes. Caveat: article tells readers to buy cheap supermarket beans, so only promote subscriptions honestly as the hobby upgrade, not the saving."
+        },
+        {
+          "route": "Savings account comparison affiliate",
+          "status": "later",
+          "detail": "Article ends with where to put the saved money. Money comparison affiliates pay well but need traffic and FCA-aware wording. Later."
+        },
+        {
+          "route": "Display ads",
+          "status": "later",
+          "detail": "Site-wide plan: after 20+ articles."
+        }
+      ]
+    },
+    {
       "id": 4,
       "slug": "print-on-demand-uk-profit",
       "title": "Print on Demand UK: The Real Profit Per T-Shirt",
