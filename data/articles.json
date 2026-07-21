@@ -3,6 +3,43 @@
   "updated": "2026-07-21",
   "articles": [
     {
+      "id": 10,
+      "slug": "youtube-earnings-uk",
+      "title": "YouTube Earnings UK: What 1,000 Views Is Really Worth",
+      "category": "make-money",
+      "status": "published",
+      "date": "2026-07-21",
+      "metaTitle": "YouTube Earnings UK: What 1,000 Views Is Really Worth",
+      "metaDescription": "Real UK YouTube RPM figures, what the monetisation thresholds actually are, and how many views you need before the money becomes worth the work.",
+      "coverImage": "https://images.pexels.com/photos/1181298/pexels-photo-1181298.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending studio run",
+      "factsCheckedOn": "2026-07-21",
+      "lastReviewed": "2026-07-21",
+      "trackingNotes": "ARTICLE 10 MILESTONE. Facts July 2026: UK RPM £1.50-8 by niche, YPP 1000 subs + 4000 watch hours, Shorts separate route (10M views/90 days) and Shorts time does NOT count to 4000 hours. Differentiator: hourly rate maths (£2/hr gaming, £6/hr finance) which nobody publishes.",
+      "earningPlan": [
+        {
+          "route": "Video kit affiliate (Amazon UK: mic, lighting, camera)",
+          "status": "possible",
+          "detail": "Article mentions camera, microphone, lighting as tax deductible expenses. Natural product link point. Amazon UK Associates open to small sites."
+        },
+        {
+          "route": "Editing software affiliate (Descript, Filmora, Adobe)",
+          "status": "possible",
+          "detail": "Recurring subscription commissions. Companion article on editing tools would carry this better."
+        },
+        {
+          "route": "Own the audience angle: course or template",
+          "status": "later",
+          "detail": "Article argues the real money is in your own product. Site could eventually sell a UK creator tax and expenses spreadsheet."
+        },
+        {
+          "route": "Display ads",
+          "status": "later",
+          "detail": "Site-wide plan: after 20+ articles."
+        }
+      ]
+    },
+    {
       "id": 9,
       "slug": "password-manager-uk",
       "title": "Password Managers: The Free One Is Probably Enough",
