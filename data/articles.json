@@ -3,6 +3,43 @@
   "updated": "2026-07-21",
   "articles": [
     {
+      "id": 7,
+      "slug": "vpn-uk-what-you-need",
+      "title": "VPN in the UK: What You Actually Need and What You Do Not",
+      "category": "tools-reviews",
+      "status": "published",
+      "date": "2026-07-21",
+      "metaTitle": "VPN in the UK: What You Actually Need and What You Do Not",
+      "metaDescription": "Are VPNs legal in the UK, what they really cost per month, when they are worth paying for, and the three situations where a VPN does nothing for you.",
+      "coverImage": "https://images.pexels.com/photos/60504/security-protection-anti-virus-software-60504.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending studio run",
+      "factsCheckedOn": "2026-07-21",
+      "lastReviewed": "2026-07-21",
+      "trackingNotes": "Live. Fills Tools & Reviews pillar (last empty one). Prices July 2026: Surfshark ~£1.50, Nord ~£2.30, Proton ~£2.40 on long plans. RECHECK QUARTERLY, VPN prices move constantly. Differentiator: tells readers when NOT to buy one, and warns about renewal price jump.",
+      "earningPlan": [
+        {
+          "route": "VPN affiliate (NordVPN, Surfshark, Proton via Impact/PartnerStack)",
+          "status": "possible",
+          "detail": "HIGHEST PAYING route on the whole site. UK VPN affiliates pay roughly £30-70 per signup, sometimes 100% of first term. All three named providers accept small publishers. Article is written honestly (says skip it if you do not need it), which protects trust while still qualifying for commission on readers who do."
+        },
+        {
+          "route": "Password manager affiliate (1Password, Bitwarden, Proton Pass)",
+          "status": "possible",
+          "detail": "Natural companion article: password managers. Same audience, recurring commission, and genuinely useful advice."
+        },
+        {
+          "route": "Antivirus / security suite affiliate",
+          "status": "later",
+          "detail": "Lower trust category with a lot of junk products. Only if a genuinely good UK-relevant option is found."
+        },
+        {
+          "route": "Display ads",
+          "status": "later",
+          "detail": "Site-wide plan: after 20+ articles."
+        }
+      ]
+    },
+    {
       "id": 6,
       "slug": "remote-jobs-uk-no-degree",
       "title": "Remote Jobs UK With No Degree: What Is Real and What Pays",
