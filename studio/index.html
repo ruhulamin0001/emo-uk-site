@@ -58,6 +58,7 @@
 <div class="top">
   <b>EMO <span>Content Studio</span> v1</b>
   <button onclick="newArticle()">+ New Article</button>
+  <button class="gold" onclick="syncFromSite()">Sync from Site</button>
   <button class="ghost" onclick="exportJson()">Backup JSON</button>
   <span class="hint">earningmoneyonline.co.uk pipeline · Draft → Ready → Approved → Published</span>
 </div>
@@ -277,6 +278,36 @@ function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')}
 let repoData=null;
 async function loadRepo(){
   try{const r=await fetch('https://raw.githubusercontent.com/ruhulamin0001/emo-uk-site/main/data/articles.json?t='+Date.now());repoData=await r.json()}catch(e){repoData=null}
+}
+async function syncFromSite(){
+  await loadRepo();
+  if(!repoData){alert('Repo data load hoyni. Internet check koro.');return}
+  let added=0;
+  for(const r of (repoData.articles||[])){
+    const exists=index.ids.map(i=>load(KEY(i))).filter(Boolean).some(x=>x.slug===r.slug);
+    if(exists)continue;
+    let body='';
+    try{
+      const res=await fetch('https://earningmoneyonline.co.uk/articles/'+r.slug+'.html?t='+Date.now());
+      const doc=new DOMParser().parseFromString(await res.text(),'text/html');
+      const el=doc.querySelector('.article-body');
+      if(el){
+        const parts=[];
+        el.querySelectorAll('h2,p,ol,ul').forEach(n=>{
+          if(n.closest('.resources')){if(n.tagName==='UL'){n.querySelectorAll('a').forEach(a=>parts.push(a.textContent.trim()+': '+a.href));return}return}
+          if(n.tagName==='H2')parts.push('## '+n.textContent.trim());
+          else if(n.tagName==='P')parts.push(n.textContent.trim());
+          else n.querySelectorAll('li').forEach((li,i)=>parts.push((i+1)+'. '+li.textContent.trim()));
+        });
+        body=parts.join('\n\n');
+      }
+    }catch(e){body='(body load hoyni, live page theke copy koro)'}
+    const id=index.next++;
+    store(KEY(id),{id,title:r.title,slug:r.slug,cat:r.category,mtitle:r.metaTitle||'',mdesc:r.metaDescription||'',img:r.coverImage||'',body:body,status:r.status==='published'?'published':'ready',date:r.date,score:null});
+    index.ids.unshift(id);added++;
+  }
+  store(IDX,index);render();
+  toast(added?added+' ta article site theke ana holo':'Sob article agei ache');
 }
 loadRepo();
 function repoEntry(){const a=cur();if(!a||!repoData)return null;return (repoData.articles||[]).find(x=>x.slug===a.slug)||null}
