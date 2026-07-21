@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EMO Content Studio v1</title>
+<style>
+  :root{--bg:#0d1f1a;--panel:#12291f;--line:#1f4335;--ink:#e8f2ec;--dim:#8fb3a4;--accent:#0fae7e;--gold:#e8b021;--red:#e05252;--green:#3ecf8e}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:14px}
+  .top{display:flex;align-items:center;gap:14px;padding:12px 18px;border-bottom:1px solid var(--line);background:var(--panel)}
+  .top b{font-size:1.05rem}.top b span{color:var(--accent)}
+  .top .hint{color:var(--dim);font-size:0.8rem;margin-left:auto}
+  .layout{display:grid;grid-template-columns:290px 1fr 1fr;height:calc(100vh - 49px)}
+  .col{overflow-y:auto;border-right:1px solid var(--line)}
+  .col h4{padding:12px 14px 6px;color:var(--dim);text-transform:uppercase;font-size:0.72rem;letter-spacing:1.5px}
+  button{background:var(--accent);border:none;color:#fff;padding:8px 14px;border-radius:8px;font-weight:700;cursor:pointer;font-size:0.85rem}
+  button:hover{opacity:0.88}
+  button.ghost{background:transparent;border:1px solid var(--line);color:var(--dim)}
+  button.gold{background:var(--gold);color:#12291f}
+  button.red{background:var(--red)}
+  .item{padding:12px 14px;border-bottom:1px solid var(--line);cursor:pointer}
+  .item:hover,.item.sel{background:#173327}
+  .item .t{font-weight:700;line-height:1.35}
+  .item .m{color:var(--dim);font-size:0.75rem;margin-top:4px}
+  .badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:0.68rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-top:6px}
+  .b-draft{background:#3a3a3a;color:#ddd}.b-ready{background:var(--gold);color:#12291f}
+  .b-approved{background:var(--accent);color:#fff}.b-published{background:var(--green);color:#0d1f1a}
+  .pad{padding:14px}
+  label{display:block;color:var(--dim);font-size:0.75rem;margin:12px 0 4px;text-transform:uppercase;letter-spacing:1px}
+  input,select,textarea{width:100%;background:#0a1813;border:1px solid var(--line);border-radius:8px;color:var(--ink);padding:9px 11px;font-size:0.9rem;font-family:inherit}
+  textarea{min-height:260px;resize:vertical;line-height:1.6}
+  .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+  .score-box{border:1px solid var(--line);border-radius:10px;padding:14px;margin-top:14px}
+  .score-big{font-size:2rem;font-weight:800}
+  .score-big.ok{color:var(--green)}.score-big.bad{color:var(--red)}
+  .crit{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px dashed var(--line);font-size:0.82rem}
+  .crit span:last-child{font-weight:700}
+  .crit .pass{color:var(--green)}.crit .fail{color:var(--red)}.crit .part{color:var(--gold)}
+  .alert{background:#3a1515;border:1px solid var(--red);border-radius:10px;padding:14px;margin-top:12px;font-weight:700;color:#ffb3b3}
+  .alert code{display:block;background:#0a1813;padding:8px;border-radius:6px;margin-top:8px;color:#fff;font-size:0.8rem;user-select:all}
+  .good{background:#12321f;border:1px solid var(--green);border-radius:10px;padding:14px;margin-top:12px;font-weight:700;color:#a9eec9}
+  /* preview mimics live site */
+  .pv{background:#f7f6f2;color:#0e2a24;height:100%;overflow-y:auto}
+  .pv-head{background:#123f33;color:#fff;padding:26px 22px}
+  .pv-head .tag{background:#e8b021;color:#0e2a24;font-size:0.65rem;font-weight:800;padding:3px 10px;border-radius:12px;text-transform:uppercase;letter-spacing:1px}
+  .pv-head h1{font-size:1.5rem;margin-top:10px;line-height:1.3}
+  .pv-head .meta{color:#9fc4b7;margin-top:8px;font-size:0.75rem}
+  .pv-body{max-width:640px;margin:0 auto;padding:26px 22px;background:#fff;line-height:1.65}
+  .pv-body img{width:100%;border-radius:10px;margin-bottom:18px}
+  .pv-body h2{font-size:1.15rem;margin:20px 0 8px}
+  .pv-body p{margin-bottom:12px;font-size:0.92rem}
+  .toast{position:fixed;bottom:18px;right:18px;background:var(--accent);color:#fff;padding:10px 18px;border-radius:10px;font-weight:700;display:none;z-index:99}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <b>EMO <span>Content Studio</span> v1</b>
+  <button onclick="newArticle()">+ New Article</button>
+  <button class="ghost" onclick="exportJson()">Backup JSON</button>
+  <span class="hint">earningmoneyonline.co.uk pipeline · Draft → Ready → Approved → Published</span>
+</div>
+
+<div class="layout">
+  <div class="col" id="list"><h4>Article Queue</h4></div>
+
+  <div class="col pad" id="editor">
+    <h4 style="padding-left:0">Editor + QA</h4>
+    <div id="ed-empty" style="color:var(--dim)">Select or create an article.</div>
+    <div id="ed" style="display:none">
+      <label>Title</label><input id="f-title" oninput="save()">
+      <label>Slug (file name)</label><input id="f-slug" oninput="save()">
+      <label>Category</label>
+      <select id="f-cat" onchange="save()">
+        <option value="make-money">Make Money Online</option>
+        <option value="side-hustles">Side Hustles</option>
+        <option value="save-money">Save Money</option>
+        <option value="work-career">Work and Career</option>
+        <option value="tools-reviews">Tools and Reviews</option>
+      </select>
+      <label>Meta title (max 60 chars)</label><input id="f-mtitle" oninput="save()">
+      <label>Meta description (120 to 160 chars)</label><input id="f-mdesc" oninput="save()">
+      <label>Cover image URL</label><input id="f-img" oninput="save()">
+      <label>Body (plain text, blank line = new paragraph, ## = heading)</label>
+      <textarea id="f-body" oninput="save()"></textarea>
+      <div class="row">
+        <button class="gold" onclick="runQA()">Run SEO + Quality Check</button>
+        <button onclick="setStatus('ready')">Mark Ready</button>
+        <button onclick="setStatus('approved')">Approve</button>
+        <button onclick="setStatus('published')">Mark Published</button>
+        <button class="red" onclick="delArticle()">Delete</button>
+      </div>
+      <div id="qa"></div>
+    </div>
+  </div>
+
+  <div class="pv" id="preview"><div style="padding:30px;color:#888">Preview appears here.</div></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const IDX='emo-studio-index', KEY=i=>'emo-studio-article-'+i;
+const BANNED=['delve','unlock','dive into','game-changer','game changer','in today\'s fast','landscape of','tapestry','elevate your','navigating the','it\'s important to note','furthermore','moreover,','in conclusion','embark','leverage the power','seamlessly','revolutionize','unleash'];
+let index=load(IDX)||{ids:[],next:1}, sel=null, saveT=null;
+
+function load(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}}
+function store(k,v){localStorage.setItem(k,JSON.stringify(v))}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.style.display='block';setTimeout(()=>t.style.display='none',1800)}
+
+function newArticle(){
+  const id=index.next++;
+  store(KEY(id),{id,title:'Untitled article',slug:'',cat:'side-hustles',mtitle:'',mdesc:'',img:'',body:'',status:'draft',date:new Date().toISOString().slice(0,10),score:null});
+  index.ids.unshift(id);store(IDX,index);sel=id;render();toast('New draft created')
+}
+function delArticle(){
+  if(!sel)return;
+  if(!confirm('Delete this article?'))return;
+  localStorage.removeItem(KEY(sel));index.ids=index.ids.filter(i=>i!==sel);store(IDX,index);sel=null;render();toast('Deleted')
+}
+function cur(){return sel?load(KEY(sel)):null}
+function save(){
+  if(!sel)return;const a=cur();if(!a)return;
+  a.title=v('f-title');a.slug=v('f-slug');a.cat=v('f-cat');a.mtitle=v('f-mtitle');a.mdesc=v('f-mdesc');a.img=v('f-img');a.body=v('f-body');
+  clearTimeout(saveT);saveT=setTimeout(()=>{store(KEY(sel),a);renderList();renderPreview()},600)
+}
+function v(id){return document.getElementById(id).value}
+function setV(id,val){document.getElementById(id).value=val||''}
+function setStatus(s){
+  if(!sel)return;const a=cur();
+  if(s==='approved'&&(a.score===null||a.score<25)){alert('QA score 25/50 er niche ba check hoy nai. Age Run SEO + Quality Check chalao, score thik hole approve koro.');return}
+  a.status=s;store(KEY(sel),a);render();toast('Status: '+s)
+}
+
+/* ---------- QA SCORING (out of 50) ---------- */
+function runQA(){
+  if(!sel)return;const a=cur();save();
+  const body=v('f-body'),title=v('f-title'),mt=v('f-mtitle'),md=v('f-mdesc');
+  const words=body.trim()?body.trim().split(/\s+/).length:0;
+  const res=[];let total=0;
+
+  // 1. Word count (8)
+  let p=0;
+  if(words>=800&&words<=1000)p=8;else if(words>=650&&words<1200)p=5;else if(words>=400)p=2;
+  res.push(['Word count 800-1000 ('+words+')',p,8]);total+=p;
+
+  // 2. Meta title (5)
+  p=(mt.length>0&&mt.length<=60)?5:(mt.length>0?2:0);
+  res.push(['Meta title within 60 chars ('+mt.length+')',p,5]);total+=p;
+
+  // 3. Meta description (5)
+  p=(md.length>=120&&md.length<=160)?5:(md.length>=90?3:(md.length>0?1:0));
+  res.push(['Meta description 120-160 chars ('+md.length+')',p,5]);total+=p;
+
+  // 4. AI phrases (6)
+  const low=(title+' '+body).toLowerCase();
+  const hits=BANNED.filter(b=>low.includes(b));
+  p=Math.max(0,6-hits.length*2);
+  res.push(['No AI phrases'+(hits.length?' (found: '+hits.join(', ')+')':''),p,6]);total+=p;
+
+  // 5. No em dash / emoji (4)
+  const emDash=/[—–]/.test(body+title+md);
+  const emoji=/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/u.test(body+title);
+  p=(!emDash&&!emoji)?4:(!emDash||!emoji?2:0);
+  res.push(['No em dash, no emoji',p,4]);total+=p;
+
+  // 6. Headings (5)
+  const heads=(body.match(/^##\s/gm)||[]).length;
+  p=heads>=4?5:(heads>=2?3:(heads>=1?1:0));
+  res.push(['At least 4 section headings ('+heads+')',p,5]);total+=p;
+
+  // 7. Resource links (5)
+  const links=(body.match(/https?:\/\//g)||[]).length;
+  p=links>=3?5:(links>=1?2:0);
+  res.push(['3+ resource links ('+links+')',p,5]);total+=p;
+
+  // 8. Readability: avg sentence length (6)
+  const sents=body.split(/[.!?]+/).filter(s=>s.trim().split(/\s+/).length>2);
+  const avg=sents.length?Math.round(sents.reduce((s,x)=>s+x.trim().split(/\s+/).length,0)/sents.length):0;
+  p=avg>0&&avg<=20?6:(avg<=26?3:0);
+  res.push(['Avg sentence under 20 words ('+avg+')',p,6]);total+=p;
+
+  // 9. Uniqueness proxy: repeated 8-word sequences (6)
+  const w=body.toLowerCase().replace(/[^a-z0-9\s£]/g,'').split(/\s+/);
+  const seen={};let dupes=0;
+  for(let i=0;i+8<=w.length;i++){const g=w.slice(i,i+8).join(' ');if(seen[g])dupes++;else seen[g]=1}
+  p=dupes===0?6:(dupes<=2?3:0);
+  res.push(['No repeated 8-word blocks ('+dupes+' repeats)',p,6]);total+=p;
+
+  a.score=total;store(KEY(sel),a);
+  renderQA(res,total);renderList();
+}
+function renderQA(res,total){
+  const pct=Math.round(total/50*100);
+  let h='<div class="score-box"><div class="score-big '+(total>=25?'ok':'bad')+'">'+total+'/50 ('+pct+'%)</div>';
+  res.forEach(r=>{
+    const cls=r[1]===r[2]?'pass':(r[1]>0?'part':'fail');
+    h+='<div class="crit"><span>'+r[0]+'</span><span class="'+cls+'">'+r[1]+'/'+r[2]+'</span></div>';
+  });
+  h+='</div>';
+  if(total<25){
+    h+='<div class="alert">NEEDS MODIFICATION — score '+total+'/50. Ei message ta Claude ke pathao:<code>Modify article "'+(cur()?cur().title:'')+'" — QA score '+total+'/50. Fix the failed criteria and resubmit to studio.</code></div>';
+  }else{
+    h+='<div class="good">SEO friendly. Score '+total+'/50. Approve korte paro.</div>';
+  }
+  document.getElementById('qa').innerHTML=h;
+}
+
+/* ---------- RENDER ---------- */
+function render(){renderList();renderEditor();renderPreview()}
+function renderList(){
+  const el=document.getElementById('list');
+  let h='<h4>Article Queue</h4>';
+  index.ids.forEach(id=>{
+    const a=load(KEY(id));if(!a)return;
+    h+='<div class="item'+(id===sel?' sel':'')+'" onclick="sel='+id+';render()">'
+      +'<div class="t">'+esc(a.title)+'</div>'
+      +'<div class="m">'+a.cat+' · '+a.date+(a.score!==null?' · QA '+a.score+'/50':'')+'</div>'
+      +'<span class="badge b-'+a.status+'">'+a.status+'</span></div>';
+  });
+  if(!index.ids.length)h+='<div class="pad" style="color:var(--dim)">Queue empty. + New Article chapo.</div>';
+  el.innerHTML=h;
+}
+function renderEditor(){
+  const a=cur();
+  document.getElementById('ed-empty').style.display=a?'none':'block';
+  document.getElementById('ed').style.display=a?'block':'none';
+  if(!a)return;
+  setV('f-title',a.title);setV('f-slug',a.slug);document.getElementById('f-cat').value=a.cat;
+  setV('f-mtitle',a.mtitle);setV('f-mdesc',a.mdesc);setV('f-img',a.img);setV('f-body',a.body);
+  document.getElementById('qa').innerHTML='';
+}
+function renderPreview(){
+  const a=cur(),el=document.getElementById('preview');
+  if(!a){el.innerHTML='<div style="padding:30px;color:#888">Preview appears here.</div>';return}
+  let bodyH='';
+  a.body.split(/\n\n+/).forEach(b=>{
+    b=b.trim();if(!b)return;
+    if(b.startsWith('## '))bodyH+='<h2>'+esc(b.slice(3))+'</h2>';
+    else bodyH+='<p>'+esc(b)+'</p>';
+  });
+  el.innerHTML='<div class="pv-head"><span class="tag">'+a.cat+'</span><h1>'+esc(a.title)+'</h1><div class="meta">'+a.date+' · preview</div></div>'
+    +'<div class="pv-body">'+(a.img?'<img src="'+esc(a.img)+'">':'')+bodyH+'</div>';
+}
+function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')}
+function exportJson(){
+  const all={index,articles:index.ids.map(i=>load(KEY(i)))};
+  const blob=new Blob([JSON.stringify(all,null,2)],{type:'application/json'});
+  const u=URL.createObjectURL(blob);const x=document.createElement('a');
+  x.href=u;x.download='emo-studio-backup.json';x.click();
+}
+render();
+</script>
+</body>
+</html>
