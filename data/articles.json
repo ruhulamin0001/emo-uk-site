@@ -3,6 +3,126 @@
   "updated": "2026-07-21",
   "articles": [
     {
+      "id": 20,
+      "slug": "home-barista-side-hustle-uk",
+      "title": "Turning Good Coffee Into a Side Hustle in the UK",
+      "category": "side-hustles",
+      "status": "published",
+      "date": "2026-07-21",
+      "metaTitle": "Turning Good Coffee Into a Side Hustle in the UK",
+      "metaDescription": "How a home coffee habit becomes a small UK income: mobile carts, market stalls and content, what each realistically earns, and the rules you must follow.",
+      "coverImage": "https://images.pexels.com/photos/312418/pexels-photo-312418.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending studio run",
+      "factsCheckedOn": "2026-07-21",
+      "lastReviewed": "2026-07-21",
+      "trackingNotes": "Batch 2 (articles 16-20). Live.",
+      "earningPlan": [
+        {
+          "route": "Coffee kit + cart supplier affiliate (Amazon UK)",
+          "status": "possible",
+          "detail": "Names equipment. Ties to coffee-savings article audience."
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "slug": "productivity-for-side-hustlers-uk",
+      "title": "Getting a Side Hustle Done Around a Full Time Job",
+      "category": "work-career",
+      "status": "published",
+      "date": "2026-07-21",
+      "metaTitle": "Getting a Side Hustle Done Around a Full Time Job",
+      "metaDescription": "A realistic system for building a side hustle in the few hours a week you actually have, without burning out or letting it eat your evenings whole.",
+      "coverImage": "https://images.pexels.com/photos/2422290/pexels-photo-2422290.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending studio run",
+      "factsCheckedOn": "2026-07-21",
+      "lastReviewed": "2026-07-21",
+      "trackingNotes": "Batch 2 (articles 16-20). Live.",
+      "earningPlan": [
+        {
+          "route": "Planner/app affiliate (Notion, Todoist)",
+          "status": "later",
+          "detail": "Low value; mainly an internal traffic hub to money articles."
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "slug": "cv-that-gets-interviews-uk",
+      "title": "Write a UK CV That Actually Gets Interviews",
+      "category": "work-career",
+      "status": "published",
+      "date": "2026-07-21",
+      "metaTitle": "Write a UK CV That Actually Gets Interviews",
+      "metaDescription": "What a UK CV should really contain in 2026, how to beat the automated filters, and the mistakes that get good candidates rejected before a human ever reads it.",
+      "coverImage": "https://images.pexels.com/photos/590016/pexels-photo-590016.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending studio run",
+      "factsCheckedOn": "2026-07-21",
+      "lastReviewed": "2026-07-21",
+      "trackingNotes": "Batch 2 (articles 16-20). Live.",
+      "earningPlan": [
+        {
+          "route": "CV builder affiliate (Zety, Kickresume, Novoresume)",
+          "status": "possible",
+          "detail": "Direct product fit. Recurring commission."
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "slug": "passive-income-uk-truth",
+      "title": "Passive Income in the UK: What Is Real and What Is a Fantasy",
+      "category": "make-money",
+      "status": "published",
+      "date": "2026-07-21",
+      "metaTitle": "Passive Income in the UK: What Is Real and What Is a Fantasy",
+      "metaDescription": "The passive income ideas that genuinely work for UK beginners, the ones that are secretly a full time job, and how much each realistically pays.",
+      "coverImage": "https://images.pexels.com/photos/6289065/pexels-photo-6289065.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending studio run",
+      "factsCheckedOn": "2026-07-21",
+      "lastReviewed": "2026-07-21",
+      "trackingNotes": "Batch 2 (articles 16-20). Live.",
+      "earningPlan": [
+        {
+          "route": "Investing platform affiliate (Trading212, InvestEngine)",
+          "status": "later",
+          "detail": "FCA rules apply. High value once traffic exists."
+        },
+        {
+          "route": "Digital product angle links to POD/Etsy",
+          "status": "active",
+          "detail": "Internal traffic driver to affiliate-carrying articles."
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "slug": "crypto-basics-uk",
+      "title": "Crypto for Beginners in the UK: The Rules, the Tax, the Risks",
+      "category": "make-money",
+      "status": "published",
+      "date": "2026-07-21",
+      "metaTitle": "Crypto for Beginners in the UK: The Rules, the Tax, the Risks",
+      "metaDescription": "A calm, honest starting point for UK crypto beginners: how it is taxed, what the FCA does and does not protect, and the mistakes that cost people the most.",
+      "coverImage": "https://images.pexels.com/photos/730547/pexels-photo-730547.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending studio run",
+      "factsCheckedOn": "2026-07-21",
+      "lastReviewed": "2026-07-21",
+      "trackingNotes": "Batch 2 (articles 16-20). Live.",
+      "earningPlan": [
+        {
+          "route": "Crypto exchange affiliate (Coinbase, Kraken UK)",
+          "status": "later",
+          "detail": "High payout but FCA promotion rules are strict; needs careful compliant wording. Later."
+        },
+        {
+          "route": "Hardware wallet affiliate (Ledger, Trezor)",
+          "status": "possible",
+          "detail": "Article stresses key safety. Genuine product need."
+        }
+      ]
+    },
+    {
       "id": 15,
       "slug": "diy-home-savings-uk",
       "title": "DIY Home Jobs That Save Real Money (and Ones to Never Attempt)",
