@@ -3,6 +3,43 @@
   "updated": "2026-07-21",
   "articles": [
     {
+      "id": 6,
+      "slug": "remote-jobs-uk-no-degree",
+      "title": "Remote Jobs UK With No Degree: What Is Real and What Pays",
+      "category": "work-career",
+      "status": "published",
+      "date": "2026-07-21",
+      "metaTitle": "Remote Jobs UK With No Degree: What Is Real and What Pays",
+      "metaDescription": "Which UK work from home jobs genuinely hire without a degree, what they pay per hour, and how to spot the scams that target people looking for remote work.",
+      "coverImage": "https://images.pexels.com/photos/4050315/pexels-photo-4050315.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending studio run",
+      "factsCheckedOn": "2026-07-21",
+      "lastReviewed": "2026-07-21",
+      "trackingNotes": "Live. Fills the empty Work & Career pillar. Pay £10-12/hr July 2026, recheck with National Living Wage changes each April. Scam section is the differentiator, competitors just list jobs.",
+      "earningPlan": [
+        {
+          "route": "CV builder affiliate (Zety, Novoresume, Kickresume)",
+          "status": "possible",
+          "detail": "Article tells readers to rewrite CV per role. CV tools run affiliate programs with decent payouts and accept small sites. Strongest natural fit here."
+        },
+        {
+          "route": "Online course affiliate (Coursera, Udemy, OpenLearn)",
+          "status": "possible",
+          "detail": "Article frames these jobs as a doorway to better paid roles. Course affiliate links fit the progression angle honestly."
+        },
+        {
+          "route": "Job board partnerships",
+          "status": "later",
+          "detail": "Some UK job boards pay per application or per signup. Needs traffic volume first."
+        },
+        {
+          "route": "Display ads",
+          "status": "later",
+          "detail": "Site-wide plan: after 20+ articles."
+        }
+      ]
+    },
+    {
       "id": 5,
       "slug": "coffee-at-home-savings-uk",
       "title": "Coffee at Home: How Much a Daily Flat White Really Costs You",
