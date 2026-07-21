@@ -3,6 +3,136 @@
   "updated": "2026-07-21",
   "articles": [
     {
+      "id": 15,
+      "slug": "diy-home-savings-uk",
+      "title": "DIY Home Jobs That Save Real Money (and Ones to Never Attempt)",
+      "category": "save-money",
+      "status": "published",
+      "date": "2026-07-21",
+      "metaTitle": "DIY Home Jobs That Save Real Money (and Ones to Never Attempt)",
+      "metaDescription": "The home jobs a UK beginner can safely do to save on tradespeople, the ones that pay for a pro, and the two you must legally never touch yourself.",
+      "coverImage": "https://images.pexels.com/photos/1249611/pexels-photo-1249611.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending studio run",
+      "factsCheckedOn": "2026-07-21",
+      "lastReviewed": "2026-07-21",
+      "trackingNotes": "Batch 1 (articles 11-15). Live.",
+      "earningPlan": [
+        {
+          "route": "Tools affiliate (Amazon UK: drill, tool set, level)",
+          "status": "possible",
+          "detail": "Article names exact starter toolkit. High intent."
+        },
+        {
+          "route": "Draught proofing products (Amazon UK)",
+          "status": "possible",
+          "detail": "Specific recurring-need product."
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "slug": "declutter-and-sell-uk",
+      "title": "Declutter and Sell: Turn Your Clutter Into Real Money",
+      "category": "side-hustles",
+      "status": "published",
+      "date": "2026-07-21",
+      "metaTitle": "Declutter and Sell: Turn Your Clutter Into Real Money",
+      "metaDescription": "Where to sell your unwanted stuff in the UK for the most money, what each platform charges, and how to avoid the tax confusion that scares people off Vinted.",
+      "coverImage": "https://images.pexels.com/photos/4498135/pexels-photo-4498135.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending studio run",
+      "factsCheckedOn": "2026-07-21",
+      "lastReviewed": "2026-07-21",
+      "trackingNotes": "Batch 1 (articles 11-15). Live.",
+      "earningPlan": [
+        {
+          "route": "Vinted/eBay have no affiliate; musicMagpie/Ziffit referral",
+          "status": "possible",
+          "detail": "Instant sale sites run refer schemes."
+        },
+        {
+          "route": "Storage/organisation products (Amazon UK)",
+          "status": "later",
+          "detail": "Companion angle."
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "slug": "grow-your-own-save-money-uk",
+      "title": "Grow Your Own in the UK: What Actually Cuts the Food Bill",
+      "category": "save-money",
+      "status": "published",
+      "date": "2026-07-21",
+      "metaTitle": "Grow Your Own in the UK: What Actually Cuts the Food Bill",
+      "metaDescription": "Which vegetables are genuinely worth growing to save money in the UK, which are a waste of space, and how a beginner can start for under £30.",
+      "coverImage": "https://images.pexels.com/photos/1084540/pexels-photo-1084540.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending studio run",
+      "factsCheckedOn": "2026-07-21",
+      "lastReviewed": "2026-07-21",
+      "trackingNotes": "Batch 1 (articles 11-15). Live.",
+      "earningPlan": [
+        {
+          "route": "Seeds and compost affiliate (Amazon UK, Suttons)",
+          "status": "possible",
+          "detail": "Article names exact starter kit under £30."
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "slug": "budget-travel-uk",
+      "title": "Budget Travel in the UK: How to See More for Less",
+      "category": "save-money",
+      "status": "published",
+      "date": "2026-07-21",
+      "metaTitle": "Budget Travel in the UK: How to See More for Less",
+      "metaDescription": "Real ways to travel the UK cheaply in 2026: which railcard pays for itself, when advance tickets beat coaches, and the timing tricks that cut fares by half.",
+      "coverImage": "https://images.pexels.com/photos/258045/pexels-photo-258045.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending studio run",
+      "factsCheckedOn": "2026-07-21",
+      "lastReviewed": "2026-07-21",
+      "trackingNotes": "Batch 1 (articles 11-15). Live.",
+      "earningPlan": [
+        {
+          "route": "Railcard + Trainline affiliate",
+          "status": "possible",
+          "detail": "Trainline runs an affiliate program. Railcard is a natural recommend."
+        },
+        {
+          "route": "Booking.com / hostel affiliate",
+          "status": "later",
+          "detail": "Accommodation affiliates need traffic."
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "slug": "budget-wedding-uk",
+      "title": "Budget Wedding UK: A Real Day for a Fraction of £20,000",
+      "category": "save-money",
+      "status": "published",
+      "date": "2026-07-21",
+      "metaTitle": "Budget Wedding UK: A Real Day for a Fraction of £20,000",
+      "metaDescription": "The average UK wedding costs over £20,000. Here is how couples get a proper day for a fraction of that, what actually moves the cost, and where not to cut.",
+      "coverImage": "https://images.pexels.com/photos/265722/pexels-photo-265722.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending studio run",
+      "factsCheckedOn": "2026-07-21",
+      "lastReviewed": "2026-07-21",
+      "trackingNotes": "Batch 1 (articles 11-15). Live.",
+      "earningPlan": [
+        {
+          "route": "Wedding insurance + savings account affiliate",
+          "status": "later",
+          "detail": "High intent audience. Wedding insurance affiliates pay well but need traffic."
+        },
+        {
+          "route": "Amazon UK (decor, stationery, silk flowers)",
+          "status": "possible",
+          "detail": "Article names DIY decor items."
+        }
+      ]
+    },
+    {
       "id": 10,
       "slug": "youtube-earnings-uk",
       "title": "YouTube Earnings UK: What 1,000 Views Is Really Worth",
