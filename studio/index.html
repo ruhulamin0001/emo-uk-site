@@ -136,14 +136,18 @@ function setStatus(s){
 /* ---------- QA SCORING (out of 50) ---------- */
 function runQA(){
   if(!sel)return;const a=cur();save();
-  const body=v('f-body'),title=v('f-title'),mt=v('f-mtitle'),md=v('f-mdesc');
+  const body=v('f-body'),title=v('f-title'),mt=v('f-mtitle'),md=v('f-mdesc'),img=v('f-img');
   const words=body.trim()?body.trim().split(/\s+/).length:0;
   const res=[];let total=0;
 
-  // 1. Word count (8)
+  // 1. Word count (6)
   let p=0;
-  if(words>=800&&words<=1000)p=8;else if(words>=650&&words<1200)p=5;else if(words>=400)p=2;
-  res.push(['Word count 800-1000 ('+words+')',p,8]);total+=p;
+  if(words>=800&&words<=1000)p=6;else if(words>=650&&words<1200)p=4;else if(words>=400)p=2;
+  res.push(['Word count 800-1000 ('+words+')',p,6]);total+=p;
+
+  // 1b. Cover photo (4)
+  p=(img&&(img.startsWith('http')||img.startsWith('../images/')||img.startsWith('images/')))?4:0;
+  res.push(['Cover photo set'+(p?'':' (MISSING)'),p,4]);total+=p;
 
   // 2. Meta title (5)
   p=(mt.length>0&&mt.length<=60)?5:(mt.length>0?2:0);
@@ -159,21 +163,21 @@ function runQA(){
   p=Math.max(0,6-hits.length*2);
   res.push(['No AI phrases'+(hits.length?' (found: '+hits.join(', ')+')':''),p,6]);total+=p;
 
-  // 5. No em dash / emoji (4)
+  // 5. No em dash / emoji (3)
   const emDash=/[—–]/.test(body+title+md);
   const emoji=/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/u.test(body+title);
-  p=(!emDash&&!emoji)?4:(!emDash||!emoji?2:0);
-  res.push(['No em dash, no emoji',p,4]);total+=p;
+  p=(!emDash&&!emoji)?3:(!emDash||!emoji?1:0);
+  res.push(['No em dash, no emoji',p,3]);total+=p;
 
   // 6. Headings (5)
   const heads=(body.match(/^##\s/gm)||[]).length;
   p=heads>=4?5:(heads>=2?3:(heads>=1?1:0));
   res.push(['At least 4 section headings ('+heads+')',p,5]);total+=p;
 
-  // 7. Resource links (5)
+  // 7. Resource links (4)
   const links=(body.match(/https?:\/\//g)||[]).length;
-  p=links>=3?5:(links>=1?2:0);
-  res.push(['3+ resource links ('+links+')',p,5]);total+=p;
+  p=links>=3?4:(links>=1?2:0);
+  res.push(['3+ resource links ('+links+')',p,4]);total+=p;
 
   // 8. Readability: avg sentence length (6)
   const sents=body.split(/[.!?]+/).filter(s=>s.trim().split(/\s+/).length>2);
@@ -189,6 +193,7 @@ function runQA(){
   res.push(['No repeated 8-word blocks ('+dupes+' repeats)',p,6]);total+=p;
 
   a.score=total;store(KEY(sel),a);
+  window.lastQA={res:res,total:total,title:a.title};
   renderQA(res,total);renderList();
 }
 function renderQA(res,total){
@@ -200,11 +205,30 @@ function renderQA(res,total){
   });
   h+='</div>';
   if(total<25){
-    h+='<div class="alert">NEEDS MODIFICATION — score '+total+'/50. Ei message ta Claude ke pathao:<code>Modify article "'+(cur()?cur().title:'')+'" — QA score '+total+'/50. Fix the failed criteria and resubmit to studio.</code></div>';
+    h+='<div class="alert">NEEDS MODIFICATION — score '+total+'/50.</div>';
+  }else if(total<50){
+    h+='<div class="good">SEO friendly. Score '+total+'/50. Approve korte paro, othoba aro improve koro.</div>';
   }else{
-    h+='<div class="good">SEO friendly. Score '+total+'/50. Approve korte paro.</div>';
+    h+='<div class="good">PERFECT 50/50.</div>';
+  }
+  if(total<50){
+    h+='<button class="gold" style="margin-top:12px" onclick="improveScore()">Improve Score with Claude</button>';
   }
   document.getElementById('qa').innerHTML=h;
+}
+function improveScore(){
+  const q=window.lastQA;if(!q){alert('Age Run SEO + Quality Check chalao.');return}
+  const weak=q.res.filter(r=>r[1]<r[2]).map(r=>'- '+r[0]+' (got '+r[1]+'/'+r[2]+')');
+  const msg='IMPROVE ARTICLE REQUEST\n'
+    +'Article: '+q.title+'\n'
+    +'Current QA score: '+q.total+'/50\n'
+    +'Weak criteria:\n'+weak.join('\n')+'\n'
+    +'Task: fix only these weak points. Keep all site rules: 800-1000 words, UK English, no AI phrases, no em dash, no emoji, 3+ real resource links, cover photo required. Then resubmit to studio and republish.';
+  const ok=confirm('Improvement order pathabe Claude ke?\n\nWeak points:\n'+weak.join('\n')+'\n\nOK chapo: order copy hobe. Cowork chat e giye paste (Ctrl+V) koro.');
+  if(!ok)return;
+  const fin=()=>{document.getElementById('toast').textContent='Order copied! Cowork chat e paste koro.';document.getElementById('toast').style.display='block';setTimeout(()=>document.getElementById('toast').style.display='none',4000)};
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(msg).then(fin).catch(()=>{prompt('Copy koro (Ctrl+C):',msg);fin()})}
+  else{prompt('Copy koro (Ctrl+C):',msg);fin()}
 }
 
 /* ---------- RENDER ---------- */
