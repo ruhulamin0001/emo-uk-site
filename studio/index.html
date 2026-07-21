@@ -91,6 +91,10 @@
         <button onclick="setStatus('published')">Mark Published</button>
         <button class="red" onclick="delArticle()">Delete</button>
       </div>
+      <div class="row">
+        <button class="ghost" onclick="trackingInfo()">Tracking Info</button>
+        <button class="ghost" onclick="earningPlan()">Earning Plan</button>
+      </div>
       <div id="qa"></div>
     </div>
   </div>
@@ -268,6 +272,50 @@ function renderPreview(){
     +'<div class="pv-body">'+(a.img?'<img src="'+esc(a.img)+'">':'')+bodyH+'</div>';
 }
 function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')}
+
+/* ---------- REPO DATA (tracking + earning, Claude daily update kore) ---------- */
+let repoData=null;
+async function loadRepo(){
+  try{const r=await fetch('https://raw.githubusercontent.com/ruhulamin0001/emo-uk-site/main/data/articles.json?t='+Date.now());repoData=await r.json()}catch(e){repoData=null}
+}
+loadRepo();
+function repoEntry(){const a=cur();if(!a||!repoData)return null;return (repoData.articles||[]).find(x=>x.slug===a.slug)||null}
+
+function trackingInfo(){
+  const a=cur();if(!a)return;const e=repoEntry();
+  let h='<div class="score-box"><b style="font-size:1.05rem;color:var(--gold)">TRACKING PARAMETER</b><div style="margin:6px 0 10px;font-weight:700">'+esc(a.title)+'</div>';
+  const rows=[];
+  if(e){
+    rows.push(['Live URL','earningmoneyonline.co.uk/articles/'+e.slug+'.html']);
+    rows.push(['Status',e.status]);
+    rows.push(['Category',e.category]);
+    rows.push(['Published',e.date]);
+    rows.push(['QA score',e.qaScore||(a.score!==null?a.score+'/50':'not run')]);
+    rows.push(['Facts checked',e.factsCheckedOn||'-']);
+    rows.push(['Last reviewed',e.lastReviewed||e.date]);
+    if(e.trackingNotes)rows.push(['Notes',e.trackingNotes]);
+  }else{
+    rows.push(['Info','Repo data load hoyni. Internet check koro, page reload koro.']);
+  }
+  rows.forEach(r=>h+='<div class="crit"><span>'+r[0]+'</span><span>'+esc(String(r[1]))+'</span></div>');
+  h+='<div style="margin-top:10px;font-size:0.75rem;color:var(--dim)">Data source: repo data/articles.json · Claude daily cycle e update kore</div></div>';
+  document.getElementById('qa').innerHTML=h;
+}
+
+function earningPlan(){
+  const a=cur();if(!a)return;const e=repoEntry();
+  let h='<div class="score-box"><b style="font-size:1.05rem;color:var(--gold)">EARNING PLAN</b><div style="margin:6px 0 4px;font-weight:700">'+esc(a.title)+'</div>';
+  if(e&&e.earningPlan&&e.earningPlan.length){
+    e.earningPlan.forEach(p=>{
+      h+='<div style="margin-top:12px;border-top:1px dashed var(--line);padding-top:10px"><b>'+esc(p.route)+'</b> <span class="badge '+(p.status==='active'?'b-published':'b-draft')+'">'+esc(p.status)+'</span>'
+        +'<div style="font-size:0.85rem;color:var(--dim);margin-top:4px">'+esc(p.detail)+'</div></div>';
+    });
+    h+='<div style="margin-top:12px;font-size:0.75rem;color:var(--dim)">Updated: '+esc(e.lastReviewed||e.date)+' · Claude daily research e refresh kore</div>';
+  }else{
+    h+='<div style="margin-top:10px;color:var(--dim)">Ei article er earning plan repo te ekhono nei. Claude ke bolo: "earning plan add koro '+esc(a.slug)+'"</div>';
+  }
+  h+='</div>';document.getElementById('qa').innerHTML=h;
+}
 function exportJson(){
   const all={index,articles:index.ids.map(i=>load(KEY(i)))};
   const blob=new Blob([JSON.stringify(all,null,2)],{type:'application/json'});
