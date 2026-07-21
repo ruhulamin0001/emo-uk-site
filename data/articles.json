@@ -3,6 +3,43 @@
   "updated": "2026-07-21",
   "articles": [
     {
+      "id": 3,
+      "slug": "etsy-fees-uk-sellers",
+      "title": "Etsy Fees for UK Sellers: What You Really Pay Per Sale",
+      "category": "make-money",
+      "status": "published",
+      "date": "2026-07-21",
+      "metaTitle": "Etsy Fees for UK Sellers: What You Really Pay Per Sale",
+      "metaDescription": "Every fee Etsy charges UK sellers in 2026, with a worked example showing what a £25 sale really costs you after listing, transaction, processing and VAT.",
+      "coverImage": "https://images.pexels.com/photos/7309465/pexels-photo-7309465.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending studio run",
+      "factsCheckedOn": "2026-07-21",
+      "lastReviewed": "2026-07-21",
+      "trackingNotes": "Live. Regulatory fee 0.48% since 22 June 2026, recheck if Etsy announces changes. Internal links to articles 1 and 2.",
+      "earningPlan": [
+        {
+          "route": "Etsy affiliate program (via Awin)",
+          "status": "possible",
+          "detail": "Etsy runs an affiliate program on Awin paying commission on purchases. Article can link handmade products or Etsy itself. Apply once site has 10+ articles."
+        },
+        {
+          "route": "Craft supplies and tools affiliate (Amazon UK Associates)",
+          "status": "possible",
+          "detail": "Packaging, label printers, candle making kits mentioned in future companion articles. Amazon UK Associates is open to small sites."
+        },
+        {
+          "route": "Display ads",
+          "status": "later",
+          "detail": "Site-wide plan: after 20+ articles."
+        },
+        {
+          "route": "Digital product (Etsy pricing calculator spreadsheet)",
+          "status": "later",
+          "detail": "Sell or give free a fee calculator spreadsheet based on this article's maths. Could itself be sold on Etsy, which becomes a case study article."
+        }
+      ]
+    },
+    {
       "id": 2,
       "slug": "best-cashback-credit-cards-uk",
       "title": "Best Cashback Credit Cards in the UK: What You Actually Earn",
