@@ -3,6 +3,43 @@
   "updated": "2026-07-21",
   "articles": [
     {
+      "id": 4,
+      "slug": "print-on-demand-uk-profit",
+      "title": "Print on Demand UK: The Real Profit Per T-Shirt",
+      "category": "make-money",
+      "status": "published",
+      "date": "2026-07-21",
+      "metaTitle": "Print on Demand UK: The Real Profit Per T-Shirt",
+      "metaDescription": "What print on demand actually pays a UK seller once base cost, shipping, platform fees and VAT come out. Full worked example on a £25 t-shirt.",
+      "coverImage": "https://images.pexels.com/photos/1656684/pexels-photo-1656684.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending studio run",
+      "factsCheckedOn": "2026-07-21",
+      "lastReviewed": "2026-07-21",
+      "trackingNotes": "Live. Printful raised some prices Feb 2026, recheck base costs quarterly. Links to articles 1 and 3.",
+      "earningPlan": [
+        {
+          "route": "Printful / Printify affiliate programs",
+          "status": "possible",
+          "detail": "Both run affiliate programs paying a share of what referred sellers spend, often recurring for 12 months. Strong fit: this article names both suppliers. Printful pays on customer orders, Printify pays per signup plus revenue share."
+        },
+        {
+          "route": "Design tool affiliate (Canva Pro, Kittl, Placeit)",
+          "status": "possible",
+          "detail": "POD sellers need design tools. Canva and Placeit run affiliate programs with recurring commission on subscriptions. Natural companion article: best design tools for POD."
+        },
+        {
+          "route": "Own POD shop as case study",
+          "status": "later",
+          "detail": "Open a small Etsy POD shop, publish monthly real revenue numbers. Case study content ranks well and builds trust no competitor can copy."
+        },
+        {
+          "route": "Display ads",
+          "status": "later",
+          "detail": "Site-wide plan: after 20+ articles."
+        }
+      ]
+    },
+    {
       "id": 3,
       "slug": "etsy-fees-uk-sellers",
       "title": "Etsy Fees for UK Sellers: What You Really Pay Per Sale",
@@ -85,11 +122,11 @@
       "date": "2026-07-21",
       "metaTitle": "Side Hustle Tax Rules UK 2026: When HMRC Needs to Know",
       "metaDescription": "Earning extra money in the UK? Here is exactly when you owe tax on a side hustle, what the £1,000 allowance covers, and what Vinted and eBay now tell HMRC.",
-      "coverImage": "",
+      "coverImage": "https://images.pexels.com/photos/6863183/pexels-photo-6863183.jpeg?auto=compress&cs=tinysrgb&w=1200",
       "qaScore": "not run in studio",
       "factsCheckedOn": "2026-07-21",
       "lastReviewed": "2026-07-21",
-      "trackingNotes": "Live. Needs cover photo (next improvement pass). £3,000 threshold law status recheck monthly.",
+      "trackingNotes": "Live with cover photo + internal links added 21 Jul. £3,000 threshold law status recheck monthly.",
       "earningPlan": [
         {
           "route": "Accounting software affiliate (FreeAgent, QuickBooks UK, Coconut)",
