@@ -3,6 +3,226 @@
   "updated": "2026-07-21",
   "articles": [
     {
+      "id": 30,
+      "slug": "cut-energy-bills-uk",
+      "title": "Cutting Your Energy Bills in the UK: What Saves Real Money",
+      "category": "save-money",
+      "status": "published",
+      "date": "2026-07-21",
+      "metaTitle": "Cutting Your Energy Bills in the UK: What Saves Real Money",
+      "metaDescription": "An honest guide to lowering UK energy bills: which changes save real money, which barely move the needle, and the free help many households never claim.",
+      "coverImage": "https://images.pexels.com/photos/1112598/pexels-photo-1112598.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending studio run",
+      "factsCheckedOn": "2026-07-21",
+      "lastReviewed": "2026-07-21",
+      "trackingNotes": "Batch 4 (articles 26-30). Live.",
+      "earningPlan": [
+        {
+          "route": "Draught-proofing / insulation / smart thermostat affiliate (Amazon UK)",
+          "status": "possible",
+          "detail": "Names cheap fixes. Modest per-item but high traffic topic."
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "slug": "car-detailing-side-hustle-uk",
+      "title": "Starting a Car Detailing Side Hustle in the UK",
+      "category": "side-hustles",
+      "status": "published",
+      "date": "2026-07-21",
+      "metaTitle": "Starting a Car Detailing Side Hustle in the UK",
+      "metaDescription": "How a car cleaning side hustle really works in the UK: the kit you need, what a job pays, the water and waste rules people forget, and how to find first customers.",
+      "coverImage": "https://images.pexels.com/photos/3354648/pexels-photo-3354648.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending studio run",
+      "factsCheckedOn": "2026-07-21",
+      "lastReviewed": "2026-07-21",
+      "trackingNotes": "Batch 4 (articles 26-30). Live.",
+      "earningPlan": [
+        {
+          "route": "Detailing kit + products affiliate (Amazon UK)",
+          "status": "strong",
+          "detail": "Names full starter kit. Direct buyer intent for supplies."
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "slug": "cover-letter-uk-that-works",
+      "title": "Writing a UK Cover Letter That Actually Gets Read",
+      "category": "work-career",
+      "status": "published",
+      "date": "2026-07-21",
+      "metaTitle": "Writing a UK Cover Letter That Actually Gets Read",
+      "metaDescription": "A simple structure for a UK cover letter that hiring managers actually read: what to open with, what to cut, and the mistakes that get yours binned in seconds.",
+      "coverImage": "https://images.pexels.com/photos/590016/pexels-photo-590016.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending studio run",
+      "factsCheckedOn": "2026-07-21",
+      "lastReviewed": "2026-07-21",
+      "trackingNotes": "Batch 4 (articles 26-30). Live.",
+      "earningPlan": [
+        {
+          "route": "CV/cover-letter template or course affiliate",
+          "status": "possible",
+          "detail": "Ties to CV guide. Digital product affiliate potential."
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "slug": "best-budget-headphones-uk",
+      "title": "Budget Headphones in the UK: What You Gain by Not Overspending",
+      "category": "tools-reviews",
+      "status": "published",
+      "date": "2026-07-21",
+      "metaTitle": "Budget Headphones in the UK: What You Gain by Not Overspending",
+      "metaDescription": "How to buy good headphones in the UK without wasting money: what actually changes with price, where the sweet spot is, and the features you are paying for but never use.",
+      "coverImage": "https://images.pexels.com/photos/205926/pexels-photo-205926.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending studio run",
+      "factsCheckedOn": "2026-07-21",
+      "lastReviewed": "2026-07-21",
+      "trackingNotes": "Batch 4 (articles 26-30). Live.",
+      "earningPlan": [
+        {
+          "route": "Headphone affiliate (Amazon UK)",
+          "status": "strong",
+          "detail": "Classic review affiliate. Recommend specific mid-price pairs."
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "slug": "e-bikes-uk-worth-it",
+      "title": "Are E-Bikes Worth It in the UK? The Real Costs and Savings",
+      "category": "tools-reviews",
+      "status": "published",
+      "date": "2026-07-21",
+      "metaTitle": "Are E-Bikes Worth It in the UK? The Real Costs and Savings",
+      "metaDescription": "An honest look at whether an e-bike saves money in the UK: the real running costs, the law you must follow, and who actually benefits versus who just spends.",
+      "coverImage": "https://images.pexels.com/photos/100582/pexels-photo-100582.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending studio run",
+      "factsCheckedOn": "2026-07-21",
+      "lastReviewed": "2026-07-21",
+      "trackingNotes": "Batch 4 (articles 26-30). Live.",
+      "earningPlan": [
+        {
+          "route": "E-bike + accessories affiliate (Amazon UK / brand programmes)",
+          "status": "strong",
+          "detail": "High ticket buyer-intent article. Names kit and battery replacements."
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "slug": "photography-income-uk",
+      "title": "Making Money From Photography in the UK: The Real Routes",
+      "category": "make-money",
+      "status": "published",
+      "date": "2026-07-21",
+      "metaTitle": "Making Money From Photography in the UK: The Real Routes",
+      "metaDescription": "An honest look at earning from photography in the UK: which routes pay, which barely do, what stock and prints really return, and how to start without big kit.",
+      "coverImage": "https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending studio run",
+      "factsCheckedOn": "2026-07-21",
+      "lastReviewed": "2026-07-21",
+      "trackingNotes": "Batch 3 (articles 21-25). Live.",
+      "earningPlan": [
+        {
+          "route": "Camera gear + print-on-demand affiliate (Amazon UK)",
+          "status": "possible",
+          "detail": "Names kit. Ties to print-on-demand article for products."
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "slug": "retro-gaming-resell-uk",
+      "title": "Flipping Retro Games in the UK: Where the Real Money Is",
+      "category": "side-hustles",
+      "status": "published",
+      "date": "2026-07-21",
+      "metaTitle": "Flipping Retro Games in the UK: Where the Real Money Is",
+      "metaDescription": "How reselling retro games works in the UK: where to buy, what actually sells, the fakes to avoid, and the honest profit after fees on a real flip.",
+      "coverImage": "https://images.pexels.com/photos/163036/pexels-photo-163036.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending studio run",
+      "factsCheckedOn": "2026-07-21",
+      "lastReviewed": "2026-07-21",
+      "trackingNotes": "Batch 3 (articles 21-25). Live.",
+      "earningPlan": [
+        {
+          "route": "Selling-platform / packaging supplies affiliate (Amazon UK)",
+          "status": "possible",
+          "detail": "Names packaging and kit. Reseller audience buys supplies."
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "slug": "freelance-rates-uk",
+      "title": "How to Set Your Freelance Rate in the UK Without Undercharging",
+      "category": "work-career",
+      "status": "published",
+      "date": "2026-07-21",
+      "metaTitle": "How to Set Your Freelance Rate in the UK Without Undercharging",
+      "metaDescription": "A clear method for setting a freelance day rate in the UK: the real cost of self employment, the maths most beginners skip, and how not to price yourself broke.",
+      "coverImage": "https://images.pexels.com/photos/275033/pexels-photo-275033.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending studio run",
+      "factsCheckedOn": "2026-07-21",
+      "lastReviewed": "2026-07-21",
+      "trackingNotes": "Batch 3 (articles 21-25). Live.",
+      "earningPlan": [
+        {
+          "route": "Invoicing/accounting tool affiliate",
+          "status": "possible",
+          "detail": "Ties to freelancer money tools. Modest recurring commission."
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "slug": "web-hosting-uk-beginners",
+      "title": "Web Hosting in the UK for Beginners: What You Actually Pay",
+      "category": "tools-reviews",
+      "status": "published",
+      "date": "2026-07-21",
+      "metaTitle": "Web Hosting in the UK for Beginners: What You Actually Pay",
+      "metaDescription": "A plain guide to web hosting for a UK beginner: shared versus other types, the renewal price trick, and how little you really need to spend to get online.",
+      "coverImage": "https://images.pexels.com/photos/1181271/pexels-photo-1181271.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending studio run",
+      "factsCheckedOn": "2026-07-21",
+      "lastReviewed": "2026-07-21",
+      "trackingNotes": "Batch 3 (articles 21-25). Live.",
+      "earningPlan": [
+        {
+          "route": "Web host + domain registrar affiliate (high payout)",
+          "status": "strong",
+          "detail": "Hosting affiliates pay well per signup. Direct buyer intent article."
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "slug": "best-ai-tools-uk-small-business",
+      "title": "Best AI Tools for a UK Small Business: What Is Worth Paying For",
+      "category": "make-money",
+      "status": "published",
+      "date": "2026-07-21",
+      "metaTitle": "Best AI Tools for a UK Small Business: What Is Worth Paying For",
+      "metaDescription": "An honest look at AI tools for a UK small business: which ones genuinely save time, which are hype, and where the free version is all you need.",
+      "coverImage": "https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending studio run",
+      "factsCheckedOn": "2026-07-21",
+      "lastReviewed": "2026-07-21",
+      "trackingNotes": "Batch 3 (articles 21-25). Live.",
+      "earningPlan": [
+        {
+          "route": "AI/design/accounting SaaS affiliate programmes",
+          "status": "possible",
+          "detail": "Names tools. Recurring commissions on paid tiers once traffic builds."
+        }
+      ]
+    },
+    {
       "id": 20,
       "slug": "home-barista-side-hustle-uk",
       "title": "Turning Good Coffee Into a Side Hustle in the UK",
