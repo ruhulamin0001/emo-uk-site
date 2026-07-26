@@ -3,6 +3,116 @@
   "updated": "2026-07-21",
   "articles": [
     {
+      "id": 45,
+      "slug": "laptop-buying-guide-uk-budget",
+      "title": "Budget Laptop Buying Guide UK: What to Get and What to Skip",
+      "category": "tools-reviews",
+      "status": "published",
+      "date": "2026-07-21",
+      "metaTitle": "Budget Laptop Buying Guide UK: What to Get and What to Skip",
+      "metaDescription": "How to buy a good laptop cheaply in the UK: the specs that actually matter, what is marketing, when refurbished wins, and how much you really need to spend.",
+      "coverImage": "https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending studio run",
+      "factsCheckedOn": "2026-07-21",
+      "lastReviewed": "2026-07-21",
+      "trackingNotes": "Batch 7 (articles 41-45). Live.",
+      "earningPlan": [
+        {
+          "route": "Refurbished laptop affiliate (Amazon UK / refurb sellers)",
+          "status": "strong",
+          "detail": "High-ticket buyer intent. Refurb + accessory commissions."
+        }
+      ]
+    },
+    {
+      "id": 44,
+      "slug": "job-interview-tips-uk",
+      "title": "UK Job Interview Tips: How to Prepare and Actually Get the Offer",
+      "category": "work-career",
+      "status": "published",
+      "date": "2026-07-21",
+      "metaTitle": "UK Job Interview Tips: How to Prepare and Actually Get the Offer",
+      "metaDescription": "Practical UK job interview tips: how to prepare, the STAR method for answers, questions to ask, and the small things that decide who gets the offer.",
+      "coverImage": "https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending studio run",
+      "factsCheckedOn": "2026-07-21",
+      "lastReviewed": "2026-07-21",
+      "trackingNotes": "Batch 7 (articles 41-45). Live.",
+      "earningPlan": [
+        {
+          "route": "Interview course / CV tool affiliate",
+          "status": "possible",
+          "detail": "Completes the job-hunt hub (CV, cover letter, LinkedIn, interview)."
+        }
+      ]
+    },
+    {
+      "id": 43,
+      "slug": "transcription-side-hustle-uk",
+      "title": "Transcription as a Side Hustle in the UK: What It Really Pays",
+      "category": "side-hustles",
+      "status": "published",
+      "date": "2026-07-21",
+      "metaTitle": "Transcription as a Side Hustle in the UK: What It Really Pays",
+      "metaDescription": "How transcription work pays in the UK: what the job involves, realistic pay per hour of audio, the kit you need, and how to find your first paid work.",
+      "coverImage": "https://images.pexels.com/photos/205926/pexels-photo-205926.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending studio run",
+      "factsCheckedOn": "2026-07-21",
+      "lastReviewed": "2026-07-21",
+      "trackingNotes": "Batch 7 (articles 41-45). Live.",
+      "earningPlan": [
+        {
+          "route": "Headphones + transcription software affiliate",
+          "status": "possible",
+          "detail": "Names kit. Ties to headphones review article."
+        }
+      ]
+    },
+    {
+      "id": 42,
+      "slug": "no-spend-challenge-uk",
+      "title": "The No Spend Challenge in the UK: How to Reset Your Spending",
+      "category": "save-money",
+      "status": "published",
+      "date": "2026-07-21",
+      "metaTitle": "The No Spend Challenge in the UK: How to Reset Your Spending",
+      "metaDescription": "How a no spend challenge really works in the UK: what counts, how much it saves, the rules that make it stick, and how to avoid the rebound spend afterwards.",
+      "coverImage": "https://images.pexels.com/photos/2422290/pexels-photo-2422290.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending studio run",
+      "factsCheckedOn": "2026-07-21",
+      "lastReviewed": "2026-07-21",
+      "trackingNotes": "Batch 7 (articles 41-45). Live.",
+      "earningPlan": [
+        {
+          "route": "Budgeting app + savings account affiliate",
+          "status": "possible",
+          "detail": "Ties to budgeting tools. Savings account affiliates need FCA-aware wording."
+        }
+      ]
+    },
+    {
+      "id": 41,
+      "slug": "dropshipping-uk-truth",
+      "title": "Dropshipping in the UK: The Honest Truth Nobody Tells Beginners",
+      "category": "make-money",
+      "status": "published",
+      "date": "2026-07-21",
+      "metaTitle": "Dropshipping in the UK: The Honest Truth Nobody Tells Beginners",
+      "metaDescription": "What dropshipping really is in the UK, why most stores fail, the hidden costs and rules, and the honest version of who actually makes money from it.",
+      "coverImage": "https://images.pexels.com/photos/4145153/pexels-photo-4145153.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending studio run",
+      "factsCheckedOn": "2026-07-21",
+      "lastReviewed": "2026-07-21",
+      "trackingNotes": "Batch 7 (articles 41-45). Live.",
+      "earningPlan": [
+        {
+          "route": "Store platform + supplier app affiliate (Shopify etc.)",
+          "status": "possible",
+          "detail": "Honest-caution angle; platform referrals still convert on serious triers."
+        }
+      ]
+    },
+    {
       "id": 40,
       "slug": "best-free-software-uk-small-business",
       "title": "Best Free Software for a UK Small Business: Stop Paying for Tools",
