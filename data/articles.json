@@ -3,6 +3,116 @@
   "updated": "2026-07-21",
   "articles": [
     {
+      "id": 50,
+      "slug": "antivirus-uk-do-you-need",
+      "title": "Do You Need Paid Antivirus in the UK? The Honest Answer",
+      "category": "tools-reviews",
+      "status": "published",
+      "date": "2026-07-21",
+      "metaTitle": "Do You Need Paid Antivirus in the UK? The Honest Answer",
+      "metaDescription": "Whether you really need paid antivirus in the UK, what the free built in protection already does, when paying is worth it, and how to stay safe for free.",
+      "coverImage": "https://images.pexels.com/photos/60504/pexels-photo-60504.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending studio run",
+      "factsCheckedOn": "2026-07-21",
+      "lastReviewed": "2026-07-21",
+      "trackingNotes": "Batch 8 (articles 46-50). Live. TARGET 50 COMPLETE.",
+      "earningPlan": [
+        {
+          "route": "Antivirus suite affiliate (only if genuinely needed)",
+          "status": "possible",
+          "detail": "Honest free-first framing; commission on suites for those who do pay."
+        }
+      ]
+    },
+    {
+      "id": 49,
+      "slug": "apprenticeships-uk-earn-while-learn",
+      "title": "Apprenticeships in the UK: Earn While You Learn a New Trade",
+      "category": "work-career",
+      "status": "published",
+      "date": "2026-07-21",
+      "metaTitle": "Apprenticeships in the UK: Earn While You Learn a New Trade",
+      "metaDescription": "How UK apprenticeships work: who they are for, what you get paid, the levels from beginner to degree, and how to find and apply for one at any age.",
+      "coverImage": "https://images.pexels.com/photos/1181271/pexels-photo-1181271.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending studio run",
+      "factsCheckedOn": "2026-07-21",
+      "lastReviewed": "2026-07-21",
+      "trackingNotes": "Batch 8 (articles 46-50). Live. TARGET 50 COMPLETE.",
+      "earningPlan": [
+        {
+          "route": "Course / careers-service (info hub, low direct affiliate)",
+          "status": "later",
+          "detail": "Mostly SEO + internal traffic to CV/interview articles."
+        }
+      ]
+    },
+    {
+      "id": 48,
+      "slug": "proofreading-side-hustle-uk",
+      "title": "Proofreading as a Side Hustle in the UK: What It Really Pays",
+      "category": "side-hustles",
+      "status": "published",
+      "date": "2026-07-21",
+      "metaTitle": "Proofreading as a Side Hustle in the UK: What It Really Pays",
+      "metaDescription": "How proofreading works as a UK side hustle: what the job is, what to charge, the skills you need, and how to find your first paying clients from home.",
+      "coverImage": "https://images.pexels.com/photos/275033/pexels-photo-275033.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending studio run",
+      "factsCheckedOn": "2026-07-21",
+      "lastReviewed": "2026-07-21",
+      "trackingNotes": "Batch 8 (articles 46-50). Live. TARGET 50 COMPLETE.",
+      "earningPlan": [
+        {
+          "route": "Proofreading course + freelance platform affiliate",
+          "status": "possible",
+          "detail": "Course referrals. Ties to VA/transcription cluster."
+        }
+      ]
+    },
+    {
+      "id": 47,
+      "slug": "switching-careers-uk",
+      "title": "Switching Careers in the UK: How to Change Without Starting Over",
+      "category": "work-career",
+      "status": "published",
+      "date": "2026-07-21",
+      "metaTitle": "Switching Careers in the UK: How to Change Without Starting Over",
+      "metaDescription": "A practical guide to switching careers in the UK: how to move without losing your income, transferable skills, retraining routes, and reducing the risk.",
+      "coverImage": "https://images.pexels.com/photos/590016/pexels-photo-590016.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending studio run",
+      "factsCheckedOn": "2026-07-21",
+      "lastReviewed": "2026-07-21",
+      "trackingNotes": "Batch 8 (articles 46-50). Live. TARGET 50 COMPLETE.",
+      "earningPlan": [
+        {
+          "route": "Online course + CV tool affiliate",
+          "status": "possible",
+          "detail": "Retraining course referrals. Ties to apprenticeships + CV hub."
+        }
+      ]
+    },
+    {
+      "id": 46,
+      "slug": "smart-home-worth-it-uk",
+      "title": "Is a Smart Home Worth It in the UK? What Actually Saves Money",
+      "category": "tools-reviews",
+      "status": "published",
+      "date": "2026-07-21",
+      "metaTitle": "Is a Smart Home Worth It in the UK? What Actually Saves Money",
+      "metaDescription": "An honest look at smart home tech in the UK: what genuinely saves money or time, what is a gadget you will forget, and where to start cheaply if you do.",
+      "coverImage": "https://images.pexels.com/photos/1112598/pexels-photo-1112598.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending studio run",
+      "factsCheckedOn": "2026-07-21",
+      "lastReviewed": "2026-07-21",
+      "trackingNotes": "Batch 8 (articles 46-50). Live. TARGET 50 COMPLETE.",
+      "earningPlan": [
+        {
+          "route": "Smart thermostat + plug affiliate (Amazon UK)",
+          "status": "strong",
+          "detail": "Thermostat has real payback angle = honest buyer intent."
+        }
+      ]
+    },
+    {
       "id": 45,
       "slug": "laptop-buying-guide-uk-budget",
       "title": "Budget Laptop Buying Guide UK: What to Get and What to Skip",
