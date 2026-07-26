@@ -3,6 +3,116 @@
   "updated": "2026-07-21",
   "articles": [
     {
+      "id": 35,
+      "slug": "side-hustle-ideas-under-100-uk",
+      "title": "Side Hustle Ideas You Can Start for Under £100 in the UK",
+      "category": "side-hustles",
+      "status": "published",
+      "date": "2026-07-21",
+      "metaTitle": "Side Hustle Ideas You Can Start for Under £100 in the UK",
+      "metaDescription": "Real UK side hustles you can start for under £100: what each needs, what it honestly pays, and how to choose one that fits the time and money you actually have.",
+      "coverImage": "https://images.pexels.com/photos/2422290/pexels-photo-2422290.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending studio run",
+      "factsCheckedOn": "2026-07-21",
+      "lastReviewed": "2026-07-21",
+      "trackingNotes": "Batch 5 (articles 31-35). Live.",
+      "earningPlan": [
+        {
+          "route": "Internal traffic hub -> affiliate-carrying articles",
+          "status": "active",
+          "detail": "Links to POD, reselling, tutoring, freelancing articles. Powerful internal SEO hub."
+        }
+      ]
+    },
+    {
+      "id": 34,
+      "slug": "online-tutoring-income-uk",
+      "title": "Making Money From Online Tutoring in the UK: What It Really Pays",
+      "category": "make-money",
+      "status": "published",
+      "date": "2026-07-21",
+      "metaTitle": "Making Money From Online Tutoring in the UK: What It Really Pays",
+      "metaDescription": "How online tutoring works as a UK income: what you can earn per hour, the platforms versus going independent, the checks you need, and how to get first students.",
+      "coverImage": "https://images.pexels.com/photos/4145153/pexels-photo-4145153.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending studio run",
+      "factsCheckedOn": "2026-07-21",
+      "lastReviewed": "2026-07-21",
+      "trackingNotes": "Batch 5 (articles 31-35). Live.",
+      "earningPlan": [
+        {
+          "route": "Tutoring platform + DBS check service affiliate",
+          "status": "possible",
+          "detail": "Tutor platforms run referral schemes. Direct intent audience."
+        }
+      ]
+    },
+    {
+      "id": 33,
+      "slug": "ask-for-pay-rise-uk",
+      "title": "How to Ask for a Pay Rise in the UK (and Actually Get One)",
+      "category": "work-career",
+      "status": "published",
+      "date": "2026-07-21",
+      "metaTitle": "How to Ask for a Pay Rise in the UK (and Actually Get One)",
+      "metaDescription": "A calm, practical guide to asking for a pay rise in the UK: when to ask, how to build your case, the numbers to bring, and what to do if they say no.",
+      "coverImage": "https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending studio run",
+      "factsCheckedOn": "2026-07-21",
+      "lastReviewed": "2026-07-21",
+      "trackingNotes": "Batch 5 (articles 31-35). Live.",
+      "earningPlan": [
+        {
+          "route": "Salary guide / CV tool affiliate",
+          "status": "possible",
+          "detail": "Ties to CV + freelance-rate articles. Modest affiliate potential."
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "slug": "slow-cooker-batch-cooking-uk",
+      "title": "Slow Cooker Batch Cooking in the UK: The Real Money It Saves",
+      "category": "save-money",
+      "status": "published",
+      "date": "2026-07-21",
+      "metaTitle": "Slow Cooker Batch Cooking in the UK: The Real Money It Saves",
+      "metaDescription": "How batch cooking with a slow cooker actually cuts a UK food bill: the real running cost, what to cook, and the honest savings versus takeaways and ready meals.",
+      "coverImage": "https://images.pexels.com/photos/1435904/pexels-photo-1435904.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending studio run",
+      "factsCheckedOn": "2026-07-21",
+      "lastReviewed": "2026-07-21",
+      "trackingNotes": "Batch 5 (articles 31-35). Live.",
+      "earningPlan": [
+        {
+          "route": "Slow cooker + freezer container affiliate (Amazon UK)",
+          "status": "possible",
+          "detail": "Names kit. Low value per item but high-traffic evergreen topic."
+        }
+      ]
+    },
+    {
+      "id": 31,
+      "slug": "best-budget-smartphone-uk",
+      "title": "Best Budget Smartphone in the UK: Stop Overpaying for a Phone",
+      "category": "tools-reviews",
+      "status": "published",
+      "date": "2026-07-21",
+      "metaTitle": "Best Budget Smartphone in the UK: Stop Overpaying for a Phone",
+      "metaDescription": "How to buy a great phone in the UK without the flagship price: what actually matters, the specs that are marketing, and where the real value sits in 2026.",
+      "coverImage": "https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending studio run",
+      "factsCheckedOn": "2026-07-21",
+      "lastReviewed": "2026-07-21",
+      "trackingNotes": "Batch 5 (articles 31-35). Live.",
+      "earningPlan": [
+        {
+          "route": "Refurbished phone + SIM-only affiliate (Amazon UK / networks)",
+          "status": "strong",
+          "detail": "Buyer-intent review. Refurb marketplaces + SIM deals convert."
+        }
+      ]
+    },
+    {
       "id": 30,
       "slug": "cut-energy-bills-uk",
       "title": "Cutting Your Energy Bills in the UK: What Saves Real Money",
