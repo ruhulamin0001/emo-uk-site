@@ -3,6 +3,116 @@
   "updated": "2026-07-21",
   "articles": [
     {
+      "id": 40,
+      "slug": "best-free-software-uk-small-business",
+      "title": "Best Free Software for a UK Small Business: Stop Paying for Tools",
+      "category": "tools-reviews",
+      "status": "published",
+      "date": "2026-07-21",
+      "metaTitle": "Best Free Software for a UK Small Business: Stop Paying for Tools",
+      "metaDescription": "The genuinely good free software a UK small business can run on: office tools, design, accounting, email and more, and when paying is actually worth it.",
+      "coverImage": "https://images.pexels.com/photos/1181271/pexels-photo-1181271.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending studio run",
+      "factsCheckedOn": "2026-07-21",
+      "lastReviewed": "2026-07-21",
+      "trackingNotes": "Batch 6 (articles 36-40). Live.",
+      "earningPlan": [
+        {
+          "route": "Paid-tier SaaS affiliate (accounting/design upgrades)",
+          "status": "possible",
+          "detail": "Honest free-first framing; commission on the paid upgrades named."
+        }
+      ]
+    },
+    {
+      "id": 39,
+      "slug": "linkedin-for-job-hunting-uk",
+      "title": "Using LinkedIn to Find a Job in the UK: What Actually Works",
+      "category": "work-career",
+      "status": "published",
+      "date": "2026-07-21",
+      "metaTitle": "Using LinkedIn to Find a Job in the UK: What Actually Works",
+      "metaDescription": "A practical guide to using LinkedIn for a UK job search: what to fix on your profile, how recruiters actually find you, and the outreach that gets replies.",
+      "coverImage": "https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending studio run",
+      "factsCheckedOn": "2026-07-21",
+      "lastReviewed": "2026-07-21",
+      "trackingNotes": "Batch 6 (articles 36-40). Live.",
+      "earningPlan": [
+        {
+          "route": "CV builder / LinkedIn course affiliate",
+          "status": "possible",
+          "detail": "Ties to CV + cover letter hub. Modest affiliate potential."
+        }
+      ]
+    },
+    {
+      "id": 38,
+      "slug": "virtual-assistant-side-hustle-uk",
+      "title": "Becoming a Virtual Assistant in the UK: A Real Home Income",
+      "category": "side-hustles",
+      "status": "published",
+      "date": "2026-07-21",
+      "metaTitle": "Becoming a Virtual Assistant in the UK: A Real Home Income",
+      "metaDescription": "How virtual assistant work pays in the UK: what the job involves, what to charge, the skills clients want, and how to find your first paying client from home.",
+      "coverImage": "https://images.pexels.com/photos/275033/pexels-photo-275033.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending studio run",
+      "factsCheckedOn": "2026-07-21",
+      "lastReviewed": "2026-07-21",
+      "trackingNotes": "Batch 6 (articles 36-40). Live.",
+      "earningPlan": [
+        {
+          "route": "Freelance platform + course affiliate",
+          "status": "possible",
+          "detail": "VA course/platform referrals. Ties to freelance-rate article."
+        }
+      ]
+    },
+    {
+      "id": 37,
+      "slug": "switch-and-save-bills-uk",
+      "title": "Switch and Save on UK Bills: The Money Most People Leave Behind",
+      "category": "save-money",
+      "status": "published",
+      "date": "2026-07-21",
+      "metaTitle": "Switch and Save on UK Bills: The Money Most People Leave Behind",
+      "metaDescription": "A practical UK guide to cutting bills by switching: broadband, insurance, energy and more, what actually saves money, and the loyalty penalty costing you hundreds.",
+      "coverImage": "https://images.pexels.com/photos/590016/pexels-photo-590016.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending studio run",
+      "factsCheckedOn": "2026-07-21",
+      "lastReviewed": "2026-07-21",
+      "trackingNotes": "Batch 6 (articles 36-40). Live.",
+      "earningPlan": [
+        {
+          "route": "Comparison site affiliate (broadband/insurance/energy via Awin)",
+          "status": "strong",
+          "detail": "Comparison affiliates pay well per switch. High buyer intent."
+        }
+      ]
+    },
+    {
+      "id": 36,
+      "slug": "affiliate-marketing-uk-beginners",
+      "title": "Affiliate Marketing in the UK for Beginners: The Honest Version",
+      "category": "make-money",
+      "status": "published",
+      "date": "2026-07-21",
+      "metaTitle": "Affiliate Marketing in the UK for Beginners: The Honest Version",
+      "metaDescription": "How affiliate marketing really works in the UK: what it pays, how long it takes, the rules you must follow, and why most beginners quit before it works.",
+      "coverImage": "https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending studio run",
+      "factsCheckedOn": "2026-07-21",
+      "lastReviewed": "2026-07-21",
+      "trackingNotes": "Batch 6 (articles 36-40). Live.",
+      "earningPlan": [
+        {
+          "route": "Affiliate networks (Awin, Amazon UK, Impact)",
+          "status": "active",
+          "detail": "Meta-topic. Names the exact networks the site itself will join."
+        }
+      ]
+    },
+    {
       "id": 35,
       "slug": "side-hustle-ideas-under-100-uk",
       "title": "Side Hustle Ideas You Can Start for Under £100 in the UK",
