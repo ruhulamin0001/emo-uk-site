@@ -143,3 +143,84 @@
     body.appendChild(ab);
   });
 })();
+
+
+/* ===== STRUCTURED DATA (JSON-LD) =====
+   Adds Article, Breadcrumb and Organization schema so Google can understand
+   what each page is. Google renders JavaScript, so this is read. */
+(function(){
+  function ready(fn){ if(document.readyState!=='loading'){fn();} else {document.addEventListener('DOMContentLoaded',fn);} }
+  ready(function(){
+    if(document.querySelector('script[type="application/ld+json"]')) return;
+    var SITE='https://earningmoneyonline.co.uk';
+    var url=SITE+location.pathname;
+    var isArticle=location.pathname.indexOf('/articles/')>-1;
+    var h1=document.querySelector('h1');
+    var title=h1?h1.textContent.trim():document.title;
+    var descEl=document.querySelector('meta[name="description"]');
+    var desc=descEl?descEl.getAttribute('content'):'';
+    var img=document.querySelector('img.cover');
+    var imgSrc=img?img.getAttribute('src'):SITE+'/images/cover.jpg';
+    var tagEl=document.querySelector('.article-head .tag');
+    var section=tagEl?tagEl.textContent.trim():'';
+
+    /* try to read the date from the byline or meta line */
+    var dateTxt=(document.querySelector('.byline .who span')||document.querySelector('.article-head .meta')||{}).textContent||'';
+    var m=dateTxt.match(/(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})/);
+    var iso='';
+    if(m){
+      var months={January:'01',February:'02',March:'03',April:'04',May:'05',June:'06',July:'07',August:'08',September:'09',October:'10',November:'11',December:'12'};
+      var mm=months[m[2]];
+      if(mm){ iso=m[3]+'-'+mm+'-'+(m[1].length===1?'0'+m[1]:m[1]); }
+    }
+
+    var publisher={
+      "@type":"Organization",
+      "name":"EarningMoneyOnline.co.uk",
+      "url":SITE
+    };
+
+    var blocks=[];
+
+    if(isArticle){
+      var art={
+        "@context":"https://schema.org",
+        "@type":"Article",
+        "headline":title.slice(0,110),
+        "description":desc,
+        "image":[imgSrc],
+        "author":{"@type":"Person","name":"Ruhul Amin","url":SITE},
+        "publisher":publisher,
+        "mainEntityOfPage":{"@type":"WebPage","@id":url}
+      };
+      if(section) art.articleSection=section;
+      if(iso){ art.datePublished=iso; art.dateModified=iso; }
+      blocks.push(art);
+
+      var crumbs=[{"@type":"ListItem","position":1,"name":"Home","item":SITE+"/"}];
+      if(section){
+        var slugMap={"Make Money":"make-money","Side Hustles":"side-hustles","Save Money":"save-money","Work & Career":"work-career","Tools & Reviews":"tools-reviews"};
+        var s=slugMap[section];
+        if(s) crumbs.push({"@type":"ListItem","position":2,"name":section,"item":SITE+"/categories/"+s+".html"});
+      }
+      crumbs.push({"@type":"ListItem","position":crumbs.length+1,"name":title.slice(0,110),"item":url});
+      blocks.push({"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":crumbs});
+    } else {
+      blocks.push({
+        "@context":"https://schema.org",
+        "@type":"WebSite",
+        "name":"EarningMoneyOnline.co.uk",
+        "url":SITE,
+        "description":desc,
+        "publisher":publisher
+      });
+    }
+
+    for(var i=0;i<blocks.length;i++){
+      var s=document.createElement('script');
+      s.type='application/ld+json';
+      s.textContent=JSON.stringify(blocks[i]);
+      document.head.appendChild(s);
+    }
+  });
+})();
