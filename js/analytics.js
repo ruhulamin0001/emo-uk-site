@@ -71,3 +71,75 @@
     init();
   }
 })();
+
+
+/* ===== v2 ARTICLE ENHANCER =====
+   Adds share buttons, table of contents and an author box to any article
+   that does not already have them hard-coded. One file, every page. */
+(function(){
+  function ready(fn){ if(document.readyState!=='loading'){fn();} else {document.addEventListener('DOMContentLoaded',fn);} }
+  ready(function(){
+    if(location.pathname.indexOf('/articles/')===-1) return;
+    var body = document.querySelector('.article-body');
+    if(!body) return;
+    if(body.querySelector('.toc') || body.querySelector('.share')) return; /* already v2 */
+
+    var url = location.origin + location.pathname;
+    var eu  = encodeURIComponent(url);
+    var h1  = document.querySelector('.article-head h1');
+    var ttl = encodeURIComponent(h1 ? h1.textContent.trim() : document.title);
+    var AV  = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230fae7e'/%3E%3Ctext x='50' y='63' font-family='Segoe UI,Arial' font-size='38' font-weight='700' fill='%23ffffff' text-anchor='middle'%3ERA%3C/text%3E%3C/svg%3E";
+
+    /* 1. byline under the title */
+    var head = document.querySelector('.article-head .wrap');
+    if(head && !head.querySelector('.byline')){
+      var meta = head.querySelector('.meta');
+      var when = meta ? meta.textContent.trim() : '';
+      var by = document.createElement('div');
+      by.className='byline';
+      by.innerHTML = '<img src="'+AV+'" alt="Ruhul Amin"><div class="who"><b>Ruhul Amin</b><span>'+when+'</span></div>';
+      head.appendChild(by);
+      if(meta) meta.style.display='none';
+    }
+
+    /* 2. share bar at the top of the body */
+    var share = document.createElement('div');
+    share.className='share';
+    share.innerHTML = '<b>Share</b>'+
+      '<a target="_blank" rel="noopener" href="https://www.facebook.com/sharer/sharer.php?u='+eu+'">Facebook</a>'+
+      '<a target="_blank" rel="noopener" href="https://twitter.com/intent/tweet?url='+eu+'&text='+ttl+'">X</a>'+
+      '<a target="_blank" rel="noopener" href="https://api.whatsapp.com/send?text='+ttl+'%20'+eu+'">WhatsApp</a>'+
+      '<a target="_blank" rel="noopener" href="https://www.pinterest.com/pin/create/button/?url='+eu+'&description='+ttl+'">Pinterest</a>'+
+      '<a target="_blank" rel="noopener" href="https://www.linkedin.com/sharing/share-offsite/?url='+eu+'">LinkedIn</a>';
+    body.insertBefore(share, body.firstChild);
+
+    /* 3. table of contents from the h2 headings */
+    var hs = body.querySelectorAll('h2');
+    var real = [];
+    for(var i=0;i<hs.length;i++){
+      if(hs[i].closest('.resources')||hs[i].closest('.takeaways')||hs[i].closest('.toc')) continue;
+      real.push(hs[i]);
+    }
+    if(real.length>=3){
+      var toc = document.createElement('div');
+      toc.className='toc';
+      var items='';
+      for(var j=0;j<real.length;j++){
+        var id = real[j].id || ('s'+(j+1));
+        real[j].id = id;
+        items += '<li><a href="#'+id+'">'+real[j].textContent.trim()+'</a></li>';
+      }
+      toc.innerHTML='<h2>What this guide covers</h2><ol>'+items+'</ol>';
+      var cover = body.querySelector('img.cover');
+      if(cover && cover.nextSibling){ body.insertBefore(toc, cover.nextSibling); }
+      else { body.insertBefore(toc, share.nextSibling); }
+    }
+
+    /* 4. author box at the end */
+    var ab = document.createElement('div');
+    ab.className='authorbox';
+    ab.innerHTML = '<img src="'+AV+'" alt="Ruhul Amin"><div><h3>Ruhul Amin</h3>'+
+      '<p>Founder of EarningMoneyOnline.co.uk. Based in Hertfordshire, he writes UK money guides the way he wishes someone had explained them to him: with the actual numbers, the rules that apply, and the parts the adverts leave out. Every guide on this site is written and checked by hand.</p></div>';
+    body.appendChild(ab);
+  });
+})();
