@@ -1,7 +1,29 @@
 {
   "site": "earningmoneyonline.co.uk",
-  "updated": "2026-07-21",
+  "updated": "2026-08-16",
   "articles": [
+    {
+      "id": 51,
+      "slug": "sign-up-bonuses-uk",
+      "title": "UK Sign-Up Bonuses and Refer-a-Friend: The Honest Money Maths",
+      "category": "make-money",
+      "status": "published",
+      "date": "2026-08-16",
+      "metaTitle": "UK Sign-Up Bonuses and Refer-a-Friend: The Honest Money Maths",
+      "metaDescription": "How UK sign-up bonuses and refer-a-friend schemes really pay in 2026: what you can honestly earn, which are one-off, the catches, and the apps worth using.",
+      "coverImage": "https://images.pexels.com/photos/4386370/pexels-photo-4386370.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "qaScore": "pending",
+      "factsCheckedOn": "2026-08-16",
+      "lastReviewed": "2026-08-16",
+      "trackingNotes": "Referral-economy article. Owner referral links: Tide, Revolut, Monzo, PayPal, Klarna(BNPL caution), TopCashback, JamDoughnut. Honest framing to protect trust + FCA.",
+      "earningPlan": [
+        {
+          "route": "Referral + sign-up bonus links (Tide/Revolut/Monzo/PayPal/Klarna/TopCashback/JamDoughnut)",
+          "status": "active",
+          "detail": "Owner's own referral links. One-off bonuses + recurring cashback. Honest maths, BNPL warning."
+        }
+      ]
+    },
     {
       "id": 50,
       "slug": "antivirus-uk-do-you-need",
