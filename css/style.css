@@ -133,3 +133,11 @@ footer a:hover{color:var(--gold)}
   .article-head h1{font-size:1.7rem}
   .authorbox{flex-direction:column}
 }
+
+
+/* ===== CARD THUMBNAILS (21 Aug 2026) ===== */
+.card .img{position:relative;overflow:hidden}
+.card .img img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease}
+.card:hover .img img{transform:scale(1.06)}
+.card .img::after{content:"";position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(180deg,rgba(0,0,0,.30),rgba(0,0,0,0) 50%,rgba(0,0,0,.45));z-index:1}
+.card .img .tag{position:relative;z-index:2;align-self:flex-start;margin:10px;backdrop-filter:blur(3px)}
