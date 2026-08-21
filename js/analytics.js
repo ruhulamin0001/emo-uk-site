@@ -315,3 +315,32 @@
     document.head.appendChild(st2);
   });
 })();
+
+
+/* ===== SEO LAYER 3 (21 Aug 2026): canonicalise the home link, feed autodiscovery, resource hints ===== */
+/* Google reported /index.html as a duplicate of /. Every page linked home via index.html,
+   which kept feeding the duplicate. Rewriting those hrefs to / fixes it in the rendered DOM.
+   The proper fix is to change the href in all 60 source files, or add a 301 on the server. */
+(function(){
+  function go(){
+    try{
+      var links=document.querySelectorAll('a[href$="index.html"]');
+      for(var i=0;i<links.length;i++){
+        var h=links[i].getAttribute('href')||'';
+        if(/^(\.\.\/)?index\.html$/.test(h) || h==='/index.html'){ links[i].setAttribute('href','/'); }
+      }
+      if(!document.querySelector('link[type="application/rss+xml"]')){
+        var f=document.createElement('link');
+        f.rel='alternate'; f.type='application/rss+xml';
+        f.title='Earning Money Online UK'; f.href='/feed.xml';
+        document.head.appendChild(f);
+      }
+      ['https://images.pexels.com'].forEach(function(u){
+        if(document.querySelector('link[rel="preconnect"][href="'+u+'"]')) return;
+        var p=document.createElement('link'); p.rel='preconnect'; p.href=u; p.crossOrigin='';
+        document.head.appendChild(p);
+      });
+    }catch(e){}
+  }
+  if(document.readyState!=='loading'){go();} else {document.addEventListener('DOMContentLoaded',go);}
+})();
