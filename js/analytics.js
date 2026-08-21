@@ -224,3 +224,94 @@
     }
   });
 })();
+
+
+/* ===== SEO LAYER 2 (21 Aug 2026): FAQ schema, Organization, breadcrumbs, related links ===== */
+(function(){
+  function ready(fn){ if(document.readyState!=='loading'){fn();} else {document.addEventListener('DOMContentLoaded',fn);} }
+  var SITE='https://earningmoneyonline.co.uk';
+  function ld(obj){ var s=document.createElement('script'); s.type='application/ld+json'; s.textContent=JSON.stringify(obj); document.head.appendChild(s); }
+  function txt(el){ return (el.textContent||'').replace(/\s+/g,' ').trim(); }
+
+  ready(function(){
+    var isArticle = location.pathname.indexOf('/articles/')>-1;
+
+    /* 1. Serp hints that are safe to set late */
+    if(!document.querySelector('meta[name="robots"]')){
+      var m=document.createElement('meta'); m.name='robots';
+      m.content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
+      document.head.appendChild(m);
+    }
+
+    /* 2. Organization, once per page */
+    ld({'@context':'https://schema.org','@type':'Organization','@id':SITE+'/#org','name':'EarningMoneyOnline.co.uk','url':SITE,'description':'UK personal finance and consumer guides with real figures and named sources.','areaServed':{'@type':'Country','name':'United Kingdom'},'founder':{'@type':'Person','name':'Ruhul Amin'},'publishingPrinciples':SITE+'/affiliate-disclosure.html'});
+
+    if(!isArticle) return;
+
+    /* 3. FAQPage from the Frequently asked section */
+    var heads=[].slice.call(document.querySelectorAll('h2'));
+    var faqH=null;
+    for(var i=0;i<heads.length;i++){ if(/^frequently asked/i.test(txt(heads[i]))){ faqH=heads[i]; break; } }
+    if(faqH){
+      var qs=[], n=faqH.nextElementSibling;
+      while(n && n.tagName!=='H2'){
+        if(n.tagName==='P'){
+          var st=n.querySelector('strong');
+          if(st){
+            var q=txt(st);
+            var a=txt(n).slice(q.length).trim();
+            if(q.length>5 && a.length>20) qs.push({'@type':'Question','name':q,'acceptedAnswer':{'@type':'Answer','text':a}});
+          }
+        }
+        n=n.nextElementSibling;
+      }
+      if(qs.length>=2) ld({'@context':'https://schema.org','@type':'FAQPage','mainEntity':qs});
+    }
+
+    /* 4. Visible breadcrumb, matching the BreadcrumbList already emitted */
+    var headWrap=document.querySelector('.article-head .wrap');
+    var tagEl=document.querySelector('.article-head .tag');
+    if(headWrap && tagEl && !document.querySelector('.crumbs')){
+      var map={'make money':'make-money','side hustles':'side-hustles','save money':'save-money','work & career':'work-career','tools & reviews':'tools-reviews'};
+      var key=txt(tagEl).toLowerCase();
+      var file=map[key];
+      if(file){
+        var nav=document.createElement('nav');
+        nav.className='crumbs'; nav.setAttribute('aria-label','Breadcrumb');
+        nav.innerHTML='<a href="/">Home<\/a> <span>&rsaquo;<\/span> <a href="/categories/'+file+'.html">'+txt(tagEl)+'<\/a>';
+        headWrap.insertBefore(nav, headWrap.firstChild);
+      }
+    }
+
+    /* 5. Related guides, only where the article has no More from this site block */
+    var body=document.querySelector('.article-body .wrap');
+    var hasMore=false;
+    [].slice.call(document.querySelectorAll('.resources h3')).forEach(function(h){ if(/more from this site/i.test(txt(h))) hasMore=true; });
+    if(body && tagEl && !hasMore){
+      var map2={'make money':'make-money','side hustles':'side-hustles','save money':'save-money','work & career':'work-career','tools & reviews':'tools-reviews'};
+      var f=map2[txt(tagEl).toLowerCase()];
+      if(f){
+        fetch('/categories/'+f+'.html').then(function(r){return r.text();}).then(function(html){
+          var doc=new DOMParser().parseFromString(html,'text/html');
+          var here=location.pathname.split('/').pop();
+          var cards=[].slice.call(doc.querySelectorAll('a.card')).filter(function(a){ return (a.getAttribute('href')||'').indexOf(here)===-1; }).slice(0,3);
+          if(!cards.length) return;
+          var d=document.createElement('div'); d.className='resources';
+          var h='<h3>Related guides<\/h3><ul>';
+          cards.forEach(function(a){
+            var t2=a.querySelector('h3'); var href=(a.getAttribute('href')||'').replace(/^\.\.\//,'/');
+            if(t2) h+='<li><a href="'+href+'">'+txt(t2)+'<\/a><\/li>';
+          });
+          h+='<\/ul>'; d.innerHTML=h;
+          var disc=document.querySelector('.disclaimer');
+          if(disc) body.insertBefore(d, disc); else body.appendChild(d);
+        }).catch(function(){});
+      }
+    }
+
+    /* 6. Small styles for the breadcrumb */
+    var st2=document.createElement('style');
+    st2.textContent='.crumbs{font-size:.82rem;letter-spacing:.3px;margin:0 0 14px;opacity:.85}.crumbs a{color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.35)}.crumbs a:hover{border-bottom-color:currentColor}.crumbs span{margin:0 6px;opacity:.6}';
+    document.head.appendChild(st2);
+  });
+})();
