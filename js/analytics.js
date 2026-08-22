@@ -199,7 +199,7 @@
 
       var crumbs=[{"@type":"ListItem","position":1,"name":"Home","item":SITE+"/"}];
       if(section){
-        var slugMap={"Make Money":"make-money","Side Hustles":"side-hustles","Save Money":"save-money","Work & Career":"work-career","Tools & Reviews":"tools-reviews"};
+        var slugMap={"Make Money":"make-money","Side Hustles":"side-hustles","Save Money":"save-money","Work & Career":"work-career","Tools & Reviews":"tools-reviews","Affiliate Marketing":"affiliate-marketing"};
         var s=slugMap[section];
         if(s) crumbs.push({"@type":"ListItem","position":2,"name":section,"item":SITE+"/categories/"+s+".html"});
       }
@@ -272,7 +272,7 @@
     var headWrap=document.querySelector('.article-head .wrap');
     var tagEl=document.querySelector('.article-head .tag');
     if(headWrap && tagEl && !document.querySelector('.crumbs')){
-      var map={'make money':'make-money','side hustles':'side-hustles','save money':'save-money','work & career':'work-career','tools & reviews':'tools-reviews'};
+      var map={'make money':'make-money','side hustles':'side-hustles','save money':'save-money','work & career':'work-career','tools & reviews':'tools-reviews','Affiliate Marketing':'affiliate-marketing'};
       var key=txt(tagEl).toLowerCase();
       var file=map[key];
       if(file){
@@ -288,7 +288,7 @@
     var hasMore=false;
     [].slice.call(document.querySelectorAll('.resources h3')).forEach(function(h){ if(/more from this site/i.test(txt(h))) hasMore=true; });
     if(body && tagEl && !hasMore){
-      var map2={'make money':'make-money','side hustles':'side-hustles','save money':'save-money','work & career':'work-career','tools & reviews':'tools-reviews'};
+      var map2={'make money':'make-money','side hustles':'side-hustles','save money':'save-money','work & career':'work-career','tools & reviews':'tools-reviews','Affiliate Marketing':'affiliate-marketing'};
       var f=map2[txt(tagEl).toLowerCase()];
       if(f){
         fetch('/categories/'+f+'.html').then(function(r){return r.text();}).then(function(html){
