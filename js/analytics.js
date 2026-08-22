@@ -344,3 +344,24 @@
   }
   if(document.readyState!=='loading'){go();} else {document.addEventListener('DOMContentLoaded',go);}
 })();
+
+/* EMO_AFF_NAV: add the Affiliate Marketing category to the header nav on every page */
+(function(){
+  function addAffNav(){
+    try{
+      var a = document.querySelector('header nav a[href$="categories/tools-reviews.html"]');
+      if(!a) return;
+      var li = a.parentElement;
+      if(!li || li.tagName !== 'LI') return;
+      var ul = li.parentElement;
+      if(ul.querySelector('a[href$="categories/affiliate-marketing.html"]')) return;
+      var n = li.cloneNode(true);
+      var x = n.querySelector('a');
+      x.setAttribute('href', a.getAttribute('href').replace('tools-reviews','affiliate-marketing'));
+      x.textContent = 'Affiliate Marketing';
+      ul.appendChild(n);
+    }catch(e){}
+  }
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', addAffNav);
+  else addAffNav();
+})();
