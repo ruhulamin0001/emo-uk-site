@@ -1,0 +1,8 @@
+# Lead data never goes into the repo: it holds live contact details,
+# outreach copy and call notes. Regenerate it with:
+#   node leadgen/run.mjs all
+leadgen/data/
+
+# Local scratch
+.DS_Store
+*.log
