@@ -345,8 +345,17 @@
   if(document.readyState!=='loading'){go();} else {document.addEventListener('DOMContentLoaded',go);}
 })();
 
-/* EMO_AFF_NAV: add the Affiliate Marketing category to the header nav on every page */
+/* EMO_AFF_NAV: keep the Affiliate Marketing category wired into every page.
+   Runs last, and only fills in what the main script did not already create. */
 (function(){
+  var PILLARS = {
+    'Make Money':'make-money',
+    'Side Hustles':'side-hustles',
+    'Save Money':'save-money',
+    'Work & Career':'work-career',
+    'Tools & Reviews':'tools-reviews',
+    'Affiliate Marketing':'affiliate-marketing'
+  };
   function addAffNav(){
     try{
       var a = document.querySelector('header nav a[href$="categories/tools-reviews.html"]');
@@ -362,6 +371,23 @@
       ul.appendChild(n);
     }catch(e){}
   }
-  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', addAffNav);
-  else addAffNav();
+  function addCrumbs(){
+    try{
+      if(document.querySelector('nav.crumbs')) return;
+      var wrap = document.querySelector('.article-head .wrap');
+      var tag  = document.querySelector('.article-head .tag');
+      if(!wrap || !tag) return;
+      var name = tag.textContent.trim();
+      var slug = PILLARS[name];
+      if(!slug) return;
+      var nav = document.createElement('nav');
+      nav.className = 'crumbs';
+      nav.setAttribute('aria-label','Breadcrumb');
+      nav.innerHTML = '<a href="/">Home</a> \u203a <a href="/categories/' + slug + '.html">' + name + '</a>';
+      wrap.insertBefore(nav, wrap.firstChild);
+    }catch(e){}
+  }
+  function run(){ addAffNav(); setTimeout(function(){ addAffNav(); addCrumbs(); }, 300); }
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run);
+  else run();
 })();
