@@ -345,9 +345,10 @@
   if(document.readyState!=='loading'){go();} else {document.addEventListener('DOMContentLoaded',go);}
 })();
 
-/* EMO_AFF_NAV: keep the Affiliate Marketing category wired into every page.
-   Runs last, and only fills in what the main script did not already create. */
+/* EMO_SITE_CHROME: site-wide bits that must appear on every page without editing 68 files.
+   Runs last, and only fills in what is not already there. */
 (function(){
+  var CONTACT = 'support@adminruhulamin.co.uk';
   var PILLARS = {
     'Make Money':'make-money',
     'Side Hustles':'side-hustles',
@@ -387,7 +388,31 @@
       wrap.insertBefore(nav, wrap.firstChild);
     }catch(e){}
   }
-  function run(){ addAffNav(); setTimeout(function(){ addAffNav(); addCrumbs(); }, 300); }
+  function addContact(){
+    try{
+      var foot = document.querySelector('footer');
+      if(!foot || foot.querySelector('a[href^="mailto:"]')) return;
+      var anchor = foot.querySelector('a[href$="affiliate-disclosure.html"]');
+      if(!anchor) return;
+      var mail = document.createElement('a');
+      mail.setAttribute('href','mailto:' + CONTACT);
+      var host = anchor.parentElement;
+      if(host.tagName === 'LI'){
+        mail.textContent = 'Contact';
+        var li = document.createElement('li');
+        li.appendChild(mail);
+        host.parentElement.appendChild(li);
+      } else {
+        mail.textContent = CONTACT;
+        host.appendChild(document.createTextNode(' \u00b7 Contact: '));
+        host.appendChild(mail);
+      }
+    }catch(e){}
+  }
+  function run(){
+    addAffNav(); addContact();
+    setTimeout(function(){ addAffNav(); addCrumbs(); addContact(); }, 300);
+  }
   if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run);
   else run();
 })();
