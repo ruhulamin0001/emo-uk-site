@@ -1,9 +1,9 @@
 {
   "_meta": {
     "description": "Starter list of real, publicly listed car and motorcycle repair businesses in Hertfordshire, gathered from public web search results. Business-level contact data only. Phone numbers marked verified:false were read from search snippets and MUST be confirmed by the enrich step before any outreach.",
-    "gatheredOn": "2026-08-23",
+    "gatheredOn": "2026-08-25",
     "source": "web-search-seed",
-    "count": 59
+    "count": 67
   },
   "leads": [
     {
@@ -498,6 +498,72 @@
       "website": null,
       "phone": null,
       "note": "Workshop services, MOTs and repairs most makes of motorcycle, with a Stevenage workshop. Website not confirmed."
+    },
+    {
+      "name": "Hatfield Auto Centre",
+      "category": "car_repair",
+      "town": "Hatfield",
+      "website": "https://www.hatfieldautocentre.co.uk/",
+      "phone": null,
+      "note": "Independent, 25+ years. Covers Hatfield, WGC and St Albans. HTML-era site — likely dated web presence."
+    },
+    {
+      "name": "Autofix Buntingford Ltd",
+      "category": "car_repair",
+      "town": "Buntingford",
+      "website": "https://garagebuntingford.co.uk/",
+      "phone": null,
+      "address": "Aspenden Industrial Estate, Buntingford",
+      "note": "Owner-run (Simon Druce). Does cars AND motorbikes — rare combination, and a one-owner shop cannot answer the phone mid-job."
+    },
+    {
+      "name": "Royston Vehicle Services",
+      "category": "car_repair",
+      "town": "Royston",
+      "website": "https://www.roystonvehicleservices.co.uk/",
+      "phone": null,
+      "note": "Family run, 20+ years. Servicing, MOTs and repairs."
+    },
+    {
+      "name": "A1BN Specialists",
+      "category": "car_repair",
+      "town": "Stevenage",
+      "website": null,
+      "phone": null,
+      "address": "off Gunnels Wood Road, Stevenage",
+      "note": "Specialist servicing and MOT. No own website found in search."
+    },
+    {
+      "name": "Bushey Hall Garage",
+      "category": "car_repair",
+      "town": "Bushey",
+      "website": "https://www.busheyhallgarage.co.uk/",
+      "phone": null,
+      "note": "Independent servicing, repairs, MOT and recovery. Recovery work means the phone matters even more."
+    },
+    {
+      "name": "BHG Motor Group (Bushey Heath Garage)",
+      "category": "car_repair",
+      "town": "Bushey",
+      "website": "https://www.bhgmotorgroup.co.uk/",
+      "phone": null,
+      "note": "Used car sales plus MOT, servicing and repairs. Sales enquiries and workshop bookings compete for the same phone."
+    },
+    {
+      "name": "Ian Thompson Mobile Mechanic",
+      "category": "car_repair",
+      "town": "Bushey",
+      "website": null,
+      "phone": null,
+      "note": "MOBILE mechanic covering Bushey — servicing, repairs, MOTs, clutches, brakes, diagnostics. Cannot answer while under a car. No website found."
+    },
+    {
+      "name": "Autotech Car Services",
+      "category": "car_repair",
+      "town": "Hitchin",
+      "website": null,
+      "phone": null,
+      "note": "Formed 2000, servicing and repair centre in North Hertfordshire. Website not confirmed."
     }
   ]
 }
