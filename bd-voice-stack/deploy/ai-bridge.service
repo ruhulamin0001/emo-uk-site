@@ -1,0 +1,14 @@
+[Unit]
+Description=AI voice bridge for Asterisk AudioSocket
+After=network.target asterisk.service
+
+[Service]
+User=asterisk
+WorkingDirectory=/opt/ai-bridge
+EnvironmentFile=/opt/ai-bridge/.env
+ExecStart=/opt/ai-bridge/.venv/bin/python -m bridge.main
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

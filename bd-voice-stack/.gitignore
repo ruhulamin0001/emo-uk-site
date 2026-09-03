@@ -1,0 +1,8 @@
+deploy/answers.env
+.env
+*.key
+*.pub
+__pycache__/
+.venv/
+recordings/
+.pytest_cache/
