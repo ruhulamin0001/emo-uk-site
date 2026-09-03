@@ -170,3 +170,19 @@ h2[id],h3[id]{scroll-margin-top:90px}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important;scroll-behavior:auto !important}}
 /* Readable focus outlines for keyboard users, which also helps accessibility scoring */
 a:focus-visible,button:focus-visible{outline:3px solid var(--gold);outline-offset:2px;border-radius:3px}
+
+/* ===== EMO_UI v1 : hero slider + card trim ===== */
+.hero .hero-slide{display:none}
+.hero .hero-slide.is-on{display:block;animation:emoFade .55s ease}
+@keyframes emoFade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.hero .hero-h{margin:0 0 14px;line-height:1.14;font-weight:800;letter-spacing:-.02em}
+.hero .hero-dots{display:flex;gap:8px;margin-top:24px}
+.hero .hero-dots button{width:36px;height:4px;padding:0;border:0;border-radius:4px;background:currentColor;opacity:.28;cursor:pointer;transition:opacity .3s,width .3s}
+.hero .hero-dots button[aria-selected="true"]{opacity:1;width:52px}
+.cards--trim>.card:nth-child(n+4){display:none}
+.cards--trim.is-open>.card{display:block}
+@media(max-width:900px){.cards--trim>.card:nth-child(n+3){display:none}.cards--trim.is-open>.card{display:block}}
+.see-all-row{display:flex;justify-content:center;margin:20px 0 4px}
+.see-all-row button{background:none;font:inherit;font-weight:600;font-size:.92rem;padding:10px 24px;border:1px solid rgba(0,0,0,.16);border-radius:999px;cursor:pointer;transition:background .2s}
+.see-all-row button:hover{background:rgba(0,0,0,.04)}
+@media(prefers-reduced-motion:reduce){.hero .hero-slide.is-on{animation:none}}
