@@ -186,3 +186,9 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--gold);outline-offse
 .see-all-row button{background:none;font:inherit;font-weight:600;font-size:.92rem;padding:10px 24px;border:1px solid rgba(0,0,0,.16);border-radius:999px;cursor:pointer;transition:background .2s}
 .see-all-row button:hover{background:rgba(0,0,0,.04)}
 @media(prefers-reduced-motion:reduce){.hero .hero-slide.is-on{animation:none}}
+
+.hero .hero-h{color:#fff}
+.hero .hero-h em{color:var(--gold);font-style:normal}
+.hero .hero-dots button{background:#fff;opacity:.32}
+.hero .hero-dots button[aria-selected="true"]{background:var(--gold);opacity:1}
+@media(min-width:900px){.hero .hero-slide{min-height:318px}}
