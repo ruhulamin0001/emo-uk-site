@@ -22,6 +22,11 @@ Hostinger VPS srv1569293.hstgr.cloud (72.62.213.196), the same box as rentjagat,
 8. Commit after each completed task: `git commit -m "T<N>: <what>"`.
 9. Do not add new services, VPNs, GUIs or a second reverse proxy. Do it the way the other sites on this VPS do it.
 
+## Owner notes, never forget (03 Sep 2026)
+1. Gemini API free tier is not available to UK/EEA Google accounts. The GEMINI_API_KEY must come from a Bangladesh Google account (BD office). Gemini stays the MAIN provider.
+2. Alternative LLM is DeepSeek, not OpenAI. Pipeline mode supports it through the OpenAI compatible API: `PIPELINE_LLM_BASE_URL=https://api.deepseek.com`, `PIPELINE_LLM_API_KEY`, `PIPELINE_LLM=deepseek-chat`. DeepSeek has no speech, so it only works in `AGENT_MODE=pipeline` with a separate STT and TTS.
+3. Numbers: the BD office follows `docs/OPERATOR_CHECKLIST.md` when buying, one number first.
+
 ## How the owner and you split work
 1. Owner (UK, remote): approves, supplies values, holds API keys, owns the VPS.
 2. BD office (Dhaka): buys the numbers, collects SIP credentials into `deploy/trunks.csv` on the VPS, confirms with the operator that registration from IP 72.62.213.196 is allowed, tests inbound calls from a real mobile.

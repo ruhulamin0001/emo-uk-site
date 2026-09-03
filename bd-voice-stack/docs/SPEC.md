@@ -41,9 +41,9 @@ Outbound: `[from-internal]` Bangladesh patterns -> `[outbound]` subroutine. The 
 | Host | Hostinger KVM 2, Debian/Ubuntu with Docker, Traefik on 80/443 | already there, owner's choice |
 | Asterisk | 21 (asterisk-21-current tarball, own image `asterisk/Dockerfile`) | AudioSocket with hangup support, UUID() function, pjsip; verified against source |
 | ai-bridge | python:3.11-slim image, `Dockerfile` | asyncio, scipy, psycopg |
-| Gemini Live | `gemini-2.5-flash-native-audio-preview-12-2025` or newer Flash Live | default: owner already has a Gemini key, cheapest speech to speech, Bangla |
+| Gemini Live | `gemini-2.5-flash-native-audio-preview-12-2025` or newer Flash Live | MAIN provider. Key must come from a Bangladesh Google account, the free tier is not offered to UK accounts |
 | OpenAI Realtime | `gpt-realtime-2.1-mini` (when a key exists) | A/B candidate |
-| Pipeline | STT `gpt-4o-mini-transcribe` (bn), LLM `gpt-5-mini`, TTS ElevenLabs `eleven_flash_v2_5` (bn) | best Bangla voice, premium customers |
+| Pipeline | STT `gpt-4o-mini-transcribe` (bn), LLM `gpt-5-mini` or DeepSeek `deepseek-chat` (OpenAI compatible, `PIPELINE_LLM_BASE_URL`), TTS ElevenLabs `eleven_flash_v2_5` (bn) | best Bangla voice; DeepSeek is the owner's alternative LLM |
 | Summary | `gemini-2.5-flash` JSON (or `gpt-5-mini` when only OpenAI is set) | cheap post call summary |
 | DB | postgres:16-alpine container | no external service, data stays on the VPS |
 | Notify | WhatsApp Cloud API v21 template `call_summary` (bn); Telegram optional | owner's channel |
@@ -67,6 +67,7 @@ docs/SPEC.md              this file
 docs/TASKS.md             ordered tasks with acceptance checks
 docs/CHANGELOG.md         vendor drift and review notes
 docs/AB_RESULTS.md        provider A/B table
+docs/OPERATOR_CHECKLIST.md  what the BD office must get from the IPTSP operator (Bangla)
 docker-compose.yml        asterisk + ai-bridge + db (no Traefik labels, no HTTP)
 Dockerfile                ai-bridge image
 asterisk/Dockerfile       Asterisk 21 from source

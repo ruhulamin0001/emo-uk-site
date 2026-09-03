@@ -1,6 +1,11 @@
 # CHANGELOG
 Record here every place where live vendor docs differed from this repo and what you changed.
 
+## 2026-09-03  Owner notes (same day)
+- Gemini key must be from a Bangladesh Google account (free tier not offered to UK accounts). Gemini stays main.
+- DeepSeek is the alternative LLM: pipeline mode now takes `PIPELINE_LLM_BASE_URL` / `PIPELINE_LLM_API_KEY`.
+- `docs/OPERATOR_CHECKLIST.md` added for the BD office (what to get from the operator, why, what breaks without it).
+
 ## 2026-09-03  Version 1.3, owner decision: Hostinger VPS, Docker, WhatsApp
 
 Owner rejected a separate Bangladesh VPS, WireGuard and Telegram. Decisions:

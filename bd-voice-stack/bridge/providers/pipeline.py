@@ -1,5 +1,6 @@
 """STT + LLM + TTS pipeline (best Bangla voice, higher latency).
-STT: OpenAI gpt-4o-mini-transcribe on utterance chunks (energy VAD). LLM: OpenAI chat (or swap to Anthropic).
+STT: OpenAI gpt-4o-mini-transcribe on utterance chunks (energy VAD). LLM: any OpenAI compatible chat API
+(OpenAI, or DeepSeek via PIPELINE_LLM_BASE_URL=https://api.deepseek.com, PIPELINE_LLM=deepseek-chat).
 TTS: ElevenLabs eleven_flash_v2_5, pcm_16000. Requires: pip install 'ai-bridge[pipeline]'
 This is a reference implementation; T9 tunes VAD thresholds on real calls.
 """
@@ -19,7 +20,9 @@ class Pipeline(Provider):
 
     async def connect(self, instructions, tools):
         from openai import AsyncOpenAI
-        self.oai = AsyncOpenAI()
+        self.oai = AsyncOpenAI()                      # STT (transcribe) always OpenAI
+        base = os.getenv("PIPELINE_LLM_BASE_URL", "").strip()
+        self.llm = AsyncOpenAI(base_url=base, api_key=os.getenv("PIPELINE_LLM_API_KEY") or os.getenv("OPENAI_API_KEY")) if base else self.oai
         self.instructions, self.tools = instructions, tools
         self._task = asyncio.create_task(self._vad_loop())
         await self.say("কলটি বাংলায় এক বাক্যে অভ্যর্থনা দিয়ে শুরু করো এবং জানাও যে তুমি AI সহকারী।")
@@ -63,7 +66,7 @@ class Pipeline(Provider):
     async def _respond(self):
         msgs = [{"role": "system", "content": self.instructions}] + self.history[-20:]
         tools = [{"type": "function", "function": {k: t[k] for k in ("name", "description", "parameters")}} for t in self.tools]
-        r = await self.oai.chat.completions.create(model=os.getenv("PIPELINE_LLM", "gpt-5-mini"), messages=msgs,
+        r = await self.llm.chat.completions.create(model=os.getenv("PIPELINE_LLM", "gpt-5-mini"), messages=msgs,
                                                    tools=tools or None)
         m = r.choices[0].message
         if m.tool_calls:
