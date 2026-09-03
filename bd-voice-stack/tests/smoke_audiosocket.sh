@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
-# Sends a fake AudioSocket session (uuid + 2 s silence + hangup) to the bridge; passes if the bridge accepts and closes cleanly.
+# Sends a fake AudioSocket session (uuid + 2 s silence + hangup) to the running ai-bridge container.
+# Passes if the bridge accepts the connection and closes cleanly. Run from the repo root on the VPS.
 set -e
-python3 - <<'PY'
+cd "$(dirname "$0")/.."
+docker compose exec -T ai-bridge python - <<'PY'
 import socket, struct, uuid, time
 s = socket.create_connection(("127.0.0.1", 9092), timeout=5)
 u = uuid.uuid4().bytes

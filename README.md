@@ -17,6 +17,6 @@ Owner: Ruhul Amin. Managed via Claude Cowork + Chrome extension.
 Studio (QA score >= 25/50) → Ruhul approve → commit to main → Hostinger auto-deploy.
 
 ## bd-voice-stack/ (separate product, not part of the website)
-FreePBX + AI receptionist stack for aiagent.jagatitlimited.com. It has its own README and CLAUDE.md.
-The folder ships a `.htaccess` (Require all denied) so Hostinger never serves it. Move it to its own
-repository before the first production deploy.
+Asterisk + AI receptionist stack for aiagent.jagatitlimited.com, deployed with docker compose on the
+Hostinger VPS like the other sites. It has its own README and CLAUDE.md. The folder ships a
+`.htaccess` (Require all denied) so Hostinger never serves it over HTTP.
