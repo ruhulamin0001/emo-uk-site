@@ -18,7 +18,7 @@ import {
 } from '@/lib/server/job-decisions';
 import { setLeadStatus } from '@/lib/server/leads';
 import { completeMatch, recordCallOutcome, shortlistLead } from '@/lib/server/matching';
-import { markManuallyPaid } from '@/lib/server/payments';
+import { clearPaymentAttention, markManuallyPaid } from '@/lib/server/payments';
 import { MANUAL_PAYMENT } from '@/config/business';
 import { setRole } from '@/lib/server/roles';
 import { banUserByEmail, unbanUserByEmail } from '@/lib/server/moderation';
@@ -140,6 +140,30 @@ export async function markPaidAction(paymentId: string, fd: FormData): Promise<A
   const res = await markManuallyPaid(actor, paymentId, note);
   revalidatePath('/admin/payments');
   return res.ok ? { ok: true, message: 'টাকা পাওয়া নথিভুক্ত হয়েছে' } : res;
+}
+
+/**
+ * Atke thaka taka - "dekhechi, kaj koreichi".
+ *
+ * Markpaid er motoi SUDHU MALIK. Ei sari te ja othe tar
+ * protita te manuser taka amader kachhe ar tar bodole se
+ * kichhu pay ni - ferot deya ba miliye deyar siddhanto
+ * admin er haate deya jay na.
+ */
+export async function clearPaymentAttentionAction(
+  paymentId: string,
+  fd: FormData,
+): Promise<ActionState> {
+  const actor = await requireOwner();
+  const note = String(fd.get('note') ?? '').trim();
+
+  if (note.length < MANUAL_PAYMENT.noteMinChars) {
+    return { ok: false, message: 'কী করলেন সেটা লিখুন (কমপক্ষে ৪ অক্ষর)' };
+  }
+
+  const res = await clearPaymentAttention(actor, paymentId, note);
+  revalidatePath('/admin/payments');
+  return res.ok ? { ok: true, message: 'সারি থেকে নামানো হয়েছে' } : res;
 }
 
 /* ── Dol o ban - SUDHU malik ────────────────────────────────── */

@@ -21,6 +21,8 @@ import {
 } from '../src/lib/server/jobs';
 import { approveJob } from '../src/lib/server/job-decisions';
 import {
+  clearPaymentAttention,
+  getPaymentsNeedingAttention,
   markManuallyPaid,
   settlePayment,
   startPayment,
@@ -295,6 +297,82 @@ async function main() {
   );
   const own2 = await getOwnJobs(employer.uid);
   ok(own2.length === 2, 'dashboard e duita post');
+
+  console.log('\n━━ 7 · Taka AGE, approve PORE - atke thake na ━━');
+  if (sub2.ok) {
+    const job2 = sub2.jobId;
+    const pay4 = await startPayment({
+      userId: employer.uid, name: 'ই২ই মালিক', phone: '+8801811111111',
+      kind: PAYMENT_KIND.job_fee, jobId: job2, siteUrl: 'http://localhost:3000',
+    });
+    ok(pay4.ok, 'approve er AGE i taka deya suru kora jay');
+    if (pay4.ok) {
+      const s4 = await markManuallyPaid(staff, pay4.paymentId, 'TRX-E2E-AGE');
+      ok(s4.ok, 'taka nothibhukto holo');
+      ok(
+        (await getPublishedJobs()).length === 0,
+        'approve chhara taka dileo feed e OTHE NA',
+      );
+
+      /* Niyom #4 er sesh ordhek: nothi ta malik er sari te uthechhe to? */
+      const stuck = await getPaymentsNeedingAttention();
+      ok(
+        stuck.some((x) => x.id === pay4.paymentId),
+        'atke jaowa taka MALIK ER SARI te othe',
+        String(stuck.length),
+      );
+      ok(
+        stuck.find((x) => x.id === pay4.paymentId)?.note?.includes('অনুমোদনের আগে') === true,
+        'keno atkeche seta note e lekha',
+      );
+
+      /* Ekhon approve - duita shorto i pura, tai prokash hobar kotha */
+      const ap2 = await approveJob(staff, job2);
+      ok(ap2.ok, 'approve holo');
+      ok(
+        (await getPublishedJobs()).length === 1,
+        'approve er sathe sathe age-deya taka r job ta feed e uthlo',
+      );
+      const after = await adminDb().collection('payments').doc(pay4.paymentId).get();
+      ok(after.get('needsOwner') === false, 'kaj hoye jaowar por sari theke neme gelo');
+      ok(
+        (await getPaymentsNeedingAttention()).every((x) => x.id !== pay4.paymentId),
+        'sari te ar nai',
+      );
+    }
+  }
+
+  console.log('\n━━ 8 · Sari theke namano - note baddhotamulok ━━');
+  {
+    const pay5 = await startPayment({
+      userId: employer.uid, name: 'ই২ই মালিক', phone: '+8801811111111',
+      kind: PAYMENT_KIND.connection_fee, siteUrl: 'http://localhost:3000',
+    });
+    if (pay5.ok) {
+      await adminDb().collection('payments').doc(pay5.paymentId).update({
+        needsOwner: true, note: 'কম টাকা এসেছে - ৫০, দরকার ৫০০',
+      });
+      const tiny = await clearPaymentAttention(staff, pay5.paymentId, 'ok');
+      ok(!tiny.ok, 'choto note e sari theke namano JAY NA');
+      const still = await adminDb().collection('payments').doc(pay5.paymentId).get();
+      ok(still.get('needsOwner') === true, 'sari tei ache');
+
+      const cleared = await clearPaymentAttention(staff, pay5.paymentId, 'বিকাশে ফেরত দিলাম');
+      ok(cleared.ok, 'thik note e namano jay');
+      const gone = await adminDb().collection('payments').doc(pay5.paymentId).get();
+      ok(gone.get('needsOwner') === false, 'sari theke nemeche');
+      ok(
+        String(gone.get('note')).includes('কম টাকা') && String(gone.get('note')).includes('ফেরত'),
+        'purono karon ta MOCHE NA - notun kotha tar pore joRe',
+      );
+      const log = await adminDb()
+        .collection('activity_logs')
+        .where('action', '==', 'payment.attention_cleared')
+        .limit(5).get();
+      ok(!log.empty, 'audit log e lekha holo');
+      await gone.ref.delete();
+    }
+  }
 
   await cleanup();
   finish();

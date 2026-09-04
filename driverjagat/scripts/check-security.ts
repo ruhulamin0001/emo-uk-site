@@ -106,8 +106,15 @@ console.log('\n━━ Khola API ━━');
     /const verdict = checkAmount\(result\.amount, doc\.amount\)/.test(pay),
     'onko milano hoy (checkAmount) - kom ba ojana taka y verified kora hoy NA',
   );
+  /* Onko na mille je block ta chole - tar bhitore i sesh hote
+     hobe. `applyPaidEffect` oi block er BAIRE thakle taka na
+     miliyeo fol ghote jeto. */
+  const failBlock = pay.slice(
+    pay.indexOf('if (!verdict.ok)'),
+    pay.indexOf('await applyPaidEffect(doc, result.providerRef)'),
+  );
   ok(
-    /if \(!verdict\.ok\)[\s\S]{0,400}return \{ ok: false/.test(pay),
+    /return \{ ok: false/.test(failBlock),
     'onko na milleI ekhane i sesh - applyPaidEffect e jay na',
   );
 }

@@ -54,6 +54,14 @@ export type AuditAction =
    * milleI ei log ta i ekmatro suto.
    */
   | 'payment.manual_settle'
+  /**
+   * Atke thaka taka malik "dekhechi" bole sari theke namalen.
+   *
+   * Onko na mila, ferot deya, ba age-taka-pore-approve - ei
+   * gulo r sesh siddhanto ekjon manuser. Kon nothi, koto taka,
+   * keno atkechilo ar KI kora holo - sob ek line e.
+   */
+  | 'payment.attention_cleared'
   | 'payment.refund'
   | 'settings.update';
 

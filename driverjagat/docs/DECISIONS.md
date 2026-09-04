@@ -130,7 +130,7 @@ file বদলাবে।
 Firestore ছাড়াই আচরণ দিয়ে পরীক্ষা হয়।
 
 **D-028 · `npm run check:money` (TutorJagat-এর মতো)।** ১০টা নিয়ম script
-দিয়ে পাহারা - ৫৬টা assert, verify chain-এ যোগ করা। নিয়ম ৪ আচরণ দিয়ে
+দিয়ে পাহারা - ৬৬টা assert, verify chain-এ যোগ করা। নিয়ম ৪ আচরণ দিয়ে
 পরীক্ষা হয় (`checkAmount()` সত্যি চালিয়ে), বাকিগুলো কোড পড়ে। নিয়ম ১০
 পুরো `src/` হেঁটে দেখে gateway-এর নাম payments folder-এর বাইরে গেছে কিনা।
 কেউ নিয়ম সরালে test লাল হবে।
@@ -138,3 +138,32 @@ Firestore ছাড়াই আচরণ দিয়ে পরীক্ষা 
 **যাচাই:** verify chain সবুজ (style, security, public, config, money,
 typecheck, lint, rules), e2e emulator-এ ৫০ assert (নতুন: ফাঁকা note আটকায়,
 ৪ অক্ষরের কম note আটকায়, অঙ্ক অজানা হলে success হয় না), prod build clean।
+
+**D-029 · নিয়ম ৪ এর শেষ অর্ধেক - "মালিকের হাতে" বলতে হাতটা থাকতে হবে।**
+নিয়ম ৪ বলে: অঙ্ক না মিললে note লিখে মালিকের হাতে ছাড়ো। note লেখা
+হতো ঠিকই, কিন্তু কোনো পাতায় উঠত না - `getPendingPayments()` শুধু
+`pending` + manual provider দেখে, তাই `failed` হওয়া gateway payment
+মালিকের সারিতে আসত না। মানে অর্ধেক নিয়ম কোডে ছিল, অর্ধেক ছিল না।
+এখন payment নথিতে `needsOwner` ঘর। আটকে যাওয়া চারটা রাস্তাতেই সেটা
+বসে: (১) অঙ্ক অজানা/কম, (২) মালিকের নথি নেই, (৩) নিষিদ্ধ অ্যাকাউন্ট,
+(৪) approve এর আগে টাকা এসেছে। `/admin/payments` এ লাল "দেখা দরকার"
+সারি - কারণসহ। নামাতে হলে requireOwner + কী করলেন সেটা ৪ অক্ষরের বেশি
+লিখতে হবে, আর `payment.attention_cleared` audit log এ যায়। পুরনো
+কারণটা মোছা হয় না - নতুন কথা তার পরে জোড়া লাগে।
+
+**D-030 · টাকা আগে, approve পরে - job আর আটকে থাকে না।**
+"টাকা + approve = প্রকাশ" - দুইটা শর্ত, কিন্তু কোড দেখত শুধু টাকার দিক
+থেকে (`applyPaidEffect`)। মানুষ approve এর আগে টাকা দিয়ে ফেললে note
+লিখে থেমে যেত, আর পরে admin approve করলে কেউ আর ঐ note টা দেখত না -
+টাকা নেওয়া হয়েছে, admin approve করেছেন, তবু job feed এ উঠত না।
+এখন `publishIfAlreadyPaid(jobId)` - `approveJob` এর শেষে ডাকা হয়,
+এক transaction এ (নিয়ম ৫), approvedAt + success job_fee + ban না -
+তিনটাই মিললে প্রকাশ, আর নথিটা সারি থেকে নেমে যায়। এটাই payments.ts
+এর একমাত্র জায়গা যেখানে `applyPaidEffect` এর বাইরে stage বদলায়,
+কারণ দুটোই "টাকার ফল"।
+
+**যাচাই:** verify chain সবুজ (৬টা script), check:money এ ১৮টা নতুন
+assert (৮৪ মোট), e2e emulator এ ৬৫ assert - নতুন দুইটা ধাপ: approve
+এর আগে টাকা দিলে feed এ ওঠে না কিন্তু মালিকের সারিতে ওঠে, তারপর
+approve করলে সাথে সাথে প্রকাশ হয়ে সারি থেকে নামে; আর ছোট note এ
+সারি থেকে নামানো আটকায়। prod build clean।

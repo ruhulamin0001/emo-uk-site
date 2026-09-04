@@ -13,6 +13,7 @@ import { FieldValue } from 'firebase-admin/firestore';
 import { adminDb } from '@/lib/firebase/admin';
 import { writeLog } from './activity-log';
 import { userRef } from './employers';
+import { publishIfAlreadyPaid } from './payments';
 import {
   EMPLOYER_STATUS,
   JOB_CLOSED_STATE,
@@ -68,10 +69,25 @@ export async function approveJob(actor: Session, jobId: string): Promise<Decisio
     );
   }
 
+  /**
+   * FEE KI AGE I DEYA HOYE GECHE?
+   *
+   * Manush payment page e giye taka diye felte paren admin er
+   * approve er AGE. Tokhon `applyPaidEffect` prokash korte pare
+   * na (approvedAt nai), sudhu note likhe rakhe. Ekhon approve
+   * holo mane duita shorto i pura - tai ekhane i prokash.
+   *
+   * Ei ekta line na thakle: taka neya hoyeche, admin approve
+   * korechen, othocho job feed e uthto NA - ar keu janto o na.
+   */
+  const publishedNow = await publishIfAlreadyPaid(jobId);
+
   await writeLog(actor, {
     action: 'job.approve',
     targetId: jobId,
-    changes: { stage: ['pending', 'approved (fee baki)'] },
+    changes: {
+      stage: ['pending', publishedNow ? 'published (fee age i deya chhilo)' : 'approved (fee baki)'],
+    },
   });
 
   return { ok: true };

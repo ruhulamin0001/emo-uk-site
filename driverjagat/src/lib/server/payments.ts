@@ -58,6 +58,16 @@ export interface PaymentDoc {
   /** Admin haate haate pawa taka bosale - ke bosalen */
   settledBy?: string;
   note?: string;
+  /**
+   * MALIK ER CHOKH LAGBE.
+   *
+   * Niyom #4 bole "note likhe malik er hate charo". Kintu note
+   * ta nothi r bhitore poRe thakle malik er hate kichhu i jay
+   * na - kono pata te oi note ta uthto na. Ei ghor ta i oi
+   * "hat": `true` hole nothi ta /admin/payments er "দেখা দরকার"
+   * sari te othe. Malik dekhe, kaj kore, tarpor namiye den.
+   */
+  needsOwner?: boolean;
 }
 
 const paymentsCol = () => adminDb().collection('payments');
@@ -272,6 +282,10 @@ export async function settlePayment(
       status: PAYMENT_STATUS.failed,
       note: verdict.note,
       providerRef: result.providerRef,
+      /* Note lekha SUDHU adhek kaj - malik ta DEKHBEN kothay?
+         Ei flag ta chara nothi ta chupchap `failed` hoye poRe
+         thakto, ar manuser taka gateway e boshe thakto. */
+      needsOwner: true,
     });
     return { ok: false, message: verdict.message };
   }
@@ -326,7 +340,7 @@ async function applyPaidEffect(doc: PaymentDoc, providerRef: string): Promise<vo
      * dite paren.
      */
     if (!userSnap.exists) {
-      tx.update(payRef, { note: 'মালিকের নথি নেই - ফেরত দিতে হবে' });
+      tx.update(payRef, { note: 'মালিকের নথি নেই - ফেরত দিতে হবে', needsOwner: true });
       return;
     }
 
@@ -337,7 +351,7 @@ async function applyPaidEffect(doc: PaymentDoc, providerRef: string): Promise<vo
      * Taka ta lekha thake (ferot dite nothi lagbe), fol ghote na.
      */
     if (status === EMPLOYER_STATUS.banned) {
-      tx.update(payRef, { note: 'নিষিদ্ধ অ্যাকাউন্ট - ফেরত দিতে হবে' });
+      tx.update(payRef, { note: 'নিষিদ্ধ অ্যাকাউন্ট - ফেরত দিতে হবে', needsOwner: true });
       return;
     }
 
@@ -376,6 +390,7 @@ async function applyPaidEffect(doc: PaymentDoc, providerRef: string): Promise<vo
       } else {
         tx.update(payRef, {
           note: 'অনুমোদনের আগে টাকা এসেছে - অ্যাডমিন দেখবেন',
+          needsOwner: true,
         });
       }
       return;
@@ -408,6 +423,71 @@ async function applyPaidEffect(doc: PaymentDoc, providerRef: string): Promise<vo
      * theke sore jeten - ar seta amader mul wada bhanga.
      * Ekhane sudhu taka ta "success" hoy; admin dekhe egoben.
      */
+  });
+}
+
+/**
+ * TAKA AGE ESECHHE, APPROVE PORE - tokhon prokash ta ke kore?
+ *
+ * "Taka + approve = prokash" - duita shorto. `applyPaidEffect`
+ * ta dekhe SUDHU takar dik theke: taka elo, approve ache to?
+ * na thakle note likhe theme jay. Kintu ulto dik ta keu dekhto
+ * na - admin pore approve korle oi note ta poRe i thakto, job
+ * chirokal pending, ar manuser taka amader kachhe.
+ *
+ * Tai approve howar por O ekbar dekha hoy: ei job er fee ki
+ * age i deya hoye geche? Hole EKHANE prokash hoy - oi ek i
+ * transaction er niyome (niyom #5), ar nothi ta malik er sari
+ * theke o neme jay.
+ *
+ * Ei function ta i ek matro jayga jekhane payment.ts job er
+ * stage bodlay applyPaidEffect er baire - dutoi "taka r fol",
+ * tai duitai ei file e.
+ */
+export async function publishIfAlreadyPaid(jobId: string): Promise<boolean> {
+  return adminDb().runTransaction(async (tx: Transaction) => {
+    const jobRef = adminDb().collection('jobs').doc(jobId);
+    const jobSnap = await tx.get(jobRef);
+
+    if (!jobSnap.exists) return false;
+    if (jobSnap.get('stage') !== JOB_STAGE.pending) return false;
+    /* Approve na hole ekhane kichhu i na - ei ta i to shorto */
+    if (!jobSnap.get('approvedAt')) return false;
+
+    /* Firestore transaction: SOB pora lekha-r AGE */
+    const paidSnap = await tx.get(
+      paymentsCol()
+        .where('jobId', '==', jobId)
+        .where('status', '==', PAYMENT_STATUS.success)
+        .limit(10),
+    );
+    const fee = paidSnap.docs.find((d) => d.get('kind') === PAYMENT_KIND.job_fee);
+    if (!fee) return false;
+
+    const user = userRef(String(jobSnap.get('createdBy')));
+    const userSnap = await tx.get(user);
+    if (!userSnap.exists) return false;
+    if (userSnap.get('employerStatus') === EMPLOYER_STATUS.banned) return false;
+
+    tx.update(jobRef, {
+      stage: JOB_STAGE.published,
+      publishedAt: FieldValue.serverTimestamp(),
+      validUntil: jobValidUntil(),
+      updatedAt: FieldValue.serverTimestamp(),
+    });
+
+    tx.update(user, {
+      employerStatus: EMPLOYER_STATUS.verified,
+      verifiedAt: FieldValue.serverTimestamp(),
+      updatedAt: FieldValue.serverTimestamp(),
+    });
+
+    tx.update(fee.ref, {
+      needsOwner: false,
+      note: 'অনুমোদনের পর প্রকাশ হয়েছে',
+    });
+
+    return true;
   });
 }
 
@@ -512,4 +592,77 @@ export async function getPendingPayments(): Promise<PaymentDoc[]> {
     .limit(50)
     .get();
   return snap.docs.map((d) => ({ id: d.id, ...d.data() }) as PaymentDoc);
+}
+
+/**
+ * MALIK ER DEKHA DORKAR - je taka gulo atke geche.
+ *
+ * Ei sari ta na thakle niyom #4 er sesh ordhek ta faka thakto.
+ * Niyom ta bole: onko na mille "note likhe MALIK ER HATE charo".
+ * Note lekha hoto - kintu kono pata te uthto na, tai malik er
+ * hate kichhu i jeto na. Chartita rasta ekhane eshe pore:
+ *
+ *   • onko ojana ba kom (settlePayment)
+ *   • malik er nothi nai - ferot dite hobe
+ *   • nishiddho account - ferot dite hobe
+ *   • approve er AGE taka eshe geche - job ekhono pending
+ *
+ * Sob koyta te manuser taka amader kachhe, ar tar bodole se
+ * kichhu pay ni. Tai ei sari ta khali thaka i sabhabik - kichhu
+ * thakle seta AJ i dekhte hobe.
+ */
+export async function getPaymentsNeedingAttention(): Promise<PaymentDoc[]> {
+  const snap = await paymentsCol()
+    .where('needsOwner', '==', true)
+    .orderBy('createdAt', 'desc')
+    .limit(50)
+    .get();
+  return snap.docs.map((d) => ({ id: d.id, ...d.data() }) as PaymentDoc);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   6 · SARI THEKE NAMANO - "dekhechi, kaj koreichi"
+   ══════════════════════════════════════════════════════════════ */
+
+/**
+ * Malik kaj ta kore fele nothi ta sari theke namachhen.
+ *
+ * Ei ta takar obostha (`status`) bodlay NA - sudhu "ei ta ar
+ * amar dekhar bakite nai" bole. Ferot deya, gateway e miliye
+ * dekha, ba job ta হাতে prokash kora - oi asol kaj gulo ei
+ * botam er BAIRE. Tai note ta baddhotamulok: chhoy mash pore
+ * "ei 500 taka r ki holo" prosno er uttor ekhane i thakbe.
+ */
+export async function clearPaymentAttention(
+  actor: Session,
+  paymentId: string,
+  note: string,
+): Promise<SettleResult> {
+  const clean = note.trim();
+  if (clean.length < MANUAL_PAYMENT.noteMinChars) {
+    return { ok: false, message: 'কী করলেন সেটা লিখুন (ফেরত দিলাম / মিলিয়ে দেখলাম)' };
+  }
+
+  const ref = paymentsCol().doc(paymentId);
+  const snap = await ref.get();
+  if (!snap.exists) return { ok: false, message: 'পেমেন্ট পাওয়া যায়নি' };
+
+  const doc = { id: snap.id, ...snap.data() } as PaymentDoc;
+  if (!doc.needsOwner) return { ok: true, alreadyDone: true, paid: false };
+
+  /* Purono note ta MOCHA HOY NA - keno atkechilo seta i
+     asol kotha. Notun kotha tar pore joRa lage. */
+  await ref.update({
+    needsOwner: false,
+    note: `${doc.note ?? ''} → ${clean}`.trim(),
+    settledBy: actor.uid,
+  });
+
+  await writeLog(actor, {
+    action: 'payment.attention_cleared',
+    targetId: paymentId,
+    note: `${taka(doc.amount)} · ${doc.note ?? ''} → ${clean}`,
+  });
+
+  return { ok: true, alreadyDone: false, paid: false };
 }

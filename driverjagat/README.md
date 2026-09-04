@@ -32,9 +32,13 @@ service differs - driver er chakri instead of tuition, biodata, or basha.
    the callback body is a hint not proof, `verify()` asks the provider with BOTH ids,
    an unknown or short amount hard-fails, and payment + its effect land in ONE
    transaction. Payment carries a `jobId`, effect lands on THAT job (multi-job model)
-8. Power = custom claim; `staff` collection is a display cache
-9. Ban = claim + `revokeRefreshTokens` - the live session dies now
-10. Deploy order: code before rules (first launch: rules first), env before Cloudflare
+8. Stuck money is VISIBLE (D-029) - anything that took money without delivering sets
+   `needsOwner`, and the red "দেখা দরকার" queue on `/admin/payments` is the owner's
+   hand that rule 4 hands it to. Paid before approve? `approveJob` publishes it
+   (D-030) - money never sits with a pending job nobody looks at
+9. Power = custom claim; `staff` collection is a display cache
+10. Ban = claim + `revokeRefreshTokens` - the live session dies now
+11. Deploy order: code before rules (first launch: rules first), env before Cloudflare
 
 ## Repo placement
 

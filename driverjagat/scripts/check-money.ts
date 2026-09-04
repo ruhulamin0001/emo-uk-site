@@ -120,6 +120,58 @@ console.log('\n━━ 4 · onko miliye dekha - ACHORON diye porikkha ━━');
   ok(/return \{ ok: false/.test(failBlock), 'na milleI fol ghotano BONDHO (applyPaidEffect e jay na)');
 }
 
+console.log('\n━━ 4খ · note ta MALIK ER HATE i pouchay ━━');
+{
+  /**
+   * Niyom #4 er sesh ordhek: "note likhe MALIK ER HATE charo".
+   *
+   * Note lekha holo, kintu kono pata te na uthle malik er hate
+   * kichhu i jay na. Ei asserts gulo dekhe - atke jaowa protita
+   * rasta `needsOwner` boshay, ar oi flag ta sotti ekta sari te
+   * othe je sari malik dekhen.
+   */
+  const stuckPaths = server.split('needsOwner: true').length - 1;
+  ok(stuckPaths >= 4, `atke jaowa sob rasta needsOwner boshay (${stuckPaths} ta)`);
+
+  const failBlock2 = server.slice(server.indexOf('if (!verdict.ok)'), server.indexOf('await applyPaidEffect(doc, result.providerRef)'));
+  ok(/needsOwner: true/.test(failBlock2), 'onko na mille nothi ta malik er sari te othe');
+
+  ok(
+    /where\('needsOwner', '==', true\)/.test(server),
+    'getPaymentsNeedingAttention() oi flag dekhe sari banay',
+  );
+  const adminPage = read('src/app/admin/payments/page.tsx');
+  ok(/getPaymentsNeedingAttention/.test(adminPage), 'malik er pata te oi sari ta DEKHANO hoy');
+  ok(/\{p\.note\}/.test(adminPage), 'KENO atkeche (note) pata tei lekha thake');
+
+  /* Sari theke namano - sudhu malik, note baddhotamulok, log e jay */
+  const clearAction = adminAction.slice(adminAction.indexOf('export async function clearPaymentAttentionAction'), adminAction.indexOf('/* ── Dol o ban'));
+  ok(/requireOwner\(\)/.test(clearAction), 'sari theke namano O requireOwner (admin NA)');
+  ok(/MANUAL_PAYMENT\.noteMinChars/.test(clearAction), 'namate hole ki korlen ta likhte HOY');
+  const clearServer = server.slice(server.indexOf('export async function clearPaymentAttention'));
+  ok(/MANUAL_PAYMENT\.noteMinChars/.test(clearServer), 'server e O abar mapa hoy');
+  ok(/payment\.attention_cleared/.test(clearServer), 'activity log e lekha hoy');
+  ok(!/PAYMENT_STATUS\./.test(clearServer.slice(0, clearServer.indexOf('writeLog'))), 'namano takar OBOSTHA bodlay na - sudhu sari theke sore');
+}
+
+console.log('\n━━ 4গ · taka AGE, approve PORE - job ta atke thake na ━━');
+{
+  /**
+   * Ulto dik ta. `applyPaidEffect` approve na peye note likhe
+   * theme jay - tarpor admin approve korle keu oi note ta abar
+   * dekhto na, job chirokal pending, taka amader kachhe.
+   */
+  ok(/export async function publishIfAlreadyPaid/.test(server), 'publishIfAlreadyPaid() ache');
+  const decisions = read('src/lib/server/job-decisions.ts');
+  ok(/publishIfAlreadyPaid\(jobId\)/.test(decisions), 'approveJob approve er por ekbar dekhe');
+  const pub = server.slice(server.indexOf('export async function publishIfAlreadyPaid'), server.indexOf('4 · HAATE HAATE PAWA TAKA'));
+  ok(/runTransaction/.test(pub), 'prokash ta O ek transaction e (niyom #5)');
+  ok(/approvedAt/.test(pub), 'approve na hole prokash hoy NA');
+  ok(/PAYMENT_STATUS\.success/.test(pub), 'taka sotti eseche kina dekha hoy');
+  ok(/EMPLOYER_STATUS\.banned/.test(pub), 'nishiddho account e prokash hoy NA');
+  ok(/needsOwner: false/.test(pub), 'kaj hoye gele nothi ta sari theke neme jay');
+}
+
 console.log('\n━━ 5 · taka o tar FOL ek transaction e ━━');
 ok(/runTransaction/.test(server), 'applyPaidEffect transaction e chole');
 const txBlock = server.slice(server.indexOf('async function applyPaidEffect'));
@@ -199,7 +251,7 @@ console.log('\n━━ Webhook soi - HMAC, timingSafeEqual ━━');
 }
 
 console.log('\n━━ Doc er ghor gulo ━━');
-for (const f of ['userId', 'kind', 'amount', 'status', 'providerId', 'providerRef', 'settledBy', 'note', 'createdAt']) {
+for (const f of ['userId', 'kind', 'amount', 'status', 'providerId', 'providerRef', 'settledBy', 'note', 'createdAt', 'needsOwner']) {
   ok(new RegExp(`\\b${f}[?]?:`).test(server), `PaymentDoc e \`${f}\` ache`);
 }
 for (const s of ['initiated', 'pending', 'success', 'failed']) {
