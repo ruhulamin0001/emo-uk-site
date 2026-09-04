@@ -29,6 +29,9 @@ import 'server-only';
 import { FieldValue, Timestamp, type Transaction } from 'firebase-admin/firestore';
 import { adminDb } from '@/lib/firebase/admin';
 import { activeProvider, manualProvider, providerById } from '@/lib/payments';
+import { writeLog } from './activity-log';
+import type { Session } from './session';
+import { taka } from '@/lib/format';
 import {
   EMPLOYER_STATUS,
   JOB_CLOSED_STATE,
@@ -38,7 +41,7 @@ import {
   type PaymentKind,
   type PaymentStatus,
 } from '@/types/enums';
-import { FEES, JOB } from '@/config/business';
+import { FEES, JOB, MANUAL_PAYMENT } from '@/config/business';
 
 export interface PaymentDoc {
   id: string;
@@ -83,6 +86,48 @@ export function amountFor(kind: PaymentKind): number {
     default:
       return FEES.jobFee;
   }
+}
+
+/**
+ * NIYOM #4 - provider ja bollo, ta amader hisheber sathe mile?
+ *
+ * ALADA, PURE function kore rakha hoyeche icchakrito: ei niyom
+ * ta Firestore chara i porikkha kora jay (`npm run check:money`).
+ * Niyom ta settlePayment er bhitore lukiye thakle porikkha korte
+ * hole puro emulator, payment doc, nokol gateway lagto - ar
+ * setai karone TutorJagat e ei niyom ta bochor dhore
+ * na-porikkhito chilo.
+ */
+export type AmountVerdict = { ok: true } | { ok: false; note: string; message: string };
+
+export function checkAmount(reported: number, required: number): AmountVerdict {
+  /**
+   * ONKO OJANA HOLE ATKAY - ei ta age FAK chilo.
+   *
+   * Age lekha chilo `reported > 0 && reported < required`. Mane
+   * provider `amount: 0` ba kichhu i na pathale oi shorto ta
+   * MITHYA hoto, ar payment ta CHUPCHAP pass kore jeto - onko
+   * ekbar o milano hoto na. Gateway er uttor er gathon bodlale
+   * (`amount` er jaygay `total`) protita payment jachai chara
+   * publish hoye jeto.
+   */
+  if (!Number.isFinite(reported) || reported <= 0) {
+    return {
+      ok: false,
+      note: `টাকার পরিমাণ জানা যায়নি - গেটওয়েতে মিলিয়ে দেখুন (দরকার ${required})`,
+      message: 'টাকা যাচাই করা যায়নি - আমাদের জানান',
+    };
+  }
+
+  if (reported < required) {
+    return {
+      ok: false,
+      note: `কম টাকা এসেছে - ${reported}, দরকার ${required}`,
+      message: 'পুরো টাকা আসেনি - আমাদের জানান',
+    };
+  }
+
+  return { ok: true };
 }
 
 /** Job er meyad - aj theke JOB.validDays din (D-005: 60) */
@@ -211,19 +256,24 @@ export async function settlePayment(
   }
 
   /**
-   * POROMAN TA MILIYE DEKHI.
+   * POROMAN TA MILIYE DEKHI (niyom #4).
    *
-   * Provider bollo taka esechhe - kintu KOTO? Kom ele publish
-   * kora jabe na. Ei ekta line na thakle keu gateway er pata te
-   * giye onko bodle ৳1 diye ৳100 er kaj kore nite parto.
+   * Provider bollo taka esechhe - kintu KOTO? Onko na milie
+   * fol ghotano JABE NA. Ei milano ta na thakle keu gateway er
+   * pata te giye onko bodle 1 taka diye 100 takar kaj kore nito.
+   *
+   * Niyom ta `checkAmount()` e - alada, pure, porikkha kora jay.
    */
-  if (result.amount > 0 && result.amount < doc.amount) {
+  const verdict = checkAmount(result.amount, doc.amount);
+  if (!verdict.ok) {
+    /* Taka r nothi ta THAKE, note soho - malik nijer gateway er
+       pata te dekhe siddhanto neben. Fol ghote na. */
     await ref.update({
       status: PAYMENT_STATUS.failed,
-      note: `কম টাকা এসেছে - ${result.amount}, দরকার ${doc.amount}`,
+      note: verdict.note,
       providerRef: result.providerRef,
     });
-    return { ok: false, message: 'পুরো টাকা আসেনি - আমাদের জানান' };
+    return { ok: false, message: verdict.message };
   }
 
   await applyPaidEffect(doc, result.providerRef);
@@ -374,10 +424,26 @@ async function applyPaidEffect(doc: PaymentDoc, providerRef: string): Promise<vo
  * Ekhane manush er siddhanto lage, ar seta audit log e jay.
  */
 export async function markManuallyPaid(
+  actor: Session,
   paymentId: string,
-  adminUid: string,
   note: string,
 ): Promise<SettleResult> {
+  /**
+   * NOTE BADDHOTAMULOK, ar 4 oksor er kom hole NA (niyom #9).
+   *
+   * Ekhane kono gateway er proman nai - sudhu ekjon manuser
+   * kotha. Pore hisheb na mille ei note ta i EKMATRO suto:
+   * bKash er TrxID ba je number theke taka esechhe. Faka ba
+   * "ok" jatiyo note oi suto ta kete dey.
+   *
+   * Action e o dekha hoy, ekhane O dekha hoy - action URL
+   * sorasori POST kora jay, tai server er niyom server e i.
+   */
+  const clean = note.trim();
+  if (clean.length < MANUAL_PAYMENT.noteMinChars) {
+    return { ok: false, message: 'bKash এর লেনদেন নম্বর বা যে নম্বর থেকে টাকা এসেছে লিখুন' };
+  }
+
   const ref = paymentsCol().doc(paymentId);
   const snap = await ref.get();
 
@@ -388,8 +454,23 @@ export async function markManuallyPaid(
     return { ok: true, alreadyDone: true, paid: true };
   }
 
-  await ref.update({ settledBy: adminUid, note });
-  await applyPaidEffect(doc, `manual:${adminUid}`);
+  await ref.update({ settledBy: actor.uid, note: clean });
+  await applyPaidEffect(doc, `manual:${actor.uid}`);
+
+  /**
+   * AUDIT LOG - ei kaj ta ALADA kore lekha hoy (niyom #9).
+   *
+   * Baki sob payment e gateway er proman thake. Ei ekta rastay
+   * nai - ekjon manush "peyechi" bolechen, ar tate ekjon
+   * malik verified hoye gechen. Hisheb na mille ei line ta i
+   * bole dey KE bolechilen, KOKHON, ar KON TrxID dekhe.
+   */
+  await writeLog(actor, {
+    action: 'payment.manual_settle',
+    targetId: paymentId,
+    changes: { status: [doc.status, PAYMENT_STATUS.success] },
+    note: `${taka(doc.amount)} · ${clean}`,
+  });
 
   return { ok: true, alreadyDone: false, paid: true };
 }

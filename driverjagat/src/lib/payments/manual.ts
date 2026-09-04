@@ -60,4 +60,17 @@ export const manualProvider: PaymentProvider = {
       raw: {},
     };
   },
+
+  /**
+   * Haate haate takar kono webhook NAI - kono gateway amader
+   * daake na. Tai soi milanor kichhu nai.
+   *
+   * `true` fera dile o bipod nai: manual mode e callback diye
+   * kichhu i ghote na, karon uporer `verify()` kokhono
+   * `paid: true` bole na. Taka "peyechi" sudhu MALIK bolte
+   * paren (niyom #8, #9).
+   */
+  verifySignature(): boolean {
+    return true;
+  },
 };

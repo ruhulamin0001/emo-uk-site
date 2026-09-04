@@ -48,6 +48,22 @@ export const paymentAmount = (kind: PaymentKind): number | null => {
 };
 
 /* ══════════════════════════════════════════════════════════════
+   1খ · HAATE HAATE PAWA TAKA - malik er "টাকা পেয়েছি" botam
+   ══════════════════════════════════════════════════════════════ */
+
+export const MANUAL_PAYMENT = {
+  /**
+   * Note (bKash TrxID ba je number theke taka esechhe) koto
+   * oksor er kom hole NA.
+   *
+   * Ei ekta rastay gateway er kono proman nai - sudhu ekjon
+   * manuser kotha. Pore hisheb na mille ei note ta i EKMATRO
+   * suto. Faka ba "ok" jatiyo note oi suto ta kete dey.
+   */
+  noteMinChars: 4,
+} as const;
+
+/* ══════════════════════════════════════════════════════════════
    2 · JOB ER MEYAD (D-005)
    ══════════════════════════════════════════════════════════════ */
 

@@ -75,7 +75,7 @@ async function main() {
     siteUrl: 'http://localhost:3000',
   });
   if (!pay.ok) throw new Error(pay.message);
-  await markManuallyPaid(pay.paymentId, staff.uid, 'SEED');
+  await markManuallyPaid(staff, pay.paymentId, 'SEED-TRX-001');
 
   console.log(`Demo job live: ${sub.trackingCode} (${sub.jobId})`);
   process.exit(0);

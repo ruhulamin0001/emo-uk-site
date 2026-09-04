@@ -1,30 +1,37 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { settlePayment } from '@/lib/server/payments';
-import { isValidWebhookSignature } from '@/lib/payments/amaderpay';
+import { verifyWebhookSignature } from '@/lib/payments';
 
 /**
- * Gateway er webhook - taka jachai hole tara ei URL e hit koren.
+ * Taka newar gateway er webhook - taka jachai hole tara ei URL e hit koren.
  *
  * EI URL TA KHOLA. Login lage na, lagate parbo o na - gateway
  * er server hit kore, tader kachhe amader cookie nai.
  *
- * Tai ekhane ja pathano hoy tar KICHHU I bishwas kora hoy na.
- * Sudhu ekta id neya hoy, ar tarpor amra NIJERA gateway ke
- * jiggesh kori "ei payment ta ki sotti hoyeche?"
+ * NIYOM #2: ekhane ja pathano hoy tar KICHHU I bishwas kora hoy na.
+ * Sudhu ekta id neya hoy - "ei payment ta dekho" - ar tarpor
+ * `settlePayment()` NIJE giye provider ke jiggesh kore
+ * "ei payment ta ki sotti hoyeche, ar koto taka?".
  *
- * Je keu ei URL e `?status=success` likhe hit korte pare - ar
- * tate kichhu i hobe na.
+ * Je keu ei URL e `?status=success&amount=99999` likhe hit korte
+ * pare - ar tate kichhu i hobe na.
  *
- * AmaderPay er body (tader doc theke):
- *   { event: 'payment.verified', payment_id, order_id, amount, trx_id }
- *   header: x-signature: sha256=<hmac of raw body>
- *
- * `order_id` ta AMADER nijer payment id - start korar somoy
- * amra oitai pathiyechilam.
+ * NIYOM #10: ei file e kono gateway er NAM nai, ar gateway er
+ * file o import kora hoy na. Sudhu `@/lib/payments`. Gateway
+ * bodlale ei file er ekta line o bodlabe na.
  */
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
+
+/**
+ * Amader NIJER payment id ta callback er body te kon name ache.
+ *
+ * Gateway ra alada alada nam babohar kore (`order_id`,
+ * `merchant_invoice`, ...). Tai koyekta nam dekha hoy - ei
+ * talika ta gateway er nam na, sudhu common ghor er nam.
+ */
+const OUR_ID_KEYS = ['order_id', 'merchant_invoice', 'invoice', 'id'] as const;
 
 async function handle(req: NextRequest) {
   const url = new URL(req.url);
@@ -45,7 +52,7 @@ async function handle(req: NextRequest) {
 
       if (contentType.includes('application/json')) {
         /* Soi na milleI ekhane i sesh - Firestore porjonto jay na */
-        if (!isValidWebhookSignature(raw, req.headers.get('x-signature'))) {
+        if (!verifyWebhookSignature(raw, req.headers.get('x-signature'))) {
           return NextResponse.json({ ok: false }, { status: 401 });
         }
         try {
@@ -62,17 +69,8 @@ async function handle(req: NextRequest) {
     }
   }
 
-  /**
-   * Amader nijer id.
-   * `order_id` AGE dekha hoy - AmaderPay oitai pathay.
-   * Baki nam gulo onno provider e bodlale kaje lagbe.
-   */
   const paymentId = String(
-    payload.order_id ??
-      payload.merchant_invoice ??
-      payload.invoice ??
-      payload.id ??
-      '',
+    OUR_ID_KEYS.map((k) => payload[k]).find((v) => v !== undefined) ?? '',
   );
 
   if (!paymentId) {
@@ -85,7 +83,8 @@ async function handle(req: NextRequest) {
    * Gateway ke SOB SOMOY 200 deya hoy - bhitore ja i hok.
    *
    * Karon beshirbhag gateway 200 na pele bar bar cheshta kore,
-   * ghonta dhore. Amader dik er somossa amader nothi te thakbe - * gateway ke bar bar dakiye labh nai.
+   * ghonta dhore. Amader dik er somossa amader nothi te thakbe -
+   * gateway ke bar bar dakiye labh nai.
    */
   return NextResponse.json({ ok: res.ok });
 }

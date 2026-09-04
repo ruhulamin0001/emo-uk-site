@@ -178,6 +178,15 @@ export const amaderPayProvider: PaymentProvider = {
       return { ok: false, message: 'যাচাই করা যায়নি' };
     }
   },
+
+  /**
+   * Chuktir ongsho (types.ts) - callback route ei ta SORASORI
+   * daake na, `@/lib/payments` er `verifyWebhookSignature()` diye
+   * daake. Tai gateway er nam ei folder er baire jay na (niyom #10).
+   */
+  verifySignature(rawBody: string, signature: string | null): boolean {
+    return isValidWebhookSignature(rawBody, signature);
+  },
 };
 
 /* ══════════════════════════════════════════════════════════════

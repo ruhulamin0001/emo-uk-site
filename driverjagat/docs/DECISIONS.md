@@ -93,3 +93,48 @@ verify chain: check:style, check:security, check:public (18 test), check:config
 (60+ test), typecheck, lint, prod build - সব সবুজ। check:rules আর e2e emulator
 লাগে - এই session এ চালানোর চেষ্টা DEPLOY.md এ লেখা। Firebase project, VPS
 .env, DNS - মালিকের হাতে (DEPLOY.md)।
+
+---
+
+## 2026-09-04
+
+**D-026 · Payment system TutorJagat-এর ১০ নিয়মে যাচাই ও ঠিক করা।** মালিক
+১০টা নিয়ম হুবহু লিখে দিয়েছেন। RentJagat থেকে আসা code-এ ৭টা নিয়ম আগে
+থেকেই ঠিক ছিল, ৩টা ভাঙা ছিল:
+
+**নিয়ম ৪ ভাঙা ছিল (সবচেয়ে বিপজ্জনক)।** লেখা ছিল
+`result.amount > 0 && result.amount < doc.amount`। মানে provider `amount: 0`
+বা কিছুই না পাঠালে শর্তটা মিথ্যা হতো, আর payment টা **চুপচাপ pass করে
+যেত** - অঙ্ক একবারও মেলানো হতো না। Gateway-এর উত্তরের গঠন বদলালে
+(`amount` এর জায়গায় `total`) প্রতিটা payment যাচাই ছাড়া publish হয়ে যেত।
+এখন: অঙ্ক অজানা/০/negative → hard fail, note লিখে মালিকের হাতে।
+
+**নিয়ম ৯ আংশিক ভাঙা ছিল।** requireOwner ঠিক ছিল, কিন্তু note-এর ৪ অক্ষরের
+নিয়ম ছিল না (`"ok"` চলত), আর activity log-এ কিছুই লেখা হতো না - অথচ এই
+একটা রাস্তায় gateway-এর কোনো প্রমাণ নেই, শুধু একজন মানুষের কথা। এখন
+`MANUAL_PAYMENT.noteMinChars: 4` (config/business.ts), action আর server
+**দুই জায়গায়** মাপা হয় (action URL সরাসরি POST করা যায়), আর
+`payment.manual_settle` audit log-এ TrxID সহ লেখা হয়।
+
+**নিয়ম ১০ ভাঙা ছিল।** callback route সরাসরি
+`@/lib/payments/amaderpay` import করত, আর comment-এ gateway-এর নাম ছিল।
+Gateway বদলালে ওই file-ও বদলাতে হতো। এখন `PaymentProvider` চুক্তিতে
+`verifySignature?()` যোগ হয়েছে, `index.ts` neutral
+`verifyWebhookSignature()` দেয়, callback route শুধু `@/lib/payments`
+চেনে। এখন gateway বদলাতে **শুধু** `index.ts`-এর একটা import + gateway
+file বদলাবে।
+
+**D-027 · `checkAmount()` আলাদা pure function।** নিয়ম ৪ settlePayment-এর
+ভেতরে লুকানো থাকলে পরীক্ষা করতে emulator + payment doc + নকল gateway
+লাগত - আর সেই কারণেই নিয়মটা এতদিন না-পরীক্ষিত অবস্থায় ভাঙা ছিল। এখন
+Firestore ছাড়াই আচরণ দিয়ে পরীক্ষা হয়।
+
+**D-028 · `npm run check:money` (TutorJagat-এর মতো)।** ১০টা নিয়ম script
+দিয়ে পাহারা - ৫৬টা assert, verify chain-এ যোগ করা। নিয়ম ৪ আচরণ দিয়ে
+পরীক্ষা হয় (`checkAmount()` সত্যি চালিয়ে), বাকিগুলো কোড পড়ে। নিয়ম ১০
+পুরো `src/` হেঁটে দেখে gateway-এর নাম payments folder-এর বাইরে গেছে কিনা।
+কেউ নিয়ম সরালে test লাল হবে।
+
+**যাচাই:** verify chain সবুজ (style, security, public, config, money,
+typecheck, lint, rules), e2e emulator-এ ৫০ assert (নতুন: ফাঁকা note আটকায়,
+৪ অক্ষরের কম note আটকায়, অঙ্ক অজানা হলে success হয় না), prod build clean।

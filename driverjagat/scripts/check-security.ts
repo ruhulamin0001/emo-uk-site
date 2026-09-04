@@ -94,9 +94,21 @@ console.log('\n━━ Khola API ━━');
     /provider\.verify/.test(pay),
     'callback e ja lekha ta bishwas kora hoy NA - provider ke jiggesh',
   );
+  /**
+   * Onko milano ekhon `checkAmount()` e - alada pure function,
+   * jate niyom ta Firestore chara i porikkha kora jay
+   * (`npm run check:money` seta ACHORON diye dekhe).
+   *
+   * Ekhane sudhu dekha hoy: settlePayment sotti oi ta daake,
+   * ar na mille fol ghotate JAY NA.
+   */
   ok(
-    /result\.amount[\s\S]{0,120}<[\s\S]{0,40}doc\.amount/.test(pay),
-    'kom taka ele verified kora hoy NA',
+    /const verdict = checkAmount\(result\.amount, doc\.amount\)/.test(pay),
+    'onko milano hoy (checkAmount) - kom ba ojana taka y verified kora hoy NA',
+  );
+  ok(
+    /if \(!verdict\.ok\)[\s\S]{0,400}return \{ ok: false/.test(pay),
+    'onko na milleI ekhane i sesh - applyPaidEffect e jay na',
   );
 }
 

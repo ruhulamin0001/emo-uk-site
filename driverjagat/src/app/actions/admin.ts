@@ -19,6 +19,7 @@ import {
 import { setLeadStatus } from '@/lib/server/leads';
 import { completeMatch, recordCallOutcome, shortlistLead } from '@/lib/server/matching';
 import { markManuallyPaid } from '@/lib/server/payments';
+import { MANUAL_PAYMENT } from '@/config/business';
 import { setRole } from '@/lib/server/roles';
 import { banUserByEmail, unbanUserByEmail } from '@/lib/server/moderation';
 import {
@@ -119,12 +120,24 @@ export async function completeMatchAction(jobId: string): Promise<ActionState> {
 /* ── Taka - SUDHU malik ─────────────────────────────────────── */
 
 export async function markPaidAction(paymentId: string, fd: FormData): Promise<ActionState> {
+  /**
+   * SUDHU MALIK - admin na (niyom #9).
+   *
+   * "Taka peyechi" ek chape ekjon ke verified kore dey, ar
+   * ekhane gateway er kono proman nai. Ei ekta kaj admin er
+   * haate deya jay na.
+   */
   const actor = await requireOwner();
-  const note = String(fd.get('note') ?? '');
-  if (!note.trim()) {
-    return { ok: false, message: 'bKash এর লেনদেন নম্বরটি লিখুন' };
+  const note = String(fd.get('note') ?? '').trim();
+
+  /* Note baddhotamulok, ar 4 oksor er kom hole NA. Server e o
+     abar dekha hoy (markManuallyPaid) - action URL sorasori
+     POST kora jay bole. */
+  if (note.length < MANUAL_PAYMENT.noteMinChars) {
+    return { ok: false, message: 'bKash এর লেনদেন নম্বরটি লিখুন (কমপক্ষে ৪ অক্ষর)' };
   }
-  const res = await markManuallyPaid(paymentId, actor.uid, note);
+
+  const res = await markManuallyPaid(actor, paymentId, note);
   revalidatePath('/admin/payments');
   return res.ok ? { ok: true, message: 'টাকা পাওয়া নথিভুক্ত হয়েছে' } : res;
 }

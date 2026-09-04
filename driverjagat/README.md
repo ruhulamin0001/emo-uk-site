@@ -28,8 +28,10 @@ service differs - driver er chakri instead of tuition, biodata, or basha.
    a phone number, address or number plate
 5. leadCount is admin-only - the malik never learns how many drivers applied
 6. Default-deny rules - privileged writes are Admin SDK + Server Action only
-7. Money verified server-side - amount from `config/business.ts`, `provider.verify()`;
-   payment carries a `jobId`, effect lands on THAT job (multi-job model)
+7. Money: the 10 rules (D-026, `npm run check:money`). Amount computed server-side,
+   the callback body is a hint not proof, `verify()` asks the provider with BOTH ids,
+   an unknown or short amount hard-fails, and payment + its effect land in ONE
+   transaction. Payment carries a `jobId`, effect lands on THAT job (multi-job model)
 8. Power = custom claim; `staff` collection is a display cache
 9. Ban = claim + `revokeRefreshTokens` - the live session dies now
 10. Deploy order: code before rules (first launch: rules first), env before Cloudflare

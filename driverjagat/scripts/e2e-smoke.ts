@@ -20,7 +20,12 @@ import {
   getJobForAdmin,
 } from '../src/lib/server/jobs';
 import { approveJob } from '../src/lib/server/job-decisions';
-import { markManuallyPaid, startPayment, getPaymentsFor } from '../src/lib/server/payments';
+import {
+  markManuallyPaid,
+  settlePayment,
+  startPayment,
+  getPaymentsFor,
+} from '../src/lib/server/payments';
 import { createLead, listLeadsForJob } from '../src/lib/server/leads';
 import { completeMatch, recordCallOutcome, shortlistLead } from '../src/lib/server/matching';
 import { lookupTracking } from '../src/lib/server/tracking';
@@ -173,7 +178,7 @@ async function main() {
   });
   ok(!noJob.ok, 'jobId chhara job_fee suru i hoy na');
 
-  const settle = await markManuallyPaid(pay.paymentId, staff.uid, 'TRX-E2E-1');
+  const settle = await markManuallyPaid(staff, pay.paymentId, 'TRX-E2E-1');
   ok(settle.ok && settle.paid, 'malik "taka peyechi" chapley settle');
 
   const feed = await getPublishedJobs();
@@ -192,8 +197,42 @@ async function main() {
   const payments = await getPaymentsFor(employer.uid);
   ok(payments[0]?.status === 'success', 'payment nothi success');
 
-  const again = await markManuallyPaid(pay.paymentId, staff.uid, 'TRX-E2E-1');
+  const again = await markManuallyPaid(staff, pay.paymentId, 'TRX-E2E-1');
   ok(again.ok && again.alreadyDone, 'dwitiyo settle e kichhu ghote na (idempotent)');
+
+  /* Niyom #9 - note faka ba choto hole "peyechi" bola JAY NA */
+  const pay2 = await startPayment({
+    userId: employer.uid, name: 'ই২ই মালিক', phone: '+8801811111111',
+    kind: PAYMENT_KIND.job_fee, jobId, siteUrl: 'http://localhost:3000',
+  });
+  if (pay2.ok) {
+    const noNote = await markManuallyPaid(staff, pay2.paymentId, '  ');
+    ok(!noNote.ok, 'faka note e "taka peyechi" ATKAY');
+    const tinyNote = await markManuallyPaid(staff, pay2.paymentId, 'ok');
+    ok(!tinyNote.ok, 'choto note (4 oksor er kom) ATKAY');
+    const paid2 = await adminDb().collection('payments').doc(pay2.paymentId).get();
+    ok(paid2.get('status') !== 'success', 'atke jaowa payment success HOY NI');
+    await paid2.ref.delete();
+  }
+
+  /* Niyom #4 - provider "esechhe" bollo kintu onko OJANA (0) */
+  const pay3 = await startPayment({
+    userId: employer.uid, name: 'ই২ই মালিক', phone: '+8801811111111',
+    kind: PAYMENT_KIND.job_fee, jobId, siteUrl: 'http://localhost:3000',
+  });
+  if (pay3.ok) {
+    /* Nokol gateway: paid bole, kintu amount 0 - age ei ta CHUPCHAP
+       pass kore jeto, ekhon ATKANOR kotha */
+    await adminDb().collection('payments').doc(pay3.paymentId).update({
+      providerId: 'e2e-fake', providerRef: 'ref-0-amount',
+    });
+    const bad = await settlePayment(pay3.paymentId, { paid: true, amount: 0 });
+    const doc3 = await adminDb().collection('payments').doc(pay3.paymentId).get();
+    /* providerById() ojana id te manual dey, ar manual paid:false bole -
+       tai ekhane fol ghote na. Mul kotha: success HOY NA. */
+    ok(doc3.get('status') !== 'success', 'onko ojana hole payment success HOY NA', String(bad.ok));
+    await doc3.ref.delete();
+  }
 
   console.log('\n━━ 4 · Lead → matching desk ━━');
   const lead = await createLead(

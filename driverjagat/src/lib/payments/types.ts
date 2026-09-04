@@ -81,4 +81,18 @@ export interface PaymentProvider {
     ref: { paymentId: string; providerRef?: string },
     payload: Record<string, unknown>,
   ): Promise<VerifyResult>;
+
+  /**
+   * Webhook er soi mile kina - CHUKTIR ONGSHO, gateway er nijer na.
+   *
+   * Ei ta ekhane thakar karon niyom #10: app er kono jayga
+   * gateway er NAM janbe na. Callback route sudhu
+   * `@/lib/payments` er `verifyWebhookSignature()` chene -
+   * gateway bodlale ei folder er baire ekta line o bodlay na.
+   *
+   * Ei ta amader ASOL pahara NA - asol pahara `verify()`
+   * (niyom #2: nijera giye jiggesh kora). Soi ta sosta prothom
+   * chhakni: bhua request Firestore porjonto pouchhay i na.
+   */
+  verifySignature?(rawBody: string, signature: string | null): boolean;
 }
