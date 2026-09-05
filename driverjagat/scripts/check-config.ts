@@ -51,6 +51,26 @@ ok(JOB.freeQuota === 0, 'free post NAI');
 ok(paymentAmount(PAYMENT_KIND.job_fee) === 102, 'paymentAmount(job) = 102');
 ok(paymentAmount(PAYMENT_KIND.connection_fee) === 502, 'paymentAmount(connection) = 502');
 ok(JOB.approvedUnpaidExpiryDays > 0, 'approve kore taka na dile meyad ache');
+/**
+ * ⚠️ Config e sonkha lekha thaka ar seta KAJ KORA ek jinish na.
+ *
+ * `validUntil` age LEKHA hoto othocho keu PORTO na - mane kono
+ * job kokhono meyad-sesh hoto na, ar bhora hoye jaowa post
+ * chirokal feed e thakto. Ei asserts gulo dekhe sonkha gulo
+ * sotti kono code e pouchhechhe.
+ */
+{
+  const lc = readFileSync(join(root, 'src/lib/server/lifecycle.ts'), 'utf8');
+  ok(/JOB\.approvedUnpaidExpiryDays/.test(lc), 'approvedUnpaidExpiryDays SOTTI babohar hoy');
+  ok(/'validUntil', '<='/.test(lc), 'validUntil SOTTI pora hoy - noyle meyad kagoje thakto');
+  ok(/JOB_STAGE\.published/.test(lc), 'sudhu published gulo r meyad sesh hoy');
+  ok(
+    !/JOB_STAGE\.shortlisted|JOB_STAGE\.onboarding/.test(lc),
+    'shortlisted/onboarding e HAAT DEYA HOY NA - cholti alochona bhange na',
+  );
+  const cron = readFileSync(join(root, 'src/app/api/cron/lifecycle/route.ts'), 'utf8');
+  ok(/runLifecycle\(\)/.test(cron), 'cron route puro rojkar kaj ta daake');
+}
 ok(JOB.validDays === 30, 'D-005: meyad 30 din - driver er kaj taratari bhore');
 ok(JOB.minPhotos === 0 && JOB.maxPhotos >= 1, 'D-008: chobi oichhik, kintu deya jay');
 

@@ -73,6 +73,24 @@
       ]
     },
     {
+      "//": "Rojkar meyad sesh - prokashito job er validUntil par hoyeche kina (expireJobs)",
+      "collectionGroup": "jobs",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "stage", "order": "ASCENDING" },
+        { "fieldPath": "validUntil", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "//": "Approve kore taka dey nai - 7 din por batil (expireApprovedUnpaid)",
+      "collectionGroup": "jobs",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "stage", "order": "ASCENDING" },
+        { "fieldPath": "approvedAt", "order": "ASCENDING" }
+      ]
+    },
+    {
       "//": "Dashboard o admin - ekjon malik er sob post",
       "collectionGroup": "jobs",
       "queryScope": "COLLECTION",

@@ -43,9 +43,14 @@ service differs - driver er chakri instead of tuition, biodata, or basha.
    (`POST /api/cron/lifecycle?task=payments`) is the only recovery path because the
    gateway has ONE webhook URL slot, and `GET /api/payments/health` reports
    `stuckOver24h` - the one number that catches every failure
-10. Power = custom claim; `staff` collection is a display cache
-11. Ban = claim + `revokeRefreshTokens` - the live session dies now
-12. Deploy order: code before rules (first launch: rules first), env before Cloudflare
+10. Nothing lives forever (D-035, D-036) - `validUntil` used to be WRITTEN and never
+    READ, so a filled post would sit on the feed forever, which is the exact disease
+    the Facebook groups have. The daily sweep expires published jobs past their date
+    (never `shortlisted`/`onboarding` - a live conversation) and cancels an approval
+    left unpaid for 7 days
+11. Power = custom claim; `staff` collection is a display cache
+12. Ban = claim + `revokeRefreshTokens` - the live session dies now
+13. Deploy order: code before rules (first launch: rules first), env before Cloudflare
 
 ## Repo placement
 

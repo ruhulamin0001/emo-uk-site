@@ -3,17 +3,26 @@ import 'server-only';
 /**
  * Rojkar jhaṛu - ja keu na dekhle nijei theme jeto.
  *
- * Ekhon ekta i kaj ache: ATKE THAKA GATEWAY PAYMENT (§৫).
- * Job er meyad, reminder SMS - oi gulo pore ekhane i boshbe.
+ * Tinta kaj:
+ *   1. Job er MEYAD sesh (D-005) - `validUntil` par hoye gele feed theke
+ *   2. Approve kore taka na dile 7 din e approval ta batil
+ *   3. Atke thaka gateway payment (§৫ of PAYMENTS-MULTISITE)
+ *
+ * ⚠️ 1 ar 2 na thakle ki hoto: `validUntil` LEKHA hoto, kintu keu
+ * kono din PORTO na. Mane bhora hoye jaowa "ড্রাইভার চাই" post
+ * chirokal feed e boshe thakto - ar Facebook group gulor thik oi
+ * ek number rog ta amader ekhane o eshe jeto. Amader ekmatro
+ * parthokko i to ei: feed e ja ache ta SOTTI khali.
  *
  * Utso: docs/PAYMENTS-MULTISITE.md (TutorJagat, commit 25a8338)
  */
 
-import { FieldValue } from 'firebase-admin/firestore';
+import { FieldValue, Timestamp } from 'firebase-admin/firestore';
 import { adminDb } from '@/lib/firebase/admin';
 import { manualProvider } from '@/lib/payments';
-import { PAYMENT_STATUS } from '@/types/enums';
+import { EMPLOYER_STATUS, JOB_CLOSED_STATE, JOB_STAGE, PAYMENT_STATUS } from '@/types/enums';
 import {
+  JOB,
   PAYMENT_SWEEP_MAX_AGE_MS,
   PAYMENT_SWEEP_MIN_AGE_MS,
   shouldExpirePending,
@@ -143,4 +152,140 @@ export async function runPaymentSweep(now = Date.now()): Promise<PaymentSweepRep
   }
 
   return { checked, recovered, stuckOver24h, expired };
+}
+
+/* ══════════════════════════════════════════════════════════════
+   2 · JOB ER MEYAD SESH (D-005)
+   ══════════════════════════════════════════════════════════════ */
+
+/**
+ * ⚠️ EI TA NA THAKLE AMADER EKMATRO PARTHOKKO TA I SESH.
+ *
+ * `validUntil` payment er transaction e boshano hoy - kintu keu
+ * oi ghor ta PORTO na. Mane ekta post ekbar prokash hole
+ * CHIROKAL feed e thakto: driver phone koren, malik bolen "oi
+ * kaj to tin mash age bhore gechhe" - ar dui pokkho i amader
+ * upor bhorosa hariye felen.
+ *
+ * Facebook group gulor ek number rog ta i ei - bhora hoye jaowa
+ * post. Amader ekmatro daabi holo feed e ja ache ta SOTTI khali.
+ * Ei function ta i oi daabi ta rakhe.
+ *
+ * ⚠️ SUDHU `published` gulo. `shortlisted` ba `onboarding` mane
+ * admin tokhon dui pokkher sathe kotha bolchen - majhkhane
+ * meyad sesh kore dile ekta cholti alochona bhenge jeto.
+ */
+async function expireJobs(now: number): Promise<number> {
+  const snap = await adminDb()
+    .collection('jobs')
+    .where('stage', '==', JOB_STAGE.published)
+    .where('validUntil', '<=', Timestamp.fromMillis(now))
+    .limit(200)
+    .get();
+
+  for (const doc of snap.docs) {
+    await doc.ref.update({
+      stage: JOB_CLOSED_STATE.expired,
+      expiredAt: FieldValue.serverTimestamp(),
+      updatedAt: FieldValue.serverTimestamp(),
+    });
+  }
+
+  return snap.size;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   3 · APPROVE KORA KINTU TAKA DEY NAI
+   ══════════════════════════════════════════════════════════════ */
+
+/**
+ * Admin approve korechen, malik taka den ni - 7 din por approval
+ * ta batil.
+ *
+ * ⚠️ Kano lage: ei fak ta bondho na korle "approve kore rakhi,
+ * taka pore debo" ekta sthayi obostha hoye jeto - admin er somoy
+ * kheye neya hoto, ar hishebe ekta bhoot theke jeto.
+ *
+ * ⚠️ Job ta MUCHE FELA HOY NA - `pending` e fire jay, `approvedAt`
+ * mocha hoy. Malik pore ele admin abar ekbar dekhe onumodon dite
+ * paren, suru theke korte hoy na. Tar kagoj, tar jachai - sob
+ * thake.
+ *
+ * ⚠️ `approvedUnpaidReminderDays` (3 din) ekhono babohar hoy NA -
+ * SMS er kono poth ei app e nai. Poth ta boshle ei function er
+ * bhitore i mone koriye deya boshbe (DECISIONS D-036).
+ */
+async function expireApprovedUnpaid(now: number): Promise<number> {
+  const cutoff = Timestamp.fromMillis(now - JOB.approvedUnpaidExpiryDays * DAY_MS);
+
+  /**
+   * ⚠️ `stage: pending` + `approvedAt` purono - EI DUITA I shorto.
+   *
+   * Sudhu `approvedAt` dekhle prokashito job gulo o ei jaale
+   * porto - tara to taka diyei feed e utheche.
+   */
+  const snap = await adminDb()
+    .collection('jobs')
+    .where('stage', '==', JOB_STAGE.pending)
+    .where('approvedAt', '<=', cutoff)
+    .limit(200)
+    .get();
+
+  let expired = 0;
+
+  for (const doc of snap.docs) {
+    await doc.ref.update({
+      approvedAt: null,
+      approvedBy: null,
+      updatedAt: FieldValue.serverTimestamp(),
+    });
+    expired++;
+
+    /**
+     * Malik er obostha ta o firiye ana - kintu SAVDHANE.
+     *
+     * ⚠️ Tini `verified` hole HAAT DEYA HOY NA. Ek malik er
+     * EKADHIK post thakte pare (D-013): ekta r fee bakite meyad
+     * sesh holeo tar age deya post gulo to thik i ache. Verified
+     * theke namiye dile oi post gulo o mara jeto.
+     */
+    const uid = String(doc.get('createdBy'));
+    const user = adminDb().collection('users').doc(uid);
+    const snapUser = await user.get();
+    if (snapUser.exists && snapUser.get('employerStatus') === EMPLOYER_STATUS.approved_unpaid) {
+      await user.update({
+        employerStatus: EMPLOYER_STATUS.under_review,
+        updatedAt: FieldValue.serverTimestamp(),
+      });
+    }
+  }
+
+  return expired;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   4 · PURO ROJKAR KAJ
+   ══════════════════════════════════════════════════════════════ */
+
+export interface LifecycleReport {
+  /** Meyad sesh hoye feed theke neme gechhe */
+  expiredJobs: number;
+  /** Approve chhilo, taka ase ni - approval batil */
+  expiredApprovals: number;
+  payments: PaymentSweepReport;
+}
+
+/**
+ * ⚠️ `Date.now()` EKBAR neya hoy, ar sob jaygay oi ta i.
+ *
+ * Protita hishebe alada kore dakle 200 ta job er majhkhane somoy
+ * egiye jeto - ar kono ekta ekdom shimana r upore thakle tar
+ * hisheb ek i run e duirokom hoto.
+ */
+export async function runLifecycle(now = Date.now()): Promise<LifecycleReport> {
+  return {
+    expiredJobs: await expireJobs(now),
+    expiredApprovals: await expireApprovedUnpaid(now),
+    payments: await runPaymentSweep(now),
+  };
 }

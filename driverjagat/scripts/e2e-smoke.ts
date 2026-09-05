@@ -29,7 +29,7 @@ import {
   startPayment,
   getPaymentsFor,
 } from '../src/lib/server/payments';
-import { runPaymentSweep } from '../src/lib/server/lifecycle';
+import { runLifecycle, runPaymentSweep } from '../src/lib/server/lifecycle';
 import { createLead, listLeadsForJob } from '../src/lib/server/leads';
 import { completeMatch, recordCallOutcome, shortlistLead } from '../src/lib/server/matching';
 import { lookupTracking } from '../src/lib/server/tracking';
@@ -453,6 +453,82 @@ async function main() {
       ok(later.ok, 'purono (4 din) cholti ta r pothe daray na - CHIROKAL atke thake na');
       if (later.ok) await adminDb().collection('payments').doc(later.paymentId).delete();
       await adminDb().collection('payments').doc(first.paymentId).delete();
+    }
+  }
+
+  console.log('\n━━ 11 · Rojkar meyad - job feed e chirokal thake na ━━');
+  {
+    /**
+     * ⚠️ §৬ er niyome: SOTTI ekta meyad-utirno job baniye dekha
+     * hoy se feed theke name kina. "Kichhu chhoy ni" poriksha
+     * likhle expireJobs() faka thakleo pass korto.
+     */
+    const sub3 = await submitJob(employer, intake, photoPaths);
+    if (sub3.ok) {
+      const jobRef = adminDb().collection('jobs').doc(sub3.jobId);
+      /* Prokashito, kintu meyad kal PORE gechhe */
+      await jobRef.update({
+        stage: JOB_STAGE.published,
+        approvedAt: Timestamp.now(),
+        publishedAt: Timestamp.now(),
+        validUntil: Timestamp.fromMillis(Date.now() - 3600_000),
+      });
+      /* ⚠️ Ei job TA feed e ache kina - motta gona na. Age r
+         dhap gulo r job o feed e thakte pare. */
+      const inFeed = async () =>
+        (await getPublishedJobs()).some((j) => j.id === sub3.jobId);
+      ok(await inFeed(), 'meyad-utirno job EKHONO feed e (jhaṛu chalanor AGE - ei tai rog)');
+
+      const rep = await runLifecycle();
+      ok(rep.expiredJobs === 1, 'jhaṛu meyad sesh korlo', String(rep.expiredJobs));
+      ok(!(await inFeed()), 'feed theke NEME gechhe');
+      ok(
+        (await getJobForAdmin(sub3.jobId))?.view.stage === 'expired',
+        'dhap ekhon expired - mucha hoy ni, malik dekhte paben',
+      );
+
+      /* ⚠️ Cholti alochona jate na bhange - shortlisted ta chhoy na */
+      await jobRef.update({
+        stage: JOB_STAGE.shortlisted,
+        validUntil: Timestamp.fromMillis(Date.now() - 3600_000),
+      });
+      const rep2 = await runLifecycle();
+      ok(rep2.expiredJobs === 0, 'shortlisted (admin kotha bolchen) CHHOY NA');
+      await jobRef.collection('private').doc('contact').delete();
+      await jobRef.delete();
+    }
+  }
+
+  console.log('\n━━ 12 · Approve kore taka na dile 7 din e batil ━━');
+  {
+    const sub4 = await submitJob(employer, intake, photoPaths);
+    if (sub4.ok) {
+      const jobRef = adminDb().collection('jobs').doc(sub4.jobId);
+      /* Approve hoyeche 8 din age, taka ase ni - tai ekhono pending */
+      await jobRef.update({
+        approvedAt: Timestamp.fromMillis(Date.now() - 8 * 24 * 3600_000),
+        approvedBy: staff.uid,
+      });
+
+      const rep = await runLifecycle();
+      ok(rep.expiredApprovals === 1, 'purono approval batil holo', String(rep.expiredApprovals));
+      const after = await jobRef.get();
+      ok(after.get('approvedAt') === null, 'approvedAt mocha hoyeche - abar approve korte hobe');
+      ok(after.get('stage') === JOB_STAGE.pending, 'job MUCHA HOY NI - pending e ache');
+
+      /* Taja approval jate na bhange */
+      await jobRef.update({ approvedAt: Timestamp.now() });
+      const rep2 = await runLifecycle();
+      ok(rep2.expiredApprovals === 0, 'taja approval (aj ker) CHHOY NA');
+
+      /* ⚠️ D-013: verified malik ke namano HOY NA - tar onno post gulo bache */
+      ok(
+        (await getUser(employer.uid))?.employerStatus === EMPLOYER_STATUS.verified,
+        'verified malik verified i thaken (ekadhik post er model)',
+      );
+
+      await jobRef.collection('private').doc('contact').delete();
+      await jobRef.delete();
     }
   }
 

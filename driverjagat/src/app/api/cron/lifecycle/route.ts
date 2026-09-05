@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { runPaymentSweep } from '@/lib/server/lifecycle';
+import { runLifecycle, runPaymentSweep } from '@/lib/server/lifecycle';
 import { cronKeyOk } from '@/lib/server/cron-auth';
 
 /**
@@ -56,7 +56,7 @@ export async function POST(req: Request) {
     });
   }
 
-  /* Ekhon rojkar kaj bolte oi jhaṛu tai - baki gulo pore ekhane boshbe */
-  const report = await runPaymentSweep();
+  /* Puro rojkar kaj - meyad sesh, approval batil, ar takar jhaṛu */
+  const report = await runLifecycle();
   return NextResponse.json({ ok: true, report, tookMs: Date.now() - started });
 }

@@ -167,14 +167,23 @@ One gateway account runs five sites, so the order below is not optional.
 - [ ] **Last digit 2** - every DriverJagat price ends in 2 (৳102, ৳502).
       `npm run check:multisite` proves it; never set a price ending in anything else
 - [ ] `CRON_SECRET` in `.env` (`openssl rand -hex 32`)
-- [ ] Crontab entry, every 15 minutes - the gateway has ONE webhook URL slot,
-      so DriverJagat may never receive a webhook and this sweep is the only
-      recovery path:
+- [ ] TWO crontab entries. The payment sweep runs every 15 minutes because the
+      gateway has ONE webhook URL slot, so DriverJagat may never receive a
+      webhook and this sweep is its only recovery path. The full daily run also
+      expires jobs and cancels unpaid approvals - it must NOT run every 15
+      minutes, since once it sends reminders that would mean ten SMS a day and
+      people blocking the number:
 
       ```
       */15 * * * * curl -sS -X POST -H "x-cron-key: <CRON_SECRET>" \
         https://driver.jagatitlimited.com/api/cron/lifecycle?task=payments
+      0 3 * * *    curl -sS -X POST -H "x-cron-key: <CRON_SECRET>" \
+        https://driver.jagatitlimited.com/api/cron/lifecycle
       ```
+
+      Without the daily one, `validUntil` is written and never read: filled
+      posts stay on the feed forever, which is the one thing that would make us
+      no better than the Facebook groups.
 
 - [ ] `GET /api/payments/health` answers with the cron key (same shape on all
       five sites). Watch `stuckOver24h` - anything but 0 means money is stuck:
@@ -202,5 +211,5 @@ One gateway account runs five sites, so the order below is not optional.
 ```bash
 npm run emulator      # alada terminal (Java lage)
 npm run check:rules   # rules bite test
-npm run e2e           # puro jibonchokro 72 assert
+npm run e2e           # puro jibonchokro 82 assert
 ```
