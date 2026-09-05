@@ -1,3 +1,8 @@
+/* EMO_UI v2 : favicon injection + right-hand table of contents */
+function emoUiIcon(){ if(document.querySelector('link[rel="icon"]')){ return; } var l=document.createElement('link'); l.setAttribute('rel','icon'); l.setAttribute('type','image/svg+xml'); l.setAttribute('href','/favicon.svg'); document.head.appendChild(l); }
+function emoUiToc(){ var ab=document.querySelector('.article-body'); if(!ab){ return; } var toc=ab.querySelector('.toc'); if(!toc){ return; } if(toc.parentNode!==ab){ var sv=null; for(var i=0;i<ab.children.length;i++){ if(String(ab.children[i].className||'').indexOf('short-version')>-1){ sv=ab.children[i]; } } if(sv&&sv.nextSibling){ ab.insertBefore(toc,sv.nextSibling); } else { ab.insertBefore(toc,ab.firstChild); } } if(toc.className.indexOf('side-toc')<0){ toc.className=toc.className+' side-toc'; } if(String(ab.className).indexOf('has-side-toc')<0){ ab.className=ab.className+' has-side-toc'; } }
+function emoUiInit2(){ try{ emoUiIcon(); emoUiToc(); }catch(e){ if(window.console){ console.warn('emo-ui2', e.message); } } }
+if(document.readyState!=='loading'){ emoUiInit2(); } else { document.addEventListener('DOMContentLoaded', emoUiInit2); }
 /* EarningMoneyOnline.co.uk — cookie consent + Google Analytics 4
    GDPR / UK PECR compliant: GA loads ONLY after the visitor clicks Accept.
    To activate: replace G-GQ2B6EM9YC below with your real GA4 Measurement ID. */
