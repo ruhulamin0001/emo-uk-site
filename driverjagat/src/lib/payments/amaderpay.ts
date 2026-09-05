@@ -1,5 +1,7 @@
 import 'server-only';
 
+import { siteConfig } from '@/config/site';
+
 /**
  * AmaderPay - D-04খ
  *
@@ -67,11 +69,23 @@ export const amaderPayProvider: PaymentProvider = {
         body: JSON.stringify({
           amount: intent.amount,
           /**
-           * Amader nijer id ekhane `order_id` hishebe jay.
-           * Webhook e ei ta i fire ashe - ar ei ta diye i amra
-           * amader nothi khuje pai.
+           * Amader nijer id ekhane `order_id` hishebe jay, SAMNE
+           * SITE ER CHHAP shoho - `DJ-a1b2c3`.
+           *
+           * Webhook e ei ta i fire ashe, ar callback route chhap
+           * ta kete niye amader nothi khuje ney.
+           *
+           * ⚠️ Chhap ta KANO (§৩গ): 5 ta site ek i gateway
+           * account e chole. Portal er talikay ba router er log e
+           * khali chokhe bojha jay kon taka kon site er.
+           *
+           * ⚠️ Chhap ta ja KORE NA: melanor golmal metay na.
+           * Gateway `order_id` diye melay NA (§১ dhap ৪) - melay
+           * number + onko diye. Tar ekmatro protirodh niyom ১১,
+           * mane alada sesh onko (business.ts er
+           * PAYMENT_LAST_DIGIT).
            */
-          order_id: intent.paymentId,
+          order_id: `${siteConfig.trackingPrefix}-${intent.paymentId}`,
           customer_name: intent.customerName,
           success_url: intent.returnUrl,
         }),

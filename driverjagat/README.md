@@ -36,9 +36,16 @@ service differs - driver er chakri instead of tuition, biodata, or basha.
    `needsOwner`, and the red "দেখা দরকার" queue on `/admin/payments` is the owner's
    hand that rule 4 hands it to. Paid before approve? `approveJob` publishes it
    (D-030) - money never sits with a pending job nobody looks at
-9. Power = custom claim; `staff` collection is a display cache
-10. Ban = claim + `revokeRefreshTokens` - the live session dies now
-11. Deploy order: code before rules (first launch: rules first), env before Cloudflare
+9. One gateway, five sites (D-031, `npm run check:multisite`). The gateway matches
+   bKash SMS to invoices by SENDER NUMBER + AMOUNT, not by `order_id`, across every
+   site in the account - so DriverJagat owns the last digit **2** and every price
+   ends in it (৳102, ৳502). `order_id` carries `DJ-`, the sweep
+   (`POST /api/cron/lifecycle?task=payments`) is the only recovery path because the
+   gateway has ONE webhook URL slot, and `GET /api/payments/health` reports
+   `stuckOver24h` - the one number that catches every failure
+10. Power = custom claim; `staff` collection is a display cache
+11. Ban = claim + `revokeRefreshTokens` - the live session dies now
+12. Deploy order: code before rules (first launch: rules first), env before Cloudflare
 
 ## Repo placement
 
@@ -61,7 +68,7 @@ Emulator mode e login chara i dev-admin (owner) pawa jay - SUDHU local e.
 ## Verify
 
 ```bash
-npm run verify   # style + security + public + config + typecheck + lint + rules
+npm run verify   # style + security + public + config + money + multisite + typecheck + lint + rules
 npm run e2e      # emulator e puro jibonchokro (submit → approve → taka → lead → match)
 ```
 

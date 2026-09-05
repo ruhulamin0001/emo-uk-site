@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { settlePayment } from '@/lib/server/payments';
+import { AutoRecheck } from './_components/AutoRecheck';
 
 export const dynamic = 'force-dynamic';
 
@@ -35,12 +36,21 @@ export default async function PaymentDonePage({
         </>
       ) : (
         <>
-          <h1 className="text-2xl font-bold text-ink-950">
-            পেমেন্ট এখনো নিশ্চিত হয়নি
-          </h1>
+          <h1 className="text-2xl font-bold text-ink-950">অপেক্ষা করুন</h1>
           <p className="mt-2 text-ink-600">
-            ব্যাংক বা গেটওয়ের দিক থেকে একটু সময় লাগতে পারে। কিছুক্ষণ পর
-            ড্যাশবোর্ডে দেখুন, অথবা আমাদের জানান।
+            টাকার খবর এখনো আসেনি। এটা কয়েক মিনিট সময় নিতে পারে।
+          </p>
+          {/* ⚠️ Ei line ta LEKHA JORURI - na thakle manush bhabten
+              taka mar gechhe ar ABAR pathaten, tokhon duibar
+              kata hoto */}
+          <p className="mt-2 font-semibold text-ink-950">
+            আবার টাকা দেবেন না - দিলে দুইবার কাটা যাবে।
+          </p>
+
+          {/* ⚠️ Pata ta NIJE THEKE dekhe - manush ke chapte hoy na */}
+          <AutoRecheck />
+          <p className="mt-3 text-sm text-ink-400">
+            এই পাতা নিজে থেকেই দেখছে - খবর এলে সাথে সাথে দেখাবে।
           </p>
         </>
       )}

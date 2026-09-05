@@ -15,19 +15,58 @@ import { PAYMENT_KIND, type PaymentKind } from '@/types/enums';
    hishebe halka kore, shesh e. (TutorJagat D-101 er niyom)
    ══════════════════════════════════════════════════════════════ */
 
+/**
+ * DRIVERJAGAT ER SESH ONKO - 2. EK TA O DAM EI ONKO CHHARA SESH
+ * HOBE NA.
+ *
+ * Kano (docs/PAYMENTS-MULTISITE.md §২ক, niyom ১১):
+ *
+ * Gateway ta kono "payment processor" na - se bKash er SMS er
+ * sathe opekkhoman invoice MELAY. Ar melay `order_id` diye NA -
+ * melay **pathanor number + takar onko** diye. Ar se puro
+ * account er SOB site er session ek shathe dekhe.
+ *
+ * Mane 5 ta platform ek gateway account e cholle EK MATRO bipod:
+ * ek i manush ek i onko dui platform e pathalen. Tokhon duita
+ * session er chabi HUBUHU ek - gateway kon ta melabe janto na.
+ *
+ * Protita platform ke ekta sesh onko dile ei bipod CHIROTORE
+ * sesh: TutorJagat 9, RentJagat 0, MarriageJagat 1, DriverJagat
+ * **2**, poncom 3. Notun dam thik korar somoy ar karo sathe
+ * kotha bolte hoy na - sudhu 2 e sesh korlei holo.
+ */
+export const PAYMENT_LAST_DIGIT = 2;
+
 export const FEES = {
-  /** Job prokash er fee - admin approve er PORE neya hoy */
-  jobFee: 100,
+  /**
+   * Job prokash er fee - admin approve er PORE neya hoy.
+   *
+   * ⚠️ 100 chhilo - kintu 0 RentJagat er onko. 102 kora holo.
+   */
+  jobFee: 102,
   /**
    * Dui pokkho razi howar por number binimoy er fee - malik den.
    *
    * Ei fee ta ASOL ay er jayga. Post shosta rakha hoyeche jate
    * kajer sorboraho bare - ar taka asha hoy tokhon i jokhon amra
    * SOTTI kaj ta kore diyechi (driver niyog hoyeche). Driver
-   * agency r 3-5 hajar er tulonay ৳500 kichu i na - eta i wedge.
+   * agency r 3-5 hajar er tulonay ৳502 kichu i na - eta i wedge.
+   *
+   * ⚠️ 500 chhilo - RentJagat er 0. 502 kora holo.
    */
-  connectionFee: 500,
+  connectionFee: 502,
 } as const satisfies Record<string, number>;
+
+/**
+ * Ekta dam DriverJagat er nijer elakay ache kina.
+ *
+ * ⚠️ Alada PURE function - `npm run check:money` ei ta SOTTI
+ * chaliye protita fee mepe dekhe. Comment e "2 e sesh hobe"
+ * lekha thakle chhoy mash pore keu 150 boshiye dito ar keu
+ * dhorto na.
+ */
+export const isOurAmount = (amount: number): boolean =>
+  Number.isInteger(amount) && amount > 0 && amount % 10 === PAYMENT_LAST_DIGIT;
 
 /**
  * Amount SOB SOMOY ei function theke - client theke KOKHONO na.
@@ -45,6 +84,55 @@ export const paymentAmount = (kind: PaymentKind): number | null => {
     default:
       return null;
   }
+};
+
+/* ══════════════════════════════════════════════════════════════
+   1গ · ATKE THAKA PAYMENT - kobe meyad sesh
+   (docs/PAYMENTS-MULTISITE.md §৪ক)
+   ══════════════════════════════════════════════════════════════ */
+
+/**
+ * Gateway NIJE "taka ashe nai" bolar koto din pore nothi ta
+ * meyad-sesh kora hobe.
+ *
+ * ⚠️ Kom kora JABE NA. Malik er phone bondho thakle ba app ta
+ * ghumiye thakle taka jachai hote 1-2 din lage. Taratari
+ * "failed" bole dile gateway pore "verified" bolleo manush
+ * tokhon r oi nothi dekhen na.
+ */
+export const PAYMENT_DEAD_AFTER_DAYS = 3;
+
+/** Ekdom taja payment ke jiggesh kore lav nai - manush tokhono takar patay */
+export const PAYMENT_SWEEP_MIN_AGE_MS = 15 * 60_000;
+
+/** Ei tar cheye purono hole gateway o bhule gechhe - pichhone chhutbo na */
+export const PAYMENT_SWEEP_MAX_AGE_MS = 7 * 24 * 3600_000;
+
+/**
+ * Atke thaka ekta payment er meyad sesh kora jabe kina.
+ *
+ * ⚠️ ALADA ekta CHHOTO PURE function - icchakrito.
+ *
+ * Emulator e gateway er chabi nai, tai "3 din por sotti meyad
+ * sesh hoy" ei ongsho ta okhane kokhono chalano jeto na. Sudhu
+ * "kichhu hoy nai" dhoroner poriksha thakto - ar seta function
+ * ta KICHHU NA KORLEO pass korto (§৬).
+ *
+ * @param gatewayAnswered  gateway sotti uttor diyeche kina
+ * @param paid             se ki bollo - taka eseche kina
+ * @param ageDays          nothi ta koto din er purono
+ */
+export const shouldExpirePending = (
+  gatewayAnswered: boolean,
+  paid: boolean,
+  ageDays: number,
+): boolean => {
+  /* ⚠️ Gateway chup thakle (net gelo, ba tara pore gelo) KICHHU I
+     kora hoy na - noyle tara 3 din down thakle amra SOB payment
+     ke mithya "failed" bole ditam */
+  if (!gatewayAnswered) return false;
+  if (paid) return false;
+  return ageDays > PAYMENT_DEAD_AFTER_DAYS;
 };
 
 /* ══════════════════════════════════════════════════════════════

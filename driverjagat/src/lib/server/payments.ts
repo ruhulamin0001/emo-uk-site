@@ -41,7 +41,7 @@ import {
   type PaymentKind,
   type PaymentStatus,
 } from '@/types/enums';
-import { FEES, JOB, MANUAL_PAYMENT } from '@/config/business';
+import { FEES, JOB, MANUAL_PAYMENT, PAYMENT_DEAD_AFTER_DAYS } from '@/config/business';
 
 export interface PaymentDoc {
   id: string;
@@ -145,6 +145,37 @@ function jobValidUntil(): Timestamp {
   return Timestamp.fromMillis(Date.now() + JOB.validDays * 24 * 60 * 60 * 1000);
 }
 
+/**
+ * Ei manuser ekhono ekta CHOLTI (pending) payment ache kina.
+ *
+ * ⚠️ Boyosh-shima ta EI FUNCTION ER MUL KOTHA, ekta bonus na.
+ * Shima chhara ek bar chhere deya checkout manush ke CHIROKAL
+ * atke deye (§৪ক).
+ *
+ * Purono `(userId, createdAt)` index tai kaje lagano hoy -
+ * status ar boyosh ekhane meye dekha hoy, tai notun index lage
+ * na.
+ */
+async function hasInFlightPayment(userId: string, jobId?: string): Promise<boolean> {
+  const cutoff = Date.now() - PAYMENT_DEAD_AFTER_DAYS * 24 * 3600_000;
+
+  const snap = await paymentsCol()
+    .where('userId', '==', userId)
+    .orderBy('createdAt', 'desc')
+    .limit(10)
+    .get();
+
+  return snap.docs.some((d) => {
+    if (d.get('status') !== PAYMENT_STATUS.pending) return false;
+    const at = d.get('createdAt')?.toMillis?.() ?? 0;
+    if (at < cutoff) return false;
+    /* Alada job er fee alada kaj - ekta atke thakle onno ta
+       bondho kore deya thik na */
+    const otherJob = (d.get('jobId') as string | null) ?? null;
+    return otherJob === (jobId ?? null);
+  });
+}
+
 /* ══════════════════════════════════════════════════════════════
    2 · TAKA NEWA SHURU
    ══════════════════════════════════════════════════════════════ */
@@ -170,6 +201,33 @@ export async function startPayment(opts: {
     !opts.jobId
   ) {
     return { ok: false, message: 'কোন কাজের ফি তা জানা যায়নি - আবার চেষ্টা করুন' };
+  }
+
+  /**
+   * ⚠️ EK I MANUSER DUITA CHOLTI PAYMENT THAKTE PARE NA.
+   *
+   * Ei ta sudhu porichchhonnota na - niyom ১১ er sathe jora
+   * (docs/PAYMENTS-MULTISITE.md §১ dhap ৪). Gateway melay
+   * **pathanor number + takar onko** diye. Ek i manush ek i
+   * onko r duita opekkhoman session banale duitar chabi HUBUHU
+   * ek hoye jay - gateway kon ta melabe janto na.
+   *
+   * ⚠️ Ar BOYOSH-SHIMA ta ei niyom er PRAN (§৪ক). Shima chhara
+   * likhle: manush "taka din" chapen, checkout pata khole, taka
+   * NA DIYE bondho koren - nothi ta chirokal `pending` e thake,
+   * ar tini KONO DIN ar taka dite parten na. Ei bug ta emon je
+   * malik o bujhten na keno manush taka dicchen na.
+   *
+   * `PAYMENT_DEAD_AFTER_DAYS` er purono nothi ke amra "chholti"
+   * dhori na - jhaṛu (runPaymentSweep) oi gulo ke emniteo
+   * `failed` kore dey.
+   */
+  const inFlight = await hasInFlightPayment(opts.userId, opts.jobId);
+  if (inFlight) {
+    return {
+      ok: false,
+      message: 'একটি লেনদেন এখনো চলছে - কয়েক মিনিট পর আবার দেখুন',
+    };
   }
 
   const amount = amountFor(opts.kind);

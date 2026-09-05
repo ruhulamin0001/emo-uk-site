@@ -69,9 +69,29 @@ async function handle(req: NextRequest) {
     }
   }
 
-  const paymentId = String(
+  const rawOrderId = String(
     OUR_ID_KEYS.map((k) => payload[k]).find((v) => v !== undefined) ?? '',
   );
+
+  /**
+   * Site er chhap ta kete nei - `DJ-a1b2c3` → `a1b2c3`.
+   *
+   * Ek i gateway account e onek site chole, tai id er samne
+   * site er chhap boshano hoy. Amader Firestore e doc id ta
+   * chhap CHHARA, tai ekhane kete nite hoy.
+   *
+   * ⚠️ Chhap 2 theke 4 ta BORO HATER okkhor - sonkha ba chhoto
+   * hater okkhor dile ei regex ta kate na, ar taka atke jay.
+   *
+   * ⚠️ Chhap na thakleo chole - chhap bosanor AGE toiri purono
+   * payment gulo tokhono pending e thakte pare, tader webhook
+   * eleo kaj korbe.
+   *
+   * ⚠️ ONNO site er chhap (TJ-, RJ-, MJ-) ele o kono khoti nai:
+   * `settlePayment` amader NIJER Firestore e khoje, na pele
+   * "পেমেন্ট পাওয়া যায়নি" bole fire jay. Kichhu ghote na.
+   */
+  const paymentId = rawOrderId.replace(/^[A-Z]{2,4}-/, '');
 
   if (!paymentId) {
     return NextResponse.json({ ok: false }, { status: 400 });

@@ -118,6 +118,15 @@
       ]
     },
     {
+      "//": "Rojkar jhaṛu - atke thaka payment (runPaymentSweep, payments/health). Age theke thaka (status, providerId, createdAt) ei kaje lage NA - okhane providerId majhkhane bosa.",
+      "collectionGroup": "payments",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "status", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "ASCENDING" }
+      ]
+    },
+    {
       "//": "Malik er 'dekha dorkar' sari (getPaymentsNeedingAttention)",
       "collectionGroup": "payments",
       "queryScope": "COLLECTION",

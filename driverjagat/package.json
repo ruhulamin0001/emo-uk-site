@@ -17,10 +17,11 @@
     "check:rules": "tsx --env-file-if-exists=.env.local --conditions=react-server scripts/check-rules.ts",
     "make-owner": "tsx --env-file-if-exists=.env.local --conditions=react-server scripts/make-owner.ts",
     "e2e": "tsx --env-file-if-exists=.env.local --conditions=react-server scripts/e2e-smoke.ts",
-    "verify": "npm run check:style && npm run check:security && npm run check:public && npm run check:config && npm run check:money && npm run typecheck && npm run lint && npm run check:rules",
+    "verify": "npm run check:style && npm run check:security && npm run check:public && npm run check:config && npm run check:money && npm run check:multisite && npm run typecheck && npm run lint && npm run check:rules",
     "deploy:rules": "firebase deploy --only firestore:rules,storage",
     "deploy:indexes": "firebase deploy --only firestore:indexes",
-    "check:money": "tsx --conditions=react-server scripts/check-money.ts"
+    "check:money": "tsx --conditions=react-server scripts/check-money.ts",
+    "check:multisite": "tsx --conditions=react-server scripts/check-multisite.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.9.1",

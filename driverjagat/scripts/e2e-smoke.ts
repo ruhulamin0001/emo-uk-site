@@ -11,6 +11,7 @@
  * jeta production e cholbe seta i porikkha hoy, nokol na.
  */
 
+import { Timestamp } from 'firebase-admin/firestore';
 import { adminDb, isEmulator } from '../src/lib/firebase/admin';
 import { submitJob, getUser } from '../src/lib/server/employers';
 import {
@@ -28,6 +29,7 @@ import {
   startPayment,
   getPaymentsFor,
 } from '../src/lib/server/payments';
+import { runPaymentSweep } from '../src/lib/server/lifecycle';
 import { createLead, listLeadsForJob } from '../src/lib/server/leads';
 import { completeMatch, recordCallOutcome, shortlistLead } from '../src/lib/server/matching';
 import { lookupTracking } from '../src/lib/server/tracking';
@@ -39,6 +41,7 @@ import {
   LICENSE_TYPE,
   JOB_STAGE,
   PAYMENT_KIND,
+  PAYMENT_STATUS,
   ROLE,
 } from '../src/types/enums';
 import { areas, districts } from '../src/data/locations';
@@ -371,6 +374,85 @@ async function main() {
         .limit(5).get();
       ok(!log.empty, 'audit log e lekha holo');
       await gone.ref.delete();
+    }
+  }
+
+  console.log('\n━━ 9 · Rojkar jhaṛu - ASOL atke thaka payment ━━');
+  {
+    /**
+     * ⚠️ §৬: "kichhu chhoy ni" dhoroner poriksha likhben NA -
+     * function ta KICHHU NA KORLEO ogulo pass korto.
+     *
+     * Tai ekhane ekta SOTTI atke thaka gateway-payment banano
+     * hoy (25 ghonta purono, manual na) ar dekha hoy jhaṛu ta
+     * take KHUJE PAY kina.
+     */
+    const pay6 = await startPayment({
+      userId: employer.uid, name: 'ই২ই মালিক', phone: '+8801811111111',
+      kind: PAYMENT_KIND.connection_fee, siteUrl: 'http://localhost:3000',
+    });
+    if (pay6.ok) {
+      const ref = adminDb().collection('payments').doc(pay6.paymentId);
+      await ref.update({
+        providerId: 'e2e-gateway',
+        createdAt: Timestamp.fromMillis(Date.now() - 25 * 3600_000),
+      });
+
+      const swept = await runPaymentSweep();
+      ok(swept.checked >= 1, 'jhaṛu atke thaka payment ta KHUJE PELO', String(swept.checked));
+      ok(swept.stuckOver24h >= 1, '24 ghontar beshi purono - rog nirnoy er sonkhya y utheche');
+      ok(swept.recovered === 0, 'taka ase ni tai uddhar o hoy ni');
+
+      /* Ekdom taja ta jate jhaṛu na chhoy - manush tokhono patay */
+      const fresh = await startPayment({
+        userId: staff.uid, name: 'তাজা', phone: '+8801700000000',
+        kind: PAYMENT_KIND.connection_fee, siteUrl: 'http://localhost:3000',
+      });
+      if (fresh.ok) {
+        await adminDb().collection('payments').doc(fresh.paymentId)
+          .update({ providerId: 'e2e-gateway' });
+        const again = await runPaymentSweep();
+        const freshDoc = await adminDb().collection('payments').doc(fresh.paymentId).get();
+        ok(
+          freshDoc.get('status') === PAYMENT_STATUS.pending,
+          '15 minute er kom boyosh er ta jhaṛu CHHOY NI',
+          String(again.checked),
+        );
+        await freshDoc.ref.delete();
+      }
+      await ref.delete();
+    }
+  }
+
+  console.log('\n━━ 10 · Ek shathe duita cholti payment JAY NA ━━');
+  {
+    /* §৪ক + niyom ১১: ek i manuser duita opekkhoman session
+       thakle gateway (number + onko diye melay) kon ta melabe
+       janto na */
+    const first = await startPayment({
+      userId: employer.uid, name: 'ই২ই মালিক', phone: '+8801811111111',
+      kind: PAYMENT_KIND.connection_fee, siteUrl: 'http://localhost:3000',
+    });
+    ok(first.ok, 'prothom ta jay');
+    const second = await startPayment({
+      userId: employer.uid, name: 'ই২ই মালিক', phone: '+8801811111111',
+      kind: PAYMENT_KIND.connection_fee, siteUrl: 'http://localhost:3000',
+    });
+    ok(!second.ok, 'dwitiyo ta ATKAY - "ekta lenden ekhono cholche"');
+
+    if (first.ok) {
+      /* Ar boyosh-shima ta sotti kaj kore to? 4 din purono
+         korle abar cheshta korte para uchit (§৪ক) */
+      await adminDb().collection('payments').doc(first.paymentId).update({
+        createdAt: Timestamp.fromMillis(Date.now() - 4 * 24 * 3600_000),
+      });
+      const later = await startPayment({
+        userId: employer.uid, name: 'ই২ই মালিক', phone: '+8801811111111',
+        kind: PAYMENT_KIND.connection_fee, siteUrl: 'http://localhost:3000',
+      });
+      ok(later.ok, 'purono (4 din) cholti ta r pothe daray na - CHIROKAL atke thake na');
+      if (later.ok) await adminDb().collection('payments').doc(later.paymentId).delete();
+      await adminDb().collection('payments').doc(first.paymentId).delete();
     }
   }
 

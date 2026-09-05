@@ -155,15 +155,52 @@ npm run deploy:rules     # rules/index bodlale, site confirm korar PORE
 npm run deploy:indexes
 ```
 
-## 9. Payment go-live gate
+## 9. Payment go-live gate (§৯ of PAYMENTS-MULTISITE)
 
-`AMADERPAY_VERIFIED` stays `false` until ONE real ৳100 payment is observed
-end to end. Until then the manual bKash queue is the money path.
+One gateway account runs five sites, so the order below is not optional.
+
+- [ ] **Own API key** - DriverJagat's own, never another site's
+- [ ] **SAME device key / phone / app** as the other sites. Do NOT add a second
+      phone, and do NOT clone the SMS app: a clone runs in a separate Android
+      profile, SMS never reaches it, and it will show as running forever while
+      catching nothing. Worst kind of failure
+- [ ] **Last digit 2** - every DriverJagat price ends in 2 (৳102, ৳502).
+      `npm run check:multisite` proves it; never set a price ending in anything else
+- [ ] `CRON_SECRET` in `.env` (`openssl rand -hex 32`)
+- [ ] Crontab entry, every 15 minutes - the gateway has ONE webhook URL slot,
+      so DriverJagat may never receive a webhook and this sweep is the only
+      recovery path:
+
+      ```
+      */15 * * * * curl -sS -X POST -H "x-cron-key: <CRON_SECRET>" \
+        https://driver.jagatitlimited.com/api/cron/lifecycle?task=payments
+      ```
+
+- [ ] `GET /api/payments/health` answers with the cron key (same shape on all
+      five sites). Watch `stuckOver24h` - anything but 0 means money is stuck:
+      phone off, app asleep, gateway down, or no network on the SIM
+- [ ] Webhook URL in the portal: `https://driver.jagatitlimited.com/api/payments/callback`
+- [ ] `AMADERPAY_WEBHOOK_SECRET` left EMPTY unless the portal actually shows the
+      field - a guessed secret makes every webhook 401 and silently kills
+      self-confirmation. Real protection is rule 2 (we ask the gateway ourselves)
+- [ ] Start with `AMADERPAY_VERIFIED=false`. Until then the manual bKash queue
+      is the money path
+- [ ] Send ONE real ৳102 payment and walk the whole path
+- [ ] Only then `AMADERPAY_VERIFIED=true`
+
+### If someone's money is stuck
+
+1. Check `stuckOver24h` - 0 means it is not a payment problem
+2. Check the phone: on? app shows "SMS Active"? battery Unrestricted?
+3. Run the sweep by hand: `POST /api/cron/lifecycle?task=payments`
+4. Still nothing - search the TrxID in the gateway portal, see if money arrived
+5. Arrived but not verified - the owner settles it with `markManuallyPaid`,
+   TrxID in the note
 
 ## 10. Emulator test (local, optional but recommended before launch)
 
 ```bash
 npm run emulator      # alada terminal (Java lage)
-npm run check:rules   # 28 ta rules bite test
-npm run e2e           # puro jibonchokro 45+ assert
+npm run check:rules   # rules bite test
+npm run e2e           # puro jibonchokro 72 assert
 ```

@@ -45,11 +45,11 @@ const ok = (cond: boolean, what: string, extra = '') => {
 const root = join(__dirname, '..');
 
 console.log('\n━━ 1 · Taka - launch pricing (D-002) ━━');
-ok(FEES.jobFee === 100, 'job post fee ৳100');
-ok(FEES.connectionFee === 500, 'connection fee ৳500');
+ok(FEES.jobFee === 102, 'job post fee ৳102');
+ok(FEES.connectionFee === 502, 'connection fee ৳502');
 ok(JOB.freeQuota === 0, 'free post NAI');
-ok(paymentAmount(PAYMENT_KIND.job_fee) === 100, 'paymentAmount(job) = 100');
-ok(paymentAmount(PAYMENT_KIND.connection_fee) === 500, 'paymentAmount(connection) = 500');
+ok(paymentAmount(PAYMENT_KIND.job_fee) === 102, 'paymentAmount(job) = 102');
+ok(paymentAmount(PAYMENT_KIND.connection_fee) === 502, 'paymentAmount(connection) = 502');
 ok(JOB.approvedUnpaidExpiryDays > 0, 'approve kore taka na dile meyad ache');
 ok(JOB.validDays === 30, 'D-005: meyad 30 din - driver er kaj taratari bhore');
 ok(JOB.minPhotos === 0 && JOB.maxPhotos >= 1, 'D-008: chobi oichhik, kintu deya jay');
