@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Building a GBP 5 a Month Web Tool With Claude Code: The Full UK Cost Stack, and How Many Subscribers It Takes to Break Even</title>
+<meta name="description" content="Claude Code lets a non-developer ship a narrow paid tool, but the tool still has to pay for a Claude Pro plan, a domain, hosting and Stripe's 1.5% plus 20p. Every line priced from the vendor's own page, the break-even in subscribers, and the honest failure rate.">
+<link rel="stylesheet" href="../css/style.css">
+<script defer src="/js/analytics.js"></script>
+<link rel="canonical" href="https://earningmoneyonline.co.uk/articles/claude-code-build-a-small-paid-tool-uk-cost-stack.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="EarningMoneyOnline.co.uk">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="A GBP 5 a Month Tool Built With Claude Code: The Real Cost Stack and the Break-Even">
+<meta property="og:description" content="Claude Pro, a domain, Cloudflare hosting and Stripe fees priced on 5 September 2026, then the number of subscribers that covers them. Most small tools never get there, and here is why.">
+<meta property="og:image" content="https://images.pexels.com/photos/5926382/pexels-photo-5926382.jpeg?auto=compress&cs=tinysrgb&w=1200">
+<meta property="og:url" content="https://earningmoneyonline.co.uk/articles/claude-code-build-a-small-paid-tool-uk-cost-stack.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="What it costs to run a small paid tool built with Claude Code">
+<meta name="twitter:description" content="The monthly cost stack from vendor pricing pages, the break-even in GBP 5 subscriptions, and what usually happens instead.">
+<meta name="twitter:image" content="https://images.pexels.com/photos/5926382/pexels-photo-5926382.jpeg?auto=compress&cs=tinysrgb&w=1200">
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="logo" href="../index.html">Earning<span>Money</span>Online<small>United Kingdom</small></a>
+    <nav><ul>
+      <li><a href="../categories/make-money.html">Make Money</a></li>
+      <li><a href="../categories/side-hustles.html">Side Hustles</a></li>
+      <li><a href="../categories/save-money.html">Save Money</a></li>
+      <li><a href="../categories/work-career.html">Work &amp; Career</a></li>
+      <li><a href="../categories/tools-reviews.html">Tools &amp; Reviews</a></li>
+    </ul></nav>
+  </div>
+</header>
+
+<section class="article-head">
+  <div class="wrap">
+    <span class="tag">AI Tools</span>
+    <h1>Building a GBP 5 a Month Web Tool With Claude Code: The Full UK Cost Stack, and How Many Subscribers It Takes to Break Even</h1>
+    <p class="standfirst">The pitch you will hear is that anyone can now build software and charge for it. The part that is true is that Claude Code can take a person with no programming background from an idea to a working web page in an evening. The part that is left out is that the page then has to earn back a subscription, a domain, hosting and payment fees every month, and that the hard job was never the code. Here is the cost stack, priced on the day of writing, and the arithmetic on when it pays.</p>
+    <div class="byline">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230fae7e'/%3E%3Ctext x='50' y='63' font-family='Segoe UI,Arial' font-size='38' font-weight='700' fill='%23ffffff' text-anchor='middle'%3ERA%3C/text%3E%3C/svg%3E" alt="Ruhul Amin">
+      <div class="who">
+        <b>Ruhul Amin</b>
+        <span>Published 5 September 2026 &middot; 7 min read &middot; Figures checked September 2026</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="article-body">
+
+<div class="share">
+  <b>Share</b>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https://earningmoneyonline.co.uk/articles/claude-code-build-a-small-paid-tool-uk-cost-stack.html" target="_blank" rel="noopener">Facebook</a>
+  <a href="https://twitter.com/intent/tweet?url=https://earningmoneyonline.co.uk/articles/claude-code-build-a-small-paid-tool-uk-cost-stack.html&amp;text=What%20a%20small%20paid%20tool%20built%20with%20Claude%20Code%20really%20costs%20to%20run" target="_blank" rel="noopener">X</a>
+  <a href="https://api.whatsapp.com/send?text=https://earningmoneyonline.co.uk/articles/claude-code-build-a-small-paid-tool-uk-cost-stack.html" target="_blank" rel="noopener">WhatsApp</a>
+  <a href="https://www.pinterest.com/pin/create/button/?url=https://earningmoneyonline.co.uk/articles/claude-code-build-a-small-paid-tool-uk-cost-stack.html&amp;description=What%20a%20small%20paid%20tool%20built%20with%20Claude%20Code%20really%20costs%20to%20run" target="_blank" rel="noopener">Pinterest</a>
+  <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://earningmoneyonline.co.uk/articles/claude-code-build-a-small-paid-tool-uk-cost-stack.html" target="_blank" rel="noopener">LinkedIn</a>
+</div>
+
+<img class="cover" src="https://images.pexels.com/photos/5926382/pexels-photo-5926382.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Hands typing on a laptop keyboard with green terminal text on the screen">
+
+<div class="takeaways short-version">
+<h2>The short version</h2>
+<ul>
+<li><b>Claude Code is only on paid plans.</b> The cheapest is Pro at USD 20 a month before tax, about GBP 17.71 with VAT at HMRC's September 2026 rate. It runs in the terminal, the desktop app, VS Code and JetBrains, and shares the plan's usage limits with chat and Cowork.</li>
+<li><b>The rest of the stack can be nearly free:</b> Cloudflare Workers has a free tier and a paid tier at USD 5 a month; a .co.uk domain is often promoted for pence in year one, but budget the renewal, which we take as GBP 10 a year.</li>
+<li><b>Stripe charges 1.5% plus 20p per UK card payment and 3.15% plus 20p plus 2% for international cards with conversion,</b> and its pay-as-you-go subscription billing adds 0.7%. On a GBP 5 subscription you keep about GBP 4.69 from a UK card and about GBP 4.51 from a US one.</li>
+<li><b>Break-even is 4 paying subscribers on the free hosting tier and 5 on paid hosting,</b> before you value a single hour of your own time. Value 40 build hours at the GBP 12.71 minimum wage and ten subscribers take about 18 months to pay it back.</li>
+<li><b>No reliable figures exist for what typical small tools earn.</b> Marketplaces and platforms do not publish them and the people who post revenue are the survivors. This article does not invent one.</li>
+<li><b>Our verdict:</b> worth doing if you already have ten people who will say yes before you write a line, and if you treat the first version as a GBP 20 a month experiment with a stop date. Not worth doing as a plan to earn.</li>
+</ul>
+</div>
+
+<div class="toc">
+<h2>What this guide covers</h2>
+<ol>
+<li><a href="#what">What Claude Code is, and what it is not</a></li>
+<li><a href="#stack">The cost stack, line by line</a></li>
+<li><a href="#stripe">What Stripe takes from a GBP 5 payment</a></li>
+<li><a href="#breakeven">The break-even in subscribers</a></li>
+<li><a href="#example">A worked example in Leicester</a></li>
+<li><a href="#usual">What usually happens, and the stop condition</a></li>
+<li><a href="#verdict">The honest verdict</a></li>
+</ol>
+</div>
+
+
+<h2 id="what">1. What Claude Code is, and what it is not</h2>
+
+<p>Claude Code is Anthropic's coding tool. It runs in a terminal window, inside the Claude desktop app, in editors such as VS Code and JetBrains, and through Claude Tag, and you give it plain English instructions about what you want built, then watch it write, run and fix the code in your own project folder. Anthropic's product pages describe it as built for software engineering, as opposed to Cowork, which is the same approach pointed at documents and admin. It is included in every paid Claude plan and, per the pricing FAQ, draws on the same usage pool as your chats, with the option to switch to pay-as-you-go API credits for heavy sessions.</p>
+
+<p>What it is not is a business. The tool can produce a working web page that takes an input and returns something useful, and it can wire that page to a payment button. It cannot find the people who want it, and it cannot make them pay. Every failed small tool we have seen failed on that second half, and that is worth saying before any spreadsheet, because the spreadsheet below only matters if there is demand.</p>
+
+<p>The shape of tool that suits a beginner is narrow: one job, one audience, one price. A quote formatter for one trade. A checker for one form. A calculator for one rule. The <a href="make-money-with-ai-uk.html">first GBP 1,000 with AI guide</a> calls this productised tooling and is honest that it is the slowest route on its list, needing an audience before it earns. Everything here assumes that shape.</p>
+
+<h2 id="stack">2. The cost stack, line by line</h2>
+
+<p>Every price below was read from the vendor's own page on 5 September 2026. Dollar prices are converted at HMRC's published September 2026 rate of USD 1.3554 to GBP 1 and then have 20% VAT added, because the vendors state that their prices exclude tax. The <a href="claude-plans-uk-what-each-tier-costs-and-buys.html">Claude plans guide</a> has the full plan comparison.</p>
+
+<table><thead><tr><th>Line</th><th>Vendor price</th><th>Sterling a month, with VAT</th><th>Note</th></tr></thead><tbody>
+<tr><td>Claude Pro (needed for Claude Code)</td><td>USD 20 a month</td><td><b>GBP 17.71</b></td><td>USD 17 a month if you pay USD 200 up front, about GBP 14.76</td></tr>
+<tr><td>Domain, .co.uk</td><td>Promoted at 1p in year one at 123-reg on the day of writing; renewal not shown on the offer page</td><td><b>GBP 0.83</b></td><td>We budget GBP 10 a year for renewal. Check the renewal price, not the offer</td></tr>
+<tr><td>Hosting, Cloudflare Workers Free</td><td>USD 0</td><td><b>GBP 0</b></td><td>Free tier limits apply, fine for a tool with a few hundred users</td></tr>
+<tr><td>Hosting, Cloudflare Workers Paid</td><td>USD 5 a month</td><td><b>GBP 4.43</b></td><td>Only if you outgrow the free tier</td></tr>
+<tr><td>Payments, Stripe</td><td>No monthly fee</td><td><b>GBP 0 fixed</b></td><td>Per-transaction fees in section 3</td></tr>
+<tr><td><b>Fixed total, free hosting</b></td><td></td><td><b>GBP 18.54</b></td><td></td></tr>
+<tr><td><b>Fixed total, paid hosting</b></td><td></td><td><b>GBP 22.97</b></td><td></td></tr>
+</tbody></table>
+<p class="meta">claude.com/pricing, cloudflare.com developer platform plans, 123-reg.co.uk domain page, stripe.com/gb/pricing, all read 5 September 2026. Domain renewal figure is our own conservative budget line, not a quoted price.</p>
+
+<p>Two lines deserve a comment. The domain offer is real, and so is the catch: first-year promotional pricing is normal across UK registrars, and the offer page we read did not show the renewal. Budget the renewal. And if you already pay for Claude Pro for other work, the tool's true marginal cost is under GBP 1 a month, which is the strongest argument for building one as a side experiment rather than a venture.</p>
+
+<h2 id="stripe">3. What Stripe takes from a GBP 5 payment</h2>
+
+<p>Stripe's UK pricing page lists 1.5% plus 20p for standard UK cards, 2.8% plus 20p for premium UK cards, 2.5% plus 20p for European Economic Area cards, and 3.15% plus 20p for other international cards, with a further 2% if currency conversion is required. Recurring billing on the pay-as-you-go plan adds 0.7% of billing volume. That is everything: no monthly fee, no setup fee.</p>
+
+<table><thead><tr><th>Customer's card</th><th>Fee on a GBP 5 subscription</th><th>You keep</th></tr></thead><tbody>
+<tr><td>Standard UK card</td><td>1.5% + 20p + 0.7% = 31p</td><td><b>GBP 4.69</b></td></tr>
+<tr><td>Premium UK card</td><td>2.8% + 20p + 0.7% = 38p</td><td><b>GBP 4.62</b></td></tr>
+<tr><td>EEA card, converted</td><td>2.5% + 20p + 2% + 0.7% = 46p</td><td><b>GBP 4.54</b></td></tr>
+<tr><td>US or other international card, converted</td><td>3.15% + 20p + 2% + 0.7% = 49p</td><td><b>GBP 4.51</b></td></tr>
+</tbody></table>
+<p class="meta">Stripe UK pricing, read 5 September 2026. Figures rounded to the penny.</p>
+
+<p>The fixed 20p is what makes GBP 5 a sensible floor. At GBP 2 a month the same UK card fee is 24p, or 12% of the price, and the tool has to work far harder for the same margin. Pricing low to seem harmless is one of the commonest mistakes and it shows up as a fee percentage nobody checked.</p>
+
+<p>Then VAT. Below GBP 90,000 of taxable turnover in twelve months you do not have to register for UK VAT, and a small tool will not get near that. Selling to consumers in other countries is a different question, because several jurisdictions expect VAT or sales tax from the first sale, which is why some builders use a merchant of record that handles it for a larger cut. The plain answer for a beginner is to sell to UK customers first and take advice before switching on the rest of the world.</p>
+
+<h2 id="breakeven">4. The break-even in subscribers</h2>
+
+<p>Fixed cost divided by what you keep per subscriber. On the free hosting tier that is GBP 18.54 divided by GBP 4.69, which is 3.95, so <b>four paying UK subscribers</b> cover the stack. On paid hosting it is GBP 22.97 divided by GBP 4.69, which is 4.9, so <b>five</b>. If your customers are mostly abroad, use GBP 4.51 and the answers are the same after rounding.</p>
+
+<p>That is the number that makes people think the plan is easy, and it is the wrong number, because it treats your time as free. Suppose the first version takes 40 hours across evenings, which is a fair estimate for someone learning the tool while building. At the National Living Wage of GBP 12.71 that is GBP 508.40 of your time. With ten subscribers the tool nets GBP 46.90 a month, minus GBP 18.54 of fixed cost, leaving GBP 28.36. Recovering GBP 508.40 at GBP 28.36 a month takes just under 18 months, and that assumes nobody cancels and you spend no further hours on support, which nobody manages.</p>
+
+<table><thead><tr><th>Paying subscribers (UK cards)</th><th>Net after Stripe</th><th>After GBP 18.54 fixed</th><th>Months to recover 40 hours at GBP 12.71</th></tr></thead><tbody>
+<tr><td>4</td><td>GBP 18.76</td><td>GBP 0.22</td><td>never in practice</td></tr>
+<tr><td>10</td><td>GBP 46.90</td><td>GBP 28.36</td><td>18</td></tr>
+<tr><td>25</td><td>GBP 117.25</td><td>GBP 98.71</td><td>5.2</td></tr>
+<tr><td>50</td><td>GBP 234.50</td><td>GBP 215.96</td><td>2.4</td></tr>
+</tbody></table>
+<p class="meta">Our arithmetic using the vendor prices above. Support time, refunds and cancellations excluded, so every figure is optimistic.</p>
+
+<h2 id="example">5. A worked example in Leicester</h2>
+
+<p>Dev in Leicester works in a builders' merchant and knows that the small tradespeople he serves write quotes on their phones and lose track of them. He uses Claude Code on a Pro plan to build a page where a plumber types job notes and gets back a formatted quote with the trader's details, VAT line and payment terms, saved to a list. Build time across three weekends is about 35 hours, including two evenings lost to a login bug. He puts it on the free Cloudflare tier, buys a domain, and connects Stripe with a GBP 5 a month price and a free first month.</p>
+
+<p>His fixed cost is GBP 18.54 a month. He does not spend a penny on advertising; he shows it to twelve traders at the counter and seven sign up for the free month. Four convert in month two. At GBP 4.69 each that is GBP 18.76, which covers the stack by 22p. In month four he has nine, and the tool is netting about GBP 23.67 after costs. Valued at his own time it is still deeply underwater, and the only reason it is a sensible use of his weekends is that he already paid for Claude Pro to help with his day job, so his real marginal cost was the domain.</p>
+
+<p>The tax line is the same as any side income. Under GBP 1,000 of gross trading income in the tax year he need not register, above it he registers for Self Assessment by the 5 October after the tax year he started in, and the <a href="side-hustle-tax-rules-uk.html">side hustle tax guide</a> and the <a href="sole-trader-vs-limited-company-uk.html">sole trader or limited company guide</a> cover why he should stay a sole trader for now.</p>
+
+<h2 id="usual">6. What usually happens, and the stop condition</h2>
+
+<p>The common outcome is zero. The tool works, the builder posts it in two places, a dozen people try it, nobody pays, and the domain renews once before it lapses. That is not a reason not to try, because the cost of finding out is about GBP 20 a month if you already have Pro and GBP 1 a month if you do, but it is a reason to set the stop condition before you start rather than after.</p>
+
+<p>A fair stop condition for a tool like this: if you cannot get five paying subscribers within 90 days of launch, having shown it directly to at least 30 people in the audience it was built for, stop building and either shut it down or leave it free. Five is the paid-hosting break-even, 90 days is three renewal cycles, and 30 direct conversations is enough to know whether the problem is the product or the pitch. Write the date down. People who do not set the date spend a year on version three of something four people wanted.</p>
+
+<div class="verdict" id="verdict">
+<h2>The honest verdict</h2>
+<p>Claude Code has removed the coding barrier and left every other barrier where it was. A narrow GBP 5 a month tool costs about GBP 18.54 a month to run on free hosting and needs four paying customers to cover that, but it needs several dozen before your own time is paid back, and no public source tells you how often that happens because the failures do not publish. Build one if you have a named audience you can reach in person, if Pro is already paid for, and if you have written down the day you will stop. As a plan to replace income, this is not worth your time.</p>
+</div>
+
+
+<h2>Frequently asked</h2>
+
+<p><strong>Can I use Claude Code on the free plan?</strong> No. On 5 September 2026 the pricing page lists Claude Code as included on Pro, Max, Team and Enterprise and not on Free. Pro is USD 20 a month before tax, about GBP 17.71 with VAT at HMRC's September rate.</p>
+
+<p><strong>Do I need to register for VAT to sell a GBP 5 subscription?</strong> Not for UK sales at this scale. GOV.UK says you must register when taxable turnover in the last 12 months passes GBP 90,000 or you expect to pass it in the next 30 days. Sales to consumers abroad can carry their own VAT or sales tax rules, so take advice before selling outside the UK.</p>
+
+<p><strong>Why GBP 5 and not GBP 2?</strong> Stripe's 20p fixed fee per payment. On GBP 5 the UK card fee is about 6% of the price; on GBP 2 it is about 12%. Below GBP 5 the fee eats the margin and the customer count needed to break even roughly doubles.</p>
+
+<p><strong>Is the income taxable?</strong> Yes, as trading income. Up to GBP 1,000 gross in a tax year is covered by the trading allowance and usually needs no registration; above it you register for Self Assessment by the 5 October after the end of the tax year you started in.</p>
+
+<div class="resources">
+<h3>Sources and further reading</h3>
+<ul>
+<li><a href="https://claude.com/pricing" rel="noopener" target="_blank">Claude plans and pricing, Anthropic</a>, read 5 September 2026</li>
+<li><a href="https://claude.com/product/cowork" rel="noopener" target="_blank">Claude Cowork product page, Anthropic</a>, FAQ on the difference between Claude Code and Cowork, and where Claude Code runs</li>
+<li><a href="https://stripe.com/gb/pricing" rel="noopener" target="_blank">Stripe UK pricing</a>, 1.5% + 20p standard UK cards, 3.15% + 20p international, +2% conversion, Billing 0.7%</li>
+<li><a href="https://www.cloudflare.com/en-gb/plans/developer-platform/" rel="noopener" target="_blank">Cloudflare Workers and Pages pricing</a>, Free tier and USD 5 a month paid tier</li>
+<li><a href="https://www.123-reg.co.uk/domain-names/" rel="noopener" target="_blank">123-reg domain names</a>, 1p first-year .co.uk offer seen 5 September 2026</li>
+<li><a href="https://www.gov.uk/vat-registration/when-to-register" rel="noopener" target="_blank">When to register for VAT, GOV.UK</a>, GBP 90,000 threshold</li>
+<li><a href="https://www.gov.uk/guidance/tax-free-allowances-on-property-and-trading-income" rel="noopener" target="_blank">Trading allowance, HMRC</a>, GBP 1,000 and the 5 October registration deadline</li>
+<li><a href="https://www.trade-tariff.service.gov.uk/exchange_rates/view/2026-9" rel="noopener" target="_blank">HMRC monthly exchange rates, September 2026</a>, USD 1.3554 per GBP 1</li>
+<li><a href="https://www.gov.uk/national-minimum-wage-rates" rel="noopener" target="_blank">National Living Wage, GOV.UK</a>, GBP 12.71 from 1 April 2026</li>
+</ul>
+</div>
+
+<div class="resources">
+<h3>More from this site</h3>
+<ul>
+<li><a href="claude-plans-uk-what-each-tier-costs-and-buys.html">What Claude's plans actually cost in the UK</a></li>
+<li><a href="make-money-with-ai-uk.html">How to earn your first GBP 1,000 with AI in the UK</a></li>
+<li><a href="web-hosting-uk-beginners.html">Web hosting in the UK for beginners: what you actually pay</a></li>
+</ul>
+</div>
+
+<div class="authorbox">
+  <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230fae7e'/%3E%3Ctext x='50' y='63' font-family='Segoe UI,Arial' font-size='38' font-weight='700' fill='%23ffffff' text-anchor='middle'%3ERA%3C/text%3E%3C/svg%3E" alt="Ruhul Amin">
+  <div>
+    <h3>Ruhul Amin</h3>
+    <p>Founder of EarningMoneyOnline.co.uk. Based in Hertfordshire, he writes UK money guides the way he wishes someone had explained them to him: with the actual numbers, the rules that apply, and the parts the adverts leave out. Every guide on this site is written and checked by hand.</p>
+  </div>
+</div>
+
+<p style="font-size:0.86rem;color:#5c6b66;margin-top:20px">All vendor prices were read on 5 September 2026 and change without notice. No income figure in this article is a claim about what anyone has earned; the subscriber counts are arithmetic on published fees. This site has no commercial relationship with Anthropic, Stripe, Cloudflare or 123-reg. Nothing here is tax advice.</p>
+
+</div>
+
+<footer>
+  <div class="wrap">
+    <p class="legal">&copy; 2026 EarningMoneyOnline.co.uk. Information on this site is general guidance, not financial advice. <a href="../privacy-policy.html" style="color:#9fb8af;text-decoration:underline">Privacy policy</a> &middot; <a href="../affiliate-disclosure.html" style="color:#9fb8af;text-decoration:underline">Affiliate disclosure</a></p>
+  </div>
+</footer>
+
+</body>
+</html>
