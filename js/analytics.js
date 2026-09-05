@@ -204,7 +204,7 @@ if(document.readyState!=='loading'){ emoUiInit2(); } else { document.addEventLis
 
       var crumbs=[{"@type":"ListItem","position":1,"name":"Home","item":SITE+"/"}];
       if(section){
-        var slugMap={"Make Money":"make-money","Side Hustles":"side-hustles","Save Money":"save-money","Work & Career":"work-career","Tools & Reviews":"tools-reviews","Affiliate Marketing":"affiliate-marketing","UK Update":"uk-update"};
+        var slugMap={"Make Money":"make-money","Side Hustles":"side-hustles","Save Money":"save-money","Work & Career":"work-career","Tools & Reviews":"tools-reviews","Affiliate Marketing":"affiliate-marketing","UK Update":"uk-update","AI Tools":"ai-tools"};
         var s=slugMap[section];
         if(s) crumbs.push({"@type":"ListItem","position":2,"name":section,"item":SITE+"/categories/"+s+".html"});
       }
@@ -277,7 +277,7 @@ if(document.readyState!=='loading'){ emoUiInit2(); } else { document.addEventLis
     var headWrap=document.querySelector('.article-head .wrap');
     var tagEl=document.querySelector('.article-head .tag');
     if(headWrap && tagEl && !document.querySelector('.crumbs')){
-      var map={'make money':'make-money','side hustles':'side-hustles','save money':'save-money','work & career':'work-career','tools & reviews':'tools-reviews','Affiliate Marketing':'affiliate-marketing','UK Update':'uk-update'};
+      var map={'make money':'make-money','side hustles':'side-hustles','save money':'save-money','work & career':'work-career','tools & reviews':'tools-reviews','Affiliate Marketing':'affiliate-marketing','UK Update':'uk-update','AI Tools':'ai-tools'};
       var key=txt(tagEl).toLowerCase();
       var file=map[key];
       if(file){
@@ -293,7 +293,7 @@ if(document.readyState!=='loading'){ emoUiInit2(); } else { document.addEventLis
     var hasMore=false;
     [].slice.call(document.querySelectorAll('.resources h3')).forEach(function(h){ if(/more from this site/i.test(txt(h))) hasMore=true; });
     if(body && tagEl && !hasMore){
-      var map2={'make money':'make-money','side hustles':'side-hustles','save money':'save-money','work & career':'work-career','tools & reviews':'tools-reviews','Affiliate Marketing':'affiliate-marketing','UK Update':'uk-update'};
+      var map2={'make money':'make-money','side hustles':'side-hustles','save money':'save-money','work & career':'work-career','tools & reviews':'tools-reviews','Affiliate Marketing':'affiliate-marketing','UK Update':'uk-update','AI Tools':'ai-tools'};
       var f=map2[txt(tagEl).toLowerCase()];
       if(f){
         fetch('/categories/'+f+'.html').then(function(r){return r.text();}).then(function(html){
@@ -361,10 +361,11 @@ if(document.readyState!=='loading'){ emoUiInit2(); } else { document.addEventLis
     'Work & Career':'work-career',
     'Tools & Reviews':'tools-reviews',
     'Affiliate Marketing':'affiliate-marketing',
-    'UK Update':'uk-update'
+    'UK Update':'uk-update',
+    'AI Tools':'ai-tools'
   };
   /* Categories that exist but are not in the hand-written nav of older pages. */
-  var EXTRA_NAV = ['Affiliate Marketing', 'UK Update'];
+  var EXTRA_NAV = ['Affiliate Marketing', 'UK Update', 'AI Tools'];
   function addExtraNav(){
     try{
       var a = document.querySelector('header nav a[href$="categories/tools-reviews.html"]');
