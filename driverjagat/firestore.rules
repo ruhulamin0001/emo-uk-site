@@ -1,0 +1,158 @@
+rules_version = '2';
+
+// ─────────────────────────────────────────────────────────────
+// DriverJagat - Firestore niyom
+//
+// MUL NITI: kichu i khola NA, ja khulte HOBE sudhu ta khola.
+// Notun collection banale ekhane niyom na likhle ota apna theke
+// BONDHO thakbe - eta bhul na, eta i thik.
+//
+// Privileged lekha (stage, role, verified, taka) ei niyom diye
+// HOY NA - sob Admin SDK diye Server Action theke. Tai ekhane
+// beshirbhag jaygay `allow write: if false`.
+//
+// Ei file bodlale `npm run check:rules` pass korte HOBE.
+// ─────────────────────────────────────────────────────────────
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── Sahajjo ──────────────────────────────────────────────
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function claims() {
+      return request.auth.token;
+    }
+
+    function isNotBanned() {
+      return signedIn() && claims().get('banned', false) == false;
+    }
+
+    function isStaff() {
+      return isNotBanned() &&
+             claims().get('role', 'user') in ['admin', 'owner'];
+    }
+
+    function isOwner() {
+      return isNotBanned() && claims().get('role', 'user') == 'owner';
+    }
+
+    function isSelf(uid) {
+      return isNotBanned() && request.auth.uid == uid;
+    }
+
+    // ── Job ──────────────────────────────────────────────
+    // Prokashsho hoye gele SOBAI card ta porte pare - login lage
+    // na. Card e PII NAI (create-job.ts er public schema i
+    // sob) - malik er nam, phone, PURNO THIKANA sob gopon ghore.
+    // (Gari r chobi PROKASHSHO - D-008; leadCount card e nai.)
+
+    match /jobs/{id} {
+      allow read: if resource.data.stage in
+                     ['published', 'shortlisted', 'onboarding', 'completed']
+                  || isSelf(resource.data.createdBy)
+                  || isStaff();
+      // Job KOKHONO nije theke prokashsho hoy na - admin
+      // dekhe tarpor. Tai lekha sudhu Server Action theke.
+      allow write: if false;
+
+      // Gopon ghor - malik er nam, phone, bari/road/holding
+      // number soho purno thikana, gari r number, ar match er nothi (D-009).
+      // Browser ei ta CHAITE O pare na. Lukano na, nagaler baire.
+      // Nijer ta o na - dashboard e dekhale Server Action e pora hoy.
+      match /private/{doc} {
+        allow read, write: if false;
+      }
+    }
+
+    // ── User / malik ──────────────────────────────────────
+
+    match /users/{uid} {
+      allow read: if isSelf(uid) || isStaff();
+      allow write: if false;
+    }
+
+    // "আগ্রহী" button theke asha agroho - SUDHU admin.
+    // Bariwala KOKHONO jante paren na ke agroho dekhalo, ba
+    // koyjon - janle beton komaben ba admin ke bypass korben.
+    match /contact_leads/{id} {
+      allow read, write: if false;
+    }
+
+    // ── Phone er suchi ───────────────────────────────────────
+    // Ek number, ekjon malik. Ban howa keu notun Google
+    // account khule abar ashle ei ta take dhore.
+    //
+    // PORA-O BONDHO. Ei document er ID i ekta phone number.
+    // Pora gele keu ek ek kore number bosiye dekhte parto kar
+    // account ache ar kar nai.
+    match /employer_phones/{phone} {
+      allow read, write: if false;
+    }
+
+    // ── Cheshtar gonona ──────────────────────────────────────
+    // LEKHA-O BONDHO. Browser theke lekha gele je keu nijer
+    // gonona shunyo kore dito, ar ghontay hazar bar cheshta kore
+    // sob tracking code ber kore felto.
+    match /rate_limits/{id} {
+      allow read, write: if false;
+    }
+
+    // ── SMS er nothi ────────────────────────────────────────
+    // PORA-O BONDHO - protita nothi te phone + barta.
+    match /sms_log/{id} {
+      allow read, write: if false;
+    }
+
+    // ── Taka ─────────────────────────────────────────────────
+
+    match /payments/{id} {
+      allow read: if isSelf(resource.data.userId) || isOwner();
+      allow write: if false;
+    }
+
+    // ── Gonona ───────────────────────────────────────────────
+    // Homepage er live sonkha - "১,২৪০টি যাচাই করা পোস্ট"
+
+    match /counters/{id} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // ── Audit log ────────────────────────────────────────────
+    // Ekbar likhle ar KOKHONO bodlano ba mocha jabe na.
+    // Kar number kake dewa holo, ke approve korlo - sob ekhane.
+
+    match /activity_logs/{id} {
+      allow read: if isStaff();
+      allow create, update, delete: if false;
+    }
+
+    // ── Dol ──────────────────────────────────────────────────
+    // Ke ke admin - browser theke PORA JAY NA (phishing er
+    // khabar hoye jeto). Ei talika sudhu DEKHANOR jonno - ASOL
+    // khomota Firebase custom claim e.
+
+    match /staff/{uid} {
+      allow read, write: if false;
+    }
+
+    // ── Setting ──────────────────────────────────────────────
+
+    match /settings/{id} {
+      allow read: if isStaff();
+      allow write: if false;
+    }
+
+    // ── Sob sesher niyom ─────────────────────────────────────
+    // EI TA SOB THEKE NICHE THAKTE HOBE.
+    // Upore nam kora hoy ni emon jekono kichu - bondho.
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

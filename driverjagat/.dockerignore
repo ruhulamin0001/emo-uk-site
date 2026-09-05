@@ -1,0 +1,15 @@
+# Ei file ta na thakle jonjal gulo image e dhukto - ar sob
+# theke bipojjonok: `.env.local` (emulator flag, chabi) COPY . .
+# er sathe image er bhitore chole jeto.
+node_modules
+.next
+.git
+.env
+.env.local
+.env.production
+.firebase
+*.log
+firestore-debug.log
+tsconfig.tsbuildinfo
+docs
+emulator.log
