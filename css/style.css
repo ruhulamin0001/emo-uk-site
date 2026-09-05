@@ -1,3 +1,5 @@
+/* EMO_UI v2 : right-hand sticky table of contents on articles */
+@media(min-width:1000px){.article-body.has-side-toc{max-width:1010px}.article-body.has-side-toc::after{content:"";display:block;clear:both}.article-body>.toc.side-toc{float:right;width:288px;margin:0 0 26px 34px;position:sticky;top:88px;max-height:calc(100vh - 140px);overflow:auto;font-size:.93rem}.article-body.has-side-toc>table,.article-body.has-side-toc>.verdict,.article-body.has-side-toc>.resources,.article-body.has-side-toc>figure,.article-body.has-side-toc>.short-version{clear:right}}
 :root{
   --ink:#0e2a24; --deep:#123f33; --accent:#0fae7e; --gold:#e8b021;
   --paper:#f7f6f2; --white:#ffffff; --grey:#5c6b66; --line:#e3e1da;
