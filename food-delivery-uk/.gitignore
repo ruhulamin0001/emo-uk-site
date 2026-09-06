@@ -1,0 +1,32 @@
+# Node
+node_modules/
+npm-debug.log*
+dist/
+
+# Environment / secrets
+.env
+.env.local
+*.pem
+
+# Flutter / Dart
+.dart_tool/
+.packages
+.flutter-plugins
+.flutter-plugins-dependencies
+build/
+*.iml
+.pub-cache/
+.pub/
+
+# Generated Flutter platform folders (run `flutter create .` to regenerate)
+apps/*/android/
+apps/*/ios/
+apps/*/web/
+apps/*/linux/
+apps/*/macos/
+apps/*/windows/
+
+# Editors / OS
+.idea/
+.vscode/
+.DS_Store
