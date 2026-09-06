@@ -1,3 +1,5 @@
+/* EMO_UI v3 : table of contents sits still, does not follow the scroll */
+.article-body.has-side-toc>.toc.side-toc{position:static;max-height:none;overflow:visible;top:auto}
 /* EMO_UI v2 : right-hand sticky table of contents on articles */
 @media(min-width:1000px){.article-body.has-side-toc{max-width:1010px}.article-body.has-side-toc::after{content:"";display:block;clear:both}.article-body>.toc.side-toc{float:right;width:288px;margin:0 0 26px 34px;position:sticky;top:88px;max-height:calc(100vh - 140px);overflow:auto;font-size:.93rem}.article-body.has-side-toc>table,.article-body.has-side-toc>.verdict,.article-body.has-side-toc>.resources,.article-body.has-side-toc>figure,.article-body.has-side-toc>.short-version{clear:right}}
 :root{
