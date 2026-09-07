@@ -1,0 +1,90 @@
+rules_version = '2';
+
+// ─────────────────────────────────────────────────────────────
+// DriverJagat - Storage niyom
+//
+// RentJagat er moto i (D-008): gari r chobi PROKASHSHO, kintu
+// OICHHIK - driver er kaj e chobi chara o post chole.
+//
+// Kintu DUITA shorto:
+//   1. Chobi te phone number / thikana / number plate thakle admin
+//      REJECT koren - contact_in_photos karon ta ei jonno i.
+//   2. Publish er AGE chobi feed e kothao nai, ar file er nam
+//      amra banai (slot + somoy) - tai anuman kora jay na.
+//
+// Malik er NID / gari r kagoj AGER MOTO I GOPON - oi folder
+// e `read: if true` KOKHONO na.
+// ─────────────────────────────────────────────────────────────
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isSelf(uid) {
+      return signedIn() && request.auth.uid == uid;
+    }
+
+    function isStaff() {
+      return signedIn() &&
+             request.auth.token.get('role', 'user') in ['admin', 'owner'];
+    }
+
+    // 5 MB er beshi na - client e age theke compress kora hoy
+    function sizeOk() {
+      return request.resource.size < 5 * 1024 * 1024;
+    }
+
+    function typeOk() {
+      return request.resource.contentType.matches('image/(jpeg|png|webp)')
+          || request.resource.contentType == 'application/pdf';
+    }
+
+    // ── Malik er jachai er kagoj ────────────────────────────
+    // NID, gari r registration / blue book. Nije upload korte
+    // paren, nije o admin dekhte paren. Mucha jay na - jachai er
+    // por keu kagoj soriye felte parbe na.
+
+    match /employer_docs/{uid}/{fileName} {
+      allow read: if isSelf(uid) || isStaff();
+
+      // `resource == null` - mane oi jaygay AGE THEKE kichhu nai.
+      //
+      // Storage e EK I path e abar upload `update` NA, `create` i
+      // dhora hoy - tai sudhu `update: if false` likhle kono daam
+      // nai, jachai er por o kagoj bodlano jeto. (TutorJagat e ei
+      // fak ta test likhe dhora porechilo.)
+      //
+      // EI NIYOM SUDHU TOKHON I THIK, JOKHON upload er kod
+      // PROTIBAR NOTUN NAM banay (`${slot}-${stamp}`).
+      // Sthir nam + ei niyom mane manush jhapsa chobi bodlate
+      // gele "অনুমতি নেই" peye form er majhkhane ATKE jeten.
+      allow create: if isSelf(uid) && sizeOk() && typeOk() && resource == null;
+      allow update, delete: if false;
+    }
+
+    // ── Gari r chobi - PROKASHSHO, oichhik (D-008) ────────────────────
+    // Feed er card e sorasori dekhano hoy, tai `read: if true`.
+    //
+    // Ei folder e KOKHONO manuser chobi, kagoj, ba thikana-
+    // lekha kichu uthbe na - upload er ekmatro rasta post-job
+    // form, ar admin publish er age protita chobi dekhen.
+
+    match /job_photos/{uid}/{fileName} {
+      allow read: if true;
+      allow create: if isSelf(uid) && sizeOk()
+                    && request.resource.contentType.matches('image/(jpeg|png|webp)')
+                    && resource == null;
+      // Nijer chobi mucha jay - post tola mane chobi o jawa uchit
+      allow delete: if isSelf(uid) || isStaff();
+      allow update: if false;
+    }
+
+    // ── Sob sesher niyom ─────────────────────────────────────
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
