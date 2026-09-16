@@ -1,0 +1,65 @@
+# ──────────────────────────────────────────────────────────────
+# DriverJagat - Hostinger VPS
+#
+# EKHANE TRAEFIK NAI, ar kono `networks:` O NAI - icchakrito.
+#
+# VPS e ekta Traefik AGE THEKE cholche (tutorjagat, marriagejagat,
+# rentjagat er jonno), ar seta `network_mode: host` e - mane sudhu
+# label dekhe i amader container ta khuje ney. Ekhane aro ekta
+# Traefik dile duita 80/443 niye lorto, ar CHALU TA O bondho hoye
+# jeto - mane oi VPS er baki sob site o pore jeto.
+#
+# Domain (D-006): apatoto driver.jagatitlimited.com (subdomain, tai
+# www redirect lage na). driverjagat.com kena hole: ei file +
+# src/config/site.ts + Firebase authorized domains, ar kichu na.
+#
+#   docker compose up -d --build
+# ──────────────────────────────────────────────────────────────
+
+services:
+  web:
+    build:
+      context: .
+      args:
+        # NEXT_PUBLIC_* BUILD ER SOMOY lage - ei gulo browser er
+        # javascript er bhitore dhuke jay. Run er somoy dile kaj kore na.
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL}
+        NEXT_PUBLIC_ALLOW_INDEXING: ${NEXT_PUBLIC_ALLOW_INDEXING}
+        NEXT_PUBLIC_FIREBASE_API_KEY: ${NEXT_PUBLIC_FIREBASE_API_KEY}
+        NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: ${NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN}
+        NEXT_PUBLIC_FIREBASE_PROJECT_ID: ${NEXT_PUBLIC_FIREBASE_PROJECT_ID}
+        NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: ${NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET}
+        NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: ${NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID}
+        NEXT_PUBLIC_FIREBASE_APP_ID: ${NEXT_PUBLIC_FIREBASE_APP_ID}
+
+    container_name: driverjagat
+    restart: unless-stopped
+
+    # Gopon jinish image er bhitore NA - `docker history` diye
+    # je keu dekhte peto
+    env_file: .env
+
+    environment:
+      NODE_ENV: production
+
+    # Kono `ports:` NAI. Traefik container er bhitore i pouchhay.
+    # Port khulle keu sorasori IP:3000 e giye HTTPS baad diye dhukto.
+
+    labels:
+      - traefik.enable=true
+      - "traefik.http.routers.driverjagat.rule=Host(`driver.jagatitlimited.com`)"
+      - traefik.http.routers.driverjagat.entrypoints=websecure
+      - traefik.http.routers.driverjagat.tls.certresolver=letsencrypt
+      - traefik.http.services.driverjagat.loadbalancer.server.port=3000
+
+      # ── Nirapottar header ──
+      # frameDeny EKHANE NA - app nije path bujhe dey (next.config):
+      # sob pata DENY, kintu /__/auth/* SAMEORIGIN (Firebase auth
+      # iframe amader nijer page e boshe). Traefik e dile se SOB
+      # response e DENY boshiye auth iframe ta i mere dito -
+      # Google login majh pothe atke jeto. (RentJagat e dhora pora.)
+      - traefik.http.middlewares.dj-secure.headers.stsSeconds=31536000
+      - traefik.http.middlewares.dj-secure.headers.contentTypeNosniff=true
+      - traefik.http.middlewares.dj-secure.headers.referrerPolicy=strict-origin-when-cross-origin
+
+      - traefik.http.routers.driverjagat.middlewares=dj-secure
