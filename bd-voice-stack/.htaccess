@@ -1,0 +1,3 @@
+# This folder lives inside a repo that auto-deploys to a public web host.
+# Never serve any of it over HTTP. Harmless on the PBX VPS.
+Require all denied

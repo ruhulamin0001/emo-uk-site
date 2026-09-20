@@ -1,0 +1,12 @@
+.env
+asterisk/etc/
+data/
+logs/
+deploy/extension_secrets.txt
+deploy/answers.env
+*.key
+*.pub
+__pycache__/
+.venv/
+.pytest_cache/
+recordings/

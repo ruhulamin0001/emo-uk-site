@@ -1,0 +1,52 @@
+# bd-voice-stack on the Hostinger VPS, next to the sites that already run there.
+#
+# Same rules as rentjagat / sponsorjobuk: no second Traefik, secrets only in .env, nothing
+# unnecessary published. There is no web UI in this stack, so no Traefik labels at all.
+# Only SIP (5060/udp) and a narrow RTP range are published. AMI (5038) and AudioSocket (9092)
+# stay inside the compose network.
+#
+#   python3 scripts/render_conf.py && docker compose up -d --build     (or scripts/vps-deploy.sh)
+services:
+  asterisk:
+    build: ./asterisk
+    container_name: bdvs-asterisk
+    restart: unless-stopped
+    ports:
+      - "5060:5060/udp"
+      - "${RTP_START:-10000}-${RTP_FINISH:-10200}:${RTP_START:-10000}-${RTP_FINISH:-10200}/udp"
+    volumes:
+      - ./asterisk/etc:/etc/asterisk:ro
+      - ./data/recordings:/var/spool/asterisk/monitor
+      - ./data/astdb:/var/lib/asterisk/db
+      - ./logs/asterisk:/var/log/asterisk
+    depends_on:
+      ai-bridge:
+        condition: service_started
+
+  ai-bridge:
+    build: .
+    container_name: bdvs-ai-bridge
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - ./prompts:/app/prompts:ro
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:16-alpine
+    container_name: bdvs-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: aibridge
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: aibridge
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+      - ./sql/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aibridge -d aibridge"]
+      interval: 10s
+      timeout: 5s
+      retries: 10

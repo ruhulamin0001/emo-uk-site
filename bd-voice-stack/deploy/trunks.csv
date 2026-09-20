@@ -1,0 +1,11 @@
+biz,name,number,host,port,username,secret,channels,codecs,register
+biz1,biz1_a,09666XXXXX1,sip.operator.example,5060,09666XXXXX1,CHANGE_ME,2,"ulaw,alaw",yes
+biz1,biz1_b,09666XXXXX2,sip.operator.example,5060,09666XXXXX2,CHANGE_ME,2,"ulaw,alaw",yes
+biz2,biz2_a,09666XXXXX3,sip.operator.example,5060,09666XXXXX3,CHANGE_ME,2,"ulaw,alaw",yes
+biz2,biz2_b,09666XXXXX4,sip.operator.example,5060,09666XXXXX4,CHANGE_ME,2,"ulaw,alaw",yes
+biz3,biz3_a,09666XXXXX5,sip.operator.example,5060,09666XXXXX5,CHANGE_ME,2,"ulaw,alaw",yes
+biz3,biz3_b,09666XXXXX6,sip.operator.example,5060,09666XXXXX6,CHANGE_ME,2,"ulaw,alaw",yes
+biz4,biz4_a,09666XXXXX7,sip.operator.example,5060,09666XXXXX7,CHANGE_ME,2,"ulaw,alaw",yes
+biz4,biz4_b,09666XXXXX8,sip.operator.example,5060,09666XXXXX8,CHANGE_ME,2,"ulaw,alaw",yes
+biz5,biz5_a,09666XXXXX9,sip.operator.example,5060,09666XXXXX9,CHANGE_ME,2,"ulaw,alaw",yes
+biz5,biz5_b,09666XXXXX0,sip.operator.example,5060,09666XXXXX0,CHANGE_ME,2,"ulaw,alaw",yes
