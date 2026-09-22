@@ -53,6 +53,20 @@ function briefing(leads, config) {
   lines.push('');
   lines.push(`**Tier A (call first): ${byTier.A.length}** · Tier B: ${byTier.B.length} · Tier C: ${byTier.C.length}`);
   lines.push('');
+
+  // Say plainly when the ranking has not seen anybody's website, so nobody
+  // reads a provisional gap as a verified one on the call.
+  const provisional = leads.filter((l) => l.scoreBasis === 'provisional').length;
+  if (provisional) {
+    const all = provisional === leads.length;
+    lines.push(
+      `> **${all ? 'Every lead is' : `${provisional} of these are`} scored provisionally** — their website was not read, ` +
+        'so the ranking is built only on what the listing shows (no website, mobile mechanic, weekend closures, recovery line). ' +
+        'Run `node leadgen/run.mjs enrich` from a machine with normal web access to confirm how each one actually takes bookings.'
+    );
+    lines.push('');
+  }
+
   lines.push('> Screen every number against TPS/CTPS before dialling. Sole traders and partnerships: phone or post, not cold email.');
   lines.push('');
 

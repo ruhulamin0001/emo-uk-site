@@ -76,7 +76,12 @@
 
   "scoring": {
     "tierA": 65,
-    "tierB": 45
+    "tierB": 45,
+    "provisional": {
+      "_comment": "Cut points for leads whose website was never read (no enrichment run, or the site was unreachable). Most of the score normally comes from the site analysis, so these bands are lower. Same score, different split.",
+      "tierA": 30,
+      "tierB": 18
+    }
   },
 
   "compliance": {

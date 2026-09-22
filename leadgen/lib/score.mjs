@@ -18,6 +18,16 @@ function closedAtWeekend(lead) {
   return weekend.some((l) => /closed/i.test(l));
 }
 
+/**
+ * Signals we can read off the listing itself, without opening the website.
+ * The seed and the directory sources describe a lot of businesses as mobile
+ * mechanics or 24-hour recovery operators, and that is worth as much as
+ * anything the site would have told us.
+ */
+function noteSays(lead, re) {
+  return re.test(`${lead.sourceNote || ''} ${lead.name || ''}`);
+}
+
 export function scoreLead(lead, config) {
   const a = lead.enrichment?.analysis || null;
   const reasons = [];
@@ -50,6 +60,20 @@ export function scoreLead(lead, config) {
     }
   } else if (!lead.website) {
     add(18, 'No website found — the phone is their only channel', 'no-website');
+  }
+
+  // Read off the listing when the site was never opened, so a mobile mechanic
+  // is still recognised as one in a run that could not enrich.
+  if (!a) {
+    if (noteSays(lead, /mobile mechanic|mobile motorcycle|mobile repairs|comes to you/i)) {
+      add(12, 'Described as a mobile mechanic — physically cannot answer while working on a vehicle', 'mobile-mechanic');
+    }
+    if (noteSays(lead, /24[- ]?hour recovery|recovery line|breakdown/i)) {
+      add(8, 'Runs a recovery or breakdown line — a missed call is a stranded customer ringing somebody else', 'recovery-line');
+    }
+    if (noteSays(lead, /bookmygarage|fixter|book(s|able)? online|online booking/i)) {
+      add(-20, 'Listing shows they already take online bookings through a third-party platform');
+    }
   }
 
   if (lead.enrichment?.enrichError === 'unreachable' && lead.website) {
@@ -90,9 +114,19 @@ export function scoreLead(lead, config) {
   if (lead.category === 'motorcycle_repair') add(3, 'Bike workshops are usually one or two people — nobody spare to pick up');
 
   score = Math.max(0, Math.min(100, Math.round(score)));
-  const tier = score >= config.scoring.tierA ? 'A' : score >= config.scoring.tierB ? 'B' : 'C';
 
-  return { score, tier, reasons: reasons.sort((x, y) => y.points - x.points), gaps };
+  // A lead whose website was never read cannot reach the same score as one
+  // that was: roughly two thirds of the available points come from the site
+  // analysis. Banding both against the enriched thresholds would park every
+  // unenriched lead in tier C and leave the call list empty, so each basis
+  // gets its own cut points. The score is unchanged either way — only the
+  // "call first / call later" split moves, and the basis travels with it so
+  // a provisional A is never mistaken for a verified one.
+  const basis = a ? 'enriched' : 'provisional';
+  const bands = basis === 'enriched' ? config.scoring : config.scoring.provisional || config.scoring;
+  const tier = score >= bands.tierA ? 'A' : score >= bands.tierB ? 'B' : 'C';
+
+  return { score, tier, basis, reasons: reasons.sort((x, y) => y.points - x.points), gaps };
 }
 
 export function scoreAll(leads, config) {
@@ -100,6 +134,7 @@ export function scoreAll(leads, config) {
     const r = scoreLead(lead, config);
     lead.score = r.score;
     lead.tier = r.tier;
+    lead.scoreBasis = r.basis;
     lead.scoreReasons = r.reasons;
     lead.gaps = r.gaps;
   }

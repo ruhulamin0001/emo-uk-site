@@ -44,11 +44,13 @@ Outputs land in `leadgen/data/` (git-ignored — it holds live contact details):
 
 Three sources, all opt-in via `--source`:
 
-**`seed`** (default, no setup) — 39 real Hertfordshire garages and bike
+**`seed`** (default, no setup) — 66 real Hertfordshire garages and bike
 workshops shipped in `data-seed/hertfordshire-seed.json`, gathered from public
-web search. Enough to start calling today. Phone numbers marked
-`verified: false` were read from search results and are confirmed by the
-enrich step against the business's own website before they are trusted.
+business directories and the businesses' own sites. 63 of them carry a
+published phone number, so the list is callable on day one with no API key.
+Phone numbers marked `verified: false` were read from directory listings and
+are confirmed by the enrich step against the business's own website before
+they are trusted — and screened against TPS/CTPS before anyone dials.
 
 **`places`** — Google Places API (New). This is the official, Terms-compliant
 way to read Google Business Profile listings, and it is the source that makes
@@ -108,6 +110,16 @@ Every point carries a sentence of plain English, and those sentences are what
 you say on the call. Open any lead in the dashboard to see the breakdown.
 
 Tiers: **A ≥ 65**, **B 45–64**, C below that. Adjust in `config.json`.
+
+**When the website was never read.** Roughly two thirds of the available points
+come from the site analysis, so a lead that has not been enriched — no `enrich`
+run yet, or the site was unreachable — cannot reach those thresholds. Banding it
+against them anyway would park every such lead in tier C and leave the call list
+empty. So an unenriched lead is scored on what the listing alone shows (no
+website, mobile mechanic, weekend closures, a recovery line) and banded against
+`scoring.provisional` instead. The score is identical either way; only the
+call-first split moves. Each lead carries `scoreBasis`, and the briefing says so
+at the top, so a provisional A is never mistaken for a verified one.
 
 ---
 
@@ -175,7 +187,7 @@ public pages the way a person would; it does not hammer anyone.
 
 ## Running it every week
 
-The point of a scheduled run is not to re-read the same 39 garages. It is to
+The point of a scheduled run is not to re-read the same 66 garages. It is to
 catch what changed: a new workshop that opened, a fresh review complaining
 about the phone, a garage whose website went down.
 
@@ -197,9 +209,10 @@ node leadgen/run.mjs score
 node leadgen/run.mjs outreach
 node leadgen/run.mjs export
 node leadgen/run.mjs stats
+node leadgen/run.mjs doctor                      # what is stopping me sending today?
 node leadgen/run.mjs suppress --email=… --phone=… --domain=… --name=…
 node leadgen/run.mjs import-status --file=lead-statuses.json
-node leadgen/test.mjs [--show]                 # 40 offline checks, no network
+node leadgen/test.mjs [--show]                 # 48 offline checks, no network
 ```
 
 ## Files
@@ -210,7 +223,7 @@ leadgen/
   run.mjs                         CLI and state merging
   test.mjs                        offline self-test
   dashboard.html                  local lead desk (never served publicly)
-  data-seed/hertfordshire-seed.json   39 starter leads
+  data-seed/hertfordshire-seed.json   66 starter leads
   data/                           generated output — git-ignored
   lib/
     sources/google-places.mjs     Places API (New) + review-signal pass

@@ -46,7 +46,32 @@ jobs:
             const dupes = d.leads.map(l => l.name.toLowerCase())
               .filter((n, i, a) => a.indexOf(n) !== i);
             if (dupes.length) throw new Error('duplicate seed names: ' + dupes.join(', '));
-            console.log(d.leads.length + ' seed leads, no duplicates');
+
+            // A phone campaign is only worth running if there are numbers to
+            // ring, and a malformed one wastes a call slot.
+            const withPhone = d.leads.filter(l => l.phone).length;
+            if (withPhone < d.leads.length * 0.8) {
+              throw new Error(\`only \${withPhone}/\${d.leads.length} seed leads have a phone number\`);
+            }
+            const badPhone = d.leads.filter(l => l.phone && !/^0[0-9 ]{9,13}$/.test(l.phone));
+            if (badPhone.length) {
+              throw new Error('phone numbers not in UK national format: ' + badPhone.map(l => l.name + ' (' + l.phone + ')').join(', '));
+            }
+
+            // Every lead must sit in a Hertfordshire outward code, or it is
+            // somebody else's county and nobody should be calling it.
+            const cfg = JSON.parse(require('fs').readFileSync('leadgen/config.json','utf8'));
+            const prefixes = cfg.area.outwardCodePrefixes;
+            const outOfArea = d.leads.filter(l => {
+              if (!l.postcode) return false;
+              const outward = l.postcode.trim().split(/\s+/)[0].toUpperCase();
+              return !prefixes.includes(outward);
+            });
+            if (outOfArea.length) {
+              throw new Error('outside the campaign area: ' + outOfArea.map(l => l.name + ' (' + l.postcode + ')').join(', '));
+            }
+
+            console.log(d.leads.length + ' seed leads, ' + withPhone + ' with a phone, no duplicates, all in area');
           "
 
       - name: Run the offline test suite

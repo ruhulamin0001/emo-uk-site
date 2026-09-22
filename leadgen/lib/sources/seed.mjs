@@ -21,7 +21,9 @@ export async function collect(_config, { seedFile = 'leadgen/data-seed/hertfords
     phone: l.phone || null,
     phoneAlt: l.phoneAlt || null,
     phoneVerified: l.verified === true,
+    email: l.email || null,
     website: l.website || null,
+    openingHours: l.openingHours || null,
     sourceNote: l.note || null,
   }));
   log(`seed: ${out.length} leads`);
