@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Herts Lead Desk</title>
+<style>
+  :root{--bg:#0d1f1a;--panel:#12291f;--line:#1f4335;--ink:#e8f2ec;--dim:#8fb3a4;--accent:#0fae7e;--gold:#e8b021;--red:#e05252;--green:#3ecf8e}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:14px}
+  .top{display:flex;align-items:center;gap:12px;padding:12px 18px;border-bottom:1px solid var(--line);background:var(--panel);flex-wrap:wrap}
+  .top b{font-size:1.05rem}.top b span{color:var(--accent)}
+  .top .hint{color:var(--dim);font-size:0.78rem;margin-left:auto}
+  button{background:var(--accent);border:none;color:#fff;padding:8px 14px;border-radius:8px;font-weight:700;cursor:pointer;font-size:0.85rem}
+  button:hover{opacity:0.88}
+  button.ghost{background:transparent;border:1px solid var(--line);color:var(--dim)}
+  button.gold{background:var(--gold);color:#12291f}
+  button.sm{padding:5px 10px;font-size:0.75rem}
+  select,input[type=search]{background:#0a1813;border:1px solid var(--line);border-radius:8px;color:var(--ink);padding:7px 10px;font-size:0.85rem;font-family:inherit}
+  .layout{display:grid;grid-template-columns:340px 1fr;height:calc(100vh - 106px)}
+  .col{overflow-y:auto;border-right:1px solid var(--line)}
+  .filters{display:flex;gap:8px;padding:10px 18px;border-bottom:1px solid var(--line);background:var(--panel);flex-wrap:wrap;align-items:center}
+  .filters .stat{color:var(--dim);font-size:0.78rem;margin-left:auto}
+  .item{padding:11px 14px;border-bottom:1px solid var(--line);cursor:pointer;display:flex;gap:10px;align-items:flex-start}
+  .item:hover,.item.sel{background:#173327}
+  .sc{font-weight:800;font-size:1.05rem;min-width:34px;text-align:center;border-radius:8px;padding:3px 0}
+  .sc.A{background:var(--accent);color:#fff}.sc.B{background:var(--gold);color:#12291f}.sc.C{background:#2b4438;color:var(--dim)}
+  .item .t{font-weight:700;line-height:1.3}
+  .item .m{color:var(--dim);font-size:0.74rem;margin-top:3px}
+  .pad{padding:18px 22px;max-width:820px}
+  h2{font-size:1.3rem;margin-bottom:4px}
+  .sub{color:var(--dim);font-size:0.85rem;margin-bottom:14px}
+  .chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+  .chip{background:#0a1813;border:1px solid var(--line);border-radius:12px;padding:3px 11px;font-size:0.72rem;color:var(--dim)}
+  .chip.hot{border-color:var(--gold);color:var(--gold)}
+  .chip.warn{border-color:var(--red);color:#ffb3b3}
+  .box{border:1px solid var(--line);border-radius:10px;padding:14px;margin-bottom:14px;background:var(--panel)}
+  .box h4{color:var(--dim);text-transform:uppercase;font-size:0.7rem;letter-spacing:1.4px;margin-bottom:9px}
+  .reason{display:flex;gap:10px;padding:4px 0;border-bottom:1px dashed var(--line);font-size:0.83rem;line-height:1.45}
+  .reason:last-child{border-bottom:none}
+  .reason b{min-width:34px;text-align:right}
+  .reason b.pos{color:var(--green)}.reason b.neg{color:var(--red)}
+  pre{background:#0a1813;border:1px solid var(--line);border-radius:8px;padding:12px;white-space:pre-wrap;font-family:'Segoe UI',Arial,sans-serif;font-size:0.85rem;line-height:1.6;margin-top:8px}
+  a{color:var(--accent)}
+  .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;align-items:center}
+  .empty{padding:60px 24px;text-align:center;color:var(--dim);line-height:1.8}
+  .toast{position:fixed;bottom:18px;right:18px;background:var(--accent);color:#fff;padding:10px 18px;border-radius:10px;font-weight:700;display:none;z-index:99}
+  .warnbar{background:#3a2a10;border-bottom:1px solid var(--gold);color:#f0d190;padding:8px 18px;font-size:0.8rem}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <b>Herts <span>Lead Desk</span></b>
+  <input type="file" id="file" accept=".json" style="display:none">
+  <button class="ghost sm" onclick="document.getElementById('file').click()">Load leads.json</button>
+  <button class="ghost sm" onclick="exportStatuses()">Export my statuses</button>
+  <span class="hint">Statuses are saved in this browser. Export them and run <code>node leadgen/run.mjs import-status --file=…</code> to merge back.</span>
+</div>
+
+<div class="warnbar">Screen every number against TPS/CTPS before calling. Sole traders and partnerships: call or post — do not cold email.</div>
+
+<div class="filters">
+  <select id="fTier" onchange="render()"><option value="">All tiers</option><option>A</option><option>B</option><option>C</option></select>
+  <select id="fCat" onchange="render()"><option value="">All trades</option><option value="car_repair">Car garage</option><option value="motorcycle_repair">Motorcycle</option></select>
+  <select id="fTown" onchange="render()"><option value="">All towns</option></select>
+  <select id="fStatus" onchange="render()">
+    <option value="">Any status</option><option value="new">New</option><option value="contacted">Contacted</option>
+    <option value="replied">Replied</option><option value="meeting">Meeting booked</option>
+    <option value="won">Won</option><option value="lost">Lost</option><option value="do-not-contact">Do not contact</option>
+  </select>
+  <input type="search" id="fQ" placeholder="Search name or town" oninput="render()">
+  <span class="stat" id="stat"></span>
+</div>
+
+<div class="layout">
+  <div class="col" id="list"></div>
+  <div class="col" id="detail" style="border-right:none"><div class="empty">Load <code>leadgen/data/leads.json</code> to start.<br>Generate it with <code>node leadgen/run.mjs all</code></div></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let LEADS = [], SEL = null;
+const STATUS_KEY = 'hertsLeadDesk.statuses.v1';
+const statuses = JSON.parse(localStorage.getItem(STATUS_KEY) || '{}');
+
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.style.display='block';setTimeout(()=>t.style.display='none',1600);}
+function esc(s){return String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+function statusOf(l){return statuses[l.id]?.contactStatus || l.contactStatus || 'new';}
+
+function ingest(data){
+  LEADS = (data.leads || data || []).slice().sort((a,b)=>b.score-a.score);
+  const towns=[...new Set(LEADS.map(l=>l.town).filter(Boolean))].sort();
+  document.getElementById('fTown').innerHTML='<option value="">All towns</option>'+towns.map(t=>`<option>${esc(t)}</option>`).join('');
+  render();
+}
+
+document.getElementById('file').addEventListener('change', e=>{
+  const f=e.target.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=()=>{try{ingest(JSON.parse(r.result));toast('Loaded '+LEADS.length+' leads');}catch(err){alert('Could not read that file: '+err.message);}};
+  r.readAsText(f);
+});
+
+// Works when served over http (python3 -m http.server). Falls back to the file picker.
+fetch('data/leads.json').then(r=>r.ok?r.json():Promise.reject()).then(ingest).catch(()=>{});
+
+function filtered(){
+  const t=fTier.value, c=fCat.value, tw=fTown.value, st=fStatus.value, q=fQ.value.toLowerCase().trim();
+  return LEADS.filter(l=>
+    (!t||l.tier===t) && (!c||l.category===c) && (!tw||l.town===tw) &&
+    (!st||statusOf(l)===st) &&
+    (!q||(l.name+' '+(l.town||'')).toLowerCase().includes(q))
+  );
+}
+
+function render(){
+  const rows=filtered();
+  document.getElementById('stat').textContent=`${rows.length} of ${LEADS.length} · A:${LEADS.filter(l=>l.tier==='A').length} B:${LEADS.filter(l=>l.tier==='B').length}`;
+  document.getElementById('list').innerHTML = rows.map(l=>`
+    <div class="item ${SEL===l.id?'sel':''}" onclick="select('${l.id}')">
+      <div class="sc ${l.tier}">${l.score}</div>
+      <div>
+        <div class="t">${esc(l.name)}</div>
+        <div class="m">${esc(l.town||'—')} · ${l.category==='motorcycle_repair'?'🏍️ bike':'🚗 car'} · ${esc(statusOf(l))}</div>
+      </div>
+    </div>`).join('') || '<div class="empty">Nothing matches those filters.</div>';
+}
+
+function select(id){
+  SEL=id; const l=LEADS.find(x=>x.id===id); if(!l) return;
+  render();
+  const a=l.enrichment?.analysis;
+  const pos=(l.scoreReasons||[]).filter(r=>r.points>0), neg=(l.scoreReasons||[]).filter(r=>r.points<0);
+  const o=l.outreach||{};
+  const p=l.contactPolicy||{};
+
+  document.getElementById('detail').innerHTML=`<div class="pad">
+    <h2>${esc(l.name)}</h2>
+    <div class="sub">${esc(l.town||'—')}${l.postcode?' · '+esc(l.postcode):''} · score ${l.score} (tier ${l.tier})${l.rating?` · ${l.rating}★ from ${l.reviewCount} reviews`:''}</div>
+
+    <div class="chips">
+      ${(l.gaps||[]).map(g=>`<span class="chip hot">${esc(g.replace(/-/g,' '))}</span>`).join('')}
+      <span class="chip">${esc(p.entityType||'unknown entity')}</span>
+      ${p.emailAllowed?'<span class="chip">email OK</span>':'<span class="chip warn">no cold email</span>'}
+      ${p.callAllowed?'<span class="chip">call OK</span>':'<span class="chip warn">TPS check first</span>'}
+    </div>
+
+    <div class="box">
+      <h4>Contact</h4>
+      ${l.phoneNational?`<div>📞 <a href="tel:${esc(l.phoneE164)}">${esc(l.phoneNational)}</a> ${l.phoneVerified?'<span class="chip">verified</span>':'<span class="chip warn">unverified</span>'}</div>`:'<div style="color:var(--dim)">No phone number yet</div>'}
+      ${l.email?`<div style="margin-top:6px">✉️ <a href="mailto:${esc(l.email)}">${esc(l.email)}</a></div>`:'<div style="color:var(--dim);margin-top:6px">No email yet</div>'}
+      ${l.website?`<div style="margin-top:6px">🌐 <a href="${esc(l.website)}" target="_blank" rel="noopener">${esc(l.website)}</a></div>`:''}
+      ${l.mapsUrl?`<div style="margin-top:6px">📍 <a href="${esc(l.mapsUrl)}" target="_blank" rel="noopener">Google listing</a></div>`:''}
+      ${a?`<div style="margin-top:8px;color:var(--dim);font-size:0.8rem">Booking: ${a.hasOnlineBooking?esc(a.bookingPlatform||'online form'):'phone only'} · chat: ${esc(a.chatWidget||'none')} · contact form: ${a.hasContactForm?'yes':'no'}</div>`:'<div style="margin-top:8px;color:var(--dim);font-size:0.8rem">Not enriched yet — run <code>node leadgen/run.mjs enrich</code></div>'}
+      <div class="row">
+        <select id="stSel" onchange="setStatus('${l.id}',this.value)">
+          ${['new','contacted','replied','meeting','won','lost','do-not-contact'].map(s=>`<option ${statusOf(l)===s?'selected':''}>${s}</option>`).join('')}
+        </select>
+        <button class="ghost sm" onclick="markCtps('${l.id}')">Mark TPS/CTPS checked</button>
+      </div>
+      <div class="row"><input type="search" id="noteBox" placeholder="Call note…" value="${esc(statuses[l.id]?.notes||l.notes||'')}" style="flex:1" onchange="setNote('${l.id}',this.value)"></div>
+    </div>
+
+    <div class="box">
+      <h4>Why they need it</h4>
+      ${pos.map(r=>`<div class="reason"><b class="pos">+${r.points}</b><span>${esc(r.reason)}</span></div>`).join('')}
+      ${neg.length?`<h4 style="margin-top:12px">Against</h4>`+neg.map(r=>`<div class="reason"><b class="neg">${r.points}</b><span>${esc(r.reason)}</span></div>`).join(''):''}
+      ${l.reviewSignals?.quotes?.length?`<div style="margin-top:10px;color:var(--gold);font-style:italic">"${esc(l.reviewSignals.quotes[0])}"</div>`:''}
+      ${l.sourceNote?`<div style="margin-top:10px;color:var(--dim);font-size:0.8rem">Source note: ${esc(l.sourceNote)}</div>`:''}
+    </div>
+
+    ${o.suppressed?`<div class="box"><h4>Suppressed</h4>${esc(o.suppressed)}</div>`:`
+    <div class="box">
+      <h4>Call script</h4>
+      <button class="sm" onclick="copyEl('scr')">Copy</button>
+      <pre id="scr">${esc(o.callScript||'Run: node leadgen/run.mjs outreach')}</pre>
+    </div>
+    <div class="box">
+      <h4>Email ${p.emailAllowed?'':'— NOT cleared for cold email, use the phone instead'}</h4>
+      <button class="sm" onclick="copyEl('eml')">Copy</button>
+      ${l.email&&p.emailAllowed?`<a href="mailto:${esc(l.email)}?subject=${encodeURIComponent(o.email?.subject||'')}&body=${encodeURIComponent(o.email?.body||'')}"><button class="gold sm">Open in mail client</button></a>`:''}
+      <pre id="eml">${esc((o.email?'Subject: '+o.email.subject+'\n\n'+o.email.body:'Run: node leadgen/run.mjs outreach'))}</pre>
+    </div>
+    <div class="box">
+      <h4>Text / WhatsApp</h4>
+      <button class="sm" onclick="copyEl('sms')">Copy</button>
+      <pre id="sms">${esc(o.sms||'—')}</pre>
+    </div>
+    <div class="box">
+      <h4>Follow-ups</h4>
+      ${(o.followUps||[]).map(f=>`<div style="margin-bottom:10px"><b>Day ${f.day} · ${esc(f.channel)}</b><pre>${esc('Subject: '+f.subject+'\n\n'+f.body)}</pre></div>`).join('')}
+    </div>`}
+  </div>`;
+}
+
+function saveStatuses(){localStorage.setItem(STATUS_KEY, JSON.stringify(statuses));}
+function patch(id,obj){statuses[id]={...(statuses[id]||{}),...obj};saveStatuses();}
+function setStatus(id,v){patch(id,{contactStatus:v,lastContactedAt:new Date().toISOString()});render();toast('Status: '+v);}
+function setNote(id,v){patch(id,{notes:v});toast('Note saved');}
+function markCtps(id){patch(id,{ctpsCheckedAt:new Date().toISOString().slice(0,10)});toast('TPS/CTPS check recorded — re-run outreach to unlock calling');}
+
+function copyEl(id){navigator.clipboard.writeText(document.getElementById(id).textContent).then(()=>toast('Copied'));}
+
+function exportStatuses(){
+  const blob=new Blob([JSON.stringify(statuses,null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob); a.download='lead-statuses.json'; a.click();
+  toast('Exported — merge with: node leadgen/run.mjs import-status --file=lead-statuses.json');
+}
+</script>
+</body>
+</html>

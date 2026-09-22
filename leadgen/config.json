@@ -1,0 +1,95 @@
+{
+  "campaign": {
+    "id": "herts-auto-ai-receptionist",
+    "name": "Hertfordshire car & bike mechanics — AI call answering + booking",
+    "offer": "AI receptionist that answers every call, books the job into the diary and texts the customer back — 24/7",
+    "priceAnchor": "£149/month, no contract, 14-day free trial"
+  },
+
+  "sender": {
+    "name": "Ruhul Amin",
+    "business": "",
+    "email": "",
+    "phone": "",
+    "website": "",
+    "postalAddress": "",
+    "calendarLink": ""
+  },
+
+  "area": {
+    "county": "Hertfordshire",
+    "bbox": { "south": 51.58, "west": -0.83, "north": 52.09, "east": 0.30 },
+    "outwardCodePrefixes": [
+      "AL1","AL2","AL3","AL4","AL5","AL6","AL7","AL8","AL9","AL10",
+      "SG1","SG2","SG3","SG4","SG5","SG6","SG7","SG8","SG9","SG10","SG11","SG12","SG13","SG14",
+      "WD3","WD4","WD5","WD6","WD7","WD17","WD18","WD19","WD23","WD24","WD25",
+      "HP1","HP2","HP3","HP4","HP23",
+      "EN6","EN7","EN8","EN9","EN10","EN11",
+      "CM21","CM22","CM23"
+    ],
+    "towns": [
+      "Watford","St Albans","Hemel Hempstead","Stevenage","Hatfield","Welwyn Garden City",
+      "Hitchin","Letchworth Garden City","Bishop's Stortford","Hoddesdon","Cheshunt",
+      "Waltham Cross","Borehamwood","Potters Bar","Rickmansworth","Berkhamsted","Tring",
+      "Harpenden","Ware","Hertford","Royston","Baldock","Buntingford","Sawbridgeworth",
+      "Radlett","Bushey","Abbots Langley","Kings Langley","London Colney","Elstree","Croxley Green"
+    ]
+  },
+
+  "categories": [
+    {
+      "key": "car_repair",
+      "label": "Car garage / MOT",
+      "placesQueries": ["car garage", "MOT test centre", "car servicing and repairs", "auto repair shop"],
+      "placesIncludedType": "car_repair",
+      "overpassTags": ["shop=car_repair", "amenity=vehicle_inspection", "shop=tyres"]
+    },
+    {
+      "key": "motorcycle_repair",
+      "label": "Motorcycle / bike mechanic",
+      "placesQueries": ["motorcycle repair", "motorbike servicing and MOT", "scooter repair"],
+      "placesIncludedType": "motorcycle_repair",
+      "overpassTags": ["shop=motorcycle_repair", "shop=motorcycle"]
+    }
+  ],
+
+  "exclude": {
+    "chains": [
+      "halfords","kwik fit","kwik-fit","ats euromaster","national tyres","formula one autocentres",
+      "protyre","hometyre","tyre city","mr clutch","in'n'out autocentre","in n out autocentre",
+      "arnold clark","evans halshaw","stratstone","sytner","marshall motor","vertu","lookers",
+      "bristol street motors","motorpoint","fastfit","tyres on the drive","autoglass","national windscreens",
+      "rac","aa ","green flag","charles hurst","group 1 automotive","car & motorcycle world"
+    ],
+    "franchiseHints": ["main dealer","authorised dealer","approved dealer","dealership"],
+    "excludeIfPermanentlyClosed": true
+  },
+
+  "enrich": {
+    "userAgent": "HertsLeadResearchBot/1.0 (+business research; contact via website)",
+    "respectRobotsTxt": true,
+    "delayMsBetweenRequests": 2500,
+    "timeoutMs": 20000,
+    "maxPagesPerSite": 4,
+    "candidatePaths": ["/", "/contact", "/contact-us", "/contact.html", "/about", "/book", "/booking", "/book-online", "/mot"]
+  },
+
+  "scoring": {
+    "tierA": 65,
+    "tierB": 45
+  },
+
+  "compliance": {
+    "requireCtpsCheckBeforeCalling": true,
+    "corporateSuffixes": ["ltd","ltd.","limited","plc","llp","limited liability partnership"],
+    "optOutLine": "If you would rather not hear from me again, just reply STOP and I will remove you immediately.",
+    "notes": "UK PECR/UK GDPR: cold email to corporate subscribers (Ltd/PLC/LLP) is permitted with clear sender identity and a working opt-out. Sole traders and partnerships are treated as individuals — prefer phone or postal contact, or obtain consent first. Screen every number against TPS/CTPS before cold calling."
+  },
+
+  "output": {
+    "dir": "leadgen/data",
+    "leadsFile": "leadgen/data/leads.json",
+    "csvFile": "leadgen/data/leads.csv",
+    "briefingFile": "leadgen/data/briefing.md"
+  }
+}

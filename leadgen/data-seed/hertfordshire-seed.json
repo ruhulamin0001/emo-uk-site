@@ -1,0 +1,569 @@
+{
+  "_meta": {
+    "description": "Starter list of real, publicly listed car and motorcycle repair businesses in Hertfordshire, gathered from public web search results. Business-level contact data only. Phone numbers marked verified:false were read from search snippets and MUST be confirmed by the enrich step before any outreach.",
+    "gatheredOn": "2026-08-25",
+    "source": "web-search-seed",
+    "count": 67
+  },
+  "leads": [
+    {
+      "name": "Cousins Garage",
+      "category": "car_repair",
+      "town": "Watford",
+      "website": "https://cousinsgaragewatford.co.uk/",
+      "phone": null,
+      "note": "Independent, 30+ years, own EV specialists. MOT flat rate, no pass no fee."
+    },
+    {
+      "name": "Garage Watford",
+      "category": "car_repair",
+      "town": "Watford",
+      "website": "https://www.garagewatford.co.uk/",
+      "phone": null,
+      "note": "Car garage services, Watford and wider Hertfordshire."
+    },
+    {
+      "name": "The Auto Specialists",
+      "category": "car_repair",
+      "town": "Watford",
+      "website": "https://www.theautospecialists.co.uk/",
+      "phone": null,
+      "address": "Unit 22, 186 St Albans Road, Watford",
+      "postcode": "WD24 4AS",
+      "note": "Free collection and drop off in Watford area."
+    },
+    {
+      "name": "Fairway Watford",
+      "category": "car_repair",
+      "town": "Watford",
+      "website": "https://fairwaywatford.co.uk/",
+      "phone": null,
+      "note": "Servicing, MOTs and repairs."
+    },
+    {
+      "name": "Junction Motors",
+      "category": "car_repair",
+      "town": "Watford",
+      "website": "https://junctionmotors.co.uk/",
+      "phone": null,
+      "note": "North Watford workshop. MOTs, servicing, diagnostics, wheel alignment."
+    },
+    {
+      "name": "MOT Watford",
+      "category": "car_repair",
+      "town": "Watford",
+      "website": "https://www.motwatford.com/",
+      "phone": null,
+      "note": "20+ years. Individual and fleet customers, free collection and delivery."
+    },
+    {
+      "name": "Gold Crest Motors",
+      "category": "car_repair",
+      "town": "St Albans",
+      "website": "https://www.goldcrestmotors.co.uk/",
+      "phone": null,
+      "note": "Independent servicing and repair specialist with MOT testing."
+    },
+    {
+      "name": "Prestige Performance",
+      "category": "car_repair",
+      "town": "St Albans",
+      "website": "https://prestigeperformance.co.uk/",
+      "phone": null,
+      "note": "Local independent garage."
+    },
+    {
+      "name": "M Wilson Motor Repairs",
+      "category": "car_repair",
+      "town": "St Albans",
+      "website": "https://www.mwilsonmotorrepairs.co.uk/",
+      "phone": "01727 830539",
+      "phoneAlt": "01727 835408",
+      "verified": false,
+      "note": "Established 1979. Volvo specialists, Class IV MOT. Covers Hatfield and WGC."
+    },
+    {
+      "name": "Bridge Motors",
+      "category": "car_repair",
+      "town": "St Albans",
+      "website": "https://bridgemotors.co.uk/",
+      "phone": null,
+      "address": "Radlett Road, St Albans",
+      "note": "MOT tests, servicing and repairs."
+    },
+    {
+      "name": "DP Motors",
+      "category": "car_repair",
+      "town": "St Albans",
+      "website": "https://www.dp-motors.com/",
+      "phone": null,
+      "note": "Family run since 1972. MOT testing centre, St Albans and Welwyn Garden City."
+    },
+    {
+      "name": "Old London Road Garage",
+      "category": "car_repair",
+      "town": "St Albans",
+      "website": "http://oldlondonroadgarage.com/",
+      "phone": "01727 867214",
+      "verified": false,
+      "note": "MOT and car servicing, St Albans. HTTP-only site — likely dated web presence."
+    },
+    {
+      "name": "St Albans Car Clinic",
+      "category": "car_repair",
+      "town": "St Albans",
+      "website": "https://www.car-clinic.info/",
+      "phone": "01727 867747",
+      "verified": false,
+      "address": "Units 5&6 The Gryphon Industrial Park, Porters Wood, St Albans",
+      "postcode": "AL3 6XZ",
+      "note": "MOT and service."
+    },
+    {
+      "name": "Collect Service Go",
+      "category": "car_repair",
+      "town": "Welwyn Garden City",
+      "website": "https://www.collectservicego.com/",
+      "phone": "01707 332288",
+      "verified": false,
+      "note": "Independent garage, collection and drop-off model — heavy phone coordination."
+    },
+    {
+      "name": "R & S Car Service",
+      "category": "car_repair",
+      "town": "Hemel Hempstead",
+      "website": "https://www.garageinhemelhempstead.co.uk/",
+      "phone": null,
+      "note": "Independent garage, repairs, maintenance, servicing."
+    },
+    {
+      "name": "Hanafan Auto Care",
+      "category": "car_repair",
+      "town": "Hemel Hempstead",
+      "website": "https://www.hanafanautocare.com/",
+      "phone": null,
+      "note": "Described as Hemel Hempstead's largest independent garage. Class 4 and 7 MOTs."
+    },
+    {
+      "name": "Nash Mills MOT",
+      "category": "car_repair",
+      "town": "Hemel Hempstead",
+      "website": "https://nashmillsmot.co.uk/",
+      "phone": null,
+      "note": "Family owned service garage since 1979."
+    },
+    {
+      "name": "Turners Garage",
+      "category": "car_repair",
+      "town": "Hemel Hempstead",
+      "website": "https://www.turners-garage.com/",
+      "phone": null,
+      "note": "Servicing, repairs and MOTs, dealer-level diagnostics."
+    },
+    {
+      "name": "A1 Independent BMW Garage",
+      "category": "car_repair",
+      "town": "Stevenage",
+      "website": "https://www.independentbmwgarage.co.uk/",
+      "phone": null,
+      "note": "Independent BMW specialist, serves Stevenage and Hemel Hempstead."
+    },
+    {
+      "name": "Stevenage Motorcare Ltd",
+      "category": "car_repair",
+      "town": "Stevenage",
+      "website": null,
+      "phone": null,
+      "note": "Small family run business, 30+ years in vehicle repair. No website found in search — high-need, phone-only prospect."
+    },
+    {
+      "name": "Old Welwyn MOT Centre",
+      "category": "car_repair",
+      "town": "Welwyn",
+      "website": "https://www.oldwelwynmotcentre.co.uk/",
+      "phone": null,
+      "note": "20+ years. MOT, servicing, repairs, tyres. Covers Hatfield, Hertford, WGC."
+    },
+    {
+      "name": "Welwyn Auto Centre",
+      "category": "car_repair",
+      "town": "Welwyn Garden City",
+      "website": "https://welwynautocentre.co.uk/",
+      "phone": "01707 818492",
+      "verified": false,
+      "note": "30+ years. BMW, Mercedes, VW Group specialists."
+    },
+    {
+      "name": "Burrowfield Autos",
+      "category": "car_repair",
+      "town": "Welwyn Garden City",
+      "website": "https://burrowfieldautos.com/",
+      "phone": null,
+      "note": "Repairs, servicing, MOT testing, advanced diagnostics."
+    },
+    {
+      "name": "Hertfordshire Vehicle Services",
+      "category": "car_repair",
+      "town": "Welwyn Garden City",
+      "website": "https://hertsvs.com/",
+      "phone": "01707 520611",
+      "verified": false,
+      "note": "Car service, MOT and repairs."
+    },
+    {
+      "name": "Auto Service & Tuning Centre (Herts Car Specialists)",
+      "category": "car_repair",
+      "town": "Hitchin",
+      "website": "https://hertscarspecialists.co.uk/",
+      "phone": null,
+      "address": "42 Wilbury Way, Hitchin",
+      "note": "German car specialist, Bosch-approved EV centre. Expanding — growth signal, likely rising call volume."
+    },
+    {
+      "name": "Bowles Garage",
+      "category": "car_repair",
+      "town": "Hitchin",
+      "website": "https://www.bowlesgarage.co.uk/",
+      "phone": null,
+      "note": "Family owned since 1973. Serves Baldock and Letchworth too."
+    },
+    {
+      "name": "M&L Autocare",
+      "category": "car_repair",
+      "town": "Hitchin",
+      "website": null,
+      "phone": null,
+      "note": "Family run garage — diagnostics, MOT, servicing, tyres, exhausts. No website found in search."
+    },
+    {
+      "name": "Dom's Garage Services",
+      "category": "car_repair",
+      "town": "Letchworth Garden City",
+      "website": "https://domsgarageservices.co.uk/",
+      "phone": null,
+      "address": "11 Protea Way, Letchworth Garden City",
+      "postcode": "SG6 1JT",
+      "note": "RAC approved, independently owned, transparent pricing."
+    },
+    {
+      "name": "Station Garages",
+      "category": "car_repair",
+      "town": "Bishop's Stortford",
+      "website": "https://stationgarages.co.uk/",
+      "phone": null,
+      "note": "MOT centre, same-day servicing, diagnostics, brakes, batteries."
+    },
+    {
+      "name": "DR Autos",
+      "category": "car_repair",
+      "town": "Bishop's Stortford",
+      "website": "https://drautosltd.co.uk/",
+      "phone": null,
+      "note": "MOTs, tyres, servicing, exhausts."
+    },
+    {
+      "name": "Stortford Prestige",
+      "category": "car_repair",
+      "town": "Bishop's Stortford",
+      "website": "https://www.stortfordprestige.co.uk/",
+      "phone": null,
+      "note": "Sports, prestige and 4x4 specialist — high job value, good fit for a paid receptionist."
+    },
+    {
+      "name": "Matts Auto Repair Services (MARS)",
+      "category": "car_repair",
+      "town": "Bishop's Stortford",
+      "website": "https://www.mattsautorepairservices.co.uk/",
+      "phone": null,
+      "note": "MOT testing station near town centre."
+    },
+    {
+      "name": "Orchard Works Vehicle Services",
+      "category": "car_repair",
+      "town": "Bishop's Stortford",
+      "website": "https://orchardworksvsltd.co.uk/",
+      "phone": null,
+      "note": "Local family-run garage since 1973. Serves Harlow and Bishop's Stortford."
+    },
+    {
+      "name": "Autocare Group",
+      "category": "car_repair",
+      "town": "Ware",
+      "website": "https://autocaregroup.co.uk/",
+      "phone": null,
+      "note": "Branches in Ware, Hoddesdon and Cheshunt — multi-site, so call handling is split across locations."
+    },
+    {
+      "name": "A&M Motorcycles",
+      "category": "motorcycle_repair",
+      "town": "Hertfordshire",
+      "website": "https://www.am-motorcycles.co.uk/workshop/",
+      "phone": null,
+      "note": "ATA accredited servicing, MOT centre, TEXA diagnostics. Suzuki master technicians."
+    },
+    {
+      "name": "Malc's Motorbikes",
+      "category": "motorcycle_repair",
+      "town": "Waltham Cross",
+      "website": "https://www.malcsmotorbike.co.uk/",
+      "phone": null,
+      "postcode": "EN8",
+      "note": "Servicing, repairs, tyres, Class 1 and 2 MOTs, restoration."
+    },
+    {
+      "name": "Motorbike Works",
+      "category": "motorcycle_repair",
+      "town": "Watford",
+      "website": "https://www.motorbikeworks.co.uk/",
+      "phone": null,
+      "note": "MOBILE motorcycle servicing across Hertfordshire — mobile mechanics physically cannot answer the phone mid-job. Top-tier fit."
+    },
+    {
+      "name": "Herts Bikes",
+      "category": "motorcycle_repair",
+      "town": "St Albans",
+      "website": "https://hertsbikes.com/",
+      "phone": null,
+      "note": "Motorbike and scooter servicing, MOT, repairs. Covers St Albans, Potters Bar, Watford, Borehamwood, Hemel."
+    },
+    {
+      "name": "Bike Treads Motorcycle Centre",
+      "category": "motorcycle_repair",
+      "town": "Hertfordshire",
+      "website": "https://www.biketreads.co.uk/",
+      "phone": null,
+      "note": "Motorcycle workshop and servicing."
+    },
+    {
+      "name": "CJ Watson Motors",
+      "category": "car_repair",
+      "town": "Elstree",
+      "website": "https://cjwatsonmotors.co.uk/",
+      "phone": null,
+      "address": "Slade Farm Workshop",
+      "note": "Local independent, 20+ years. Covers Elstree, Radlett and Borehamwood."
+    },
+    {
+      "name": "Borehamwood Garage (Wayne's Autoport)",
+      "category": "car_repair",
+      "town": "Borehamwood",
+      "website": null,
+      "phone": null,
+      "note": "Only a Facebook page found, no website — phone-only prospect. Covers Borehamwood, Radlett, Elstree, Bushey, Watford."
+    },
+    {
+      "name": "Kings Langley MOT Centre",
+      "category": "car_repair",
+      "town": "Kings Langley",
+      "website": "https://kingslangleymotcentre.co.uk/",
+      "phone": null,
+      "address": "28 Rucklers Lane, Kings Langley",
+      "postcode": "WD4 8AU",
+      "note": "MOT, servicing, repairs, tyres. Also covers Abbots Langley and St Albans."
+    },
+    {
+      "name": "Apsley MOT Test Centre",
+      "category": "car_repair",
+      "town": "Abbots Langley",
+      "website": "https://www.apsley-mots.co.uk/",
+      "phone": null,
+      "note": "MOT-only test station (no repairs) — pure appointment volume, every slot booked by phone."
+    },
+    {
+      "name": "Langley Autocraft",
+      "category": "car_repair",
+      "town": "Kings Langley",
+      "website": "https://www.langleyautocraft.co.uk/",
+      "phone": null,
+      "note": "30+ years. MOTs, repairs and servicing across Kings Langley and Watford."
+    },
+    {
+      "name": "Kings Road Garage",
+      "category": "car_repair",
+      "town": "Berkhamsted",
+      "website": "https://www.kingsroadgarage.co.uk/",
+      "phone": null,
+      "note": "Jaguar specialist since 1989. Covers Berkhamsted, Tring, Kings Langley, Hemel. High job value."
+    },
+    {
+      "name": "Potters Bar Garage",
+      "category": "car_repair",
+      "town": "Potters Bar",
+      "website": "https://pottersbargarage.co.uk/",
+      "phone": null,
+      "note": "Family run. Services cars AND motorbikes — Jaguar, Land Rover, Citroen, Ford specialists, plus EV servicing."
+    },
+    {
+      "name": "Potters Bar MOT Centre",
+      "category": "car_repair",
+      "town": "Potters Bar",
+      "website": "https://pottersbarmotcentre.co.uk/",
+      "phone": null,
+      "note": "Team of 4 in the workshop, 40 years combined. Free local collection within 5 miles — heavy phone coordination."
+    },
+    {
+      "name": "New Road Service Station",
+      "category": "car_repair",
+      "town": "Croxley Green",
+      "website": null,
+      "phone": null,
+      "note": "Well reviewed independent on Good Garage Guide. No own website found — phone-only prospect."
+    },
+    {
+      "name": "Rickmansworth Service Station",
+      "category": "car_repair",
+      "town": "Rickmansworth",
+      "website": null,
+      "phone": null,
+      "note": "Well reviewed independent. No own website found in search."
+    },
+    {
+      "name": "Fairway Tyre and Auto Services",
+      "category": "car_repair",
+      "town": "Rickmansworth",
+      "website": null,
+      "phone": null,
+      "note": "MOT testing centre, free 14-day retest. Website not confirmed."
+    },
+    {
+      "name": "Rickmansworth Sports Cars",
+      "category": "car_repair",
+      "town": "Rickmansworth",
+      "website": "https://www.rickmansworthsportscars.co.uk/",
+      "phone": null,
+      "note": "Used sports car sales plus servicing, covers Chorleywood and Watford. High ticket."
+    },
+    {
+      "name": "Autostart UK",
+      "category": "car_repair",
+      "town": "Watford",
+      "website": null,
+      "phone": null,
+      "note": "Family run 20+ years, Harrow and Watford area. Website not confirmed."
+    },
+    {
+      "name": "PCM Motors Ltd",
+      "category": "car_repair",
+      "town": "Waltham Cross",
+      "website": "https://pcmmotors.co.uk/",
+      "phone": null,
+      "note": "Official MOT testing centre for Waltham Cross and Cheshunt, while-you-wait MOTs."
+    },
+    {
+      "name": "GLR Autocare",
+      "category": "car_repair",
+      "town": "Hoddesdon",
+      "website": "https://glrautocare.co.uk/",
+      "phone": "01992 471154",
+      "verified": false,
+      "note": "DVSA approved MOT centre, classes 1, 2, 4 and 7 — so they take bike MOTs too. Covers Harlow, Cheshunt, Hertford."
+    },
+    {
+      "name": "Lea Motors",
+      "category": "car_repair",
+      "town": "Cheshunt",
+      "website": "https://leamotors.com/",
+      "phone": "01992 641620",
+      "verified": false,
+      "note": "Leading independent in Cheshunt. Mechanical and bodywork, MOTs, servicing."
+    },
+    {
+      "name": "Automotive Components Specialist Ltd",
+      "category": "car_repair",
+      "town": "Cheshunt",
+      "website": "https://www.automotivecomponentsspecialist.com/",
+      "phone": null,
+      "note": "Award-winning independent, free collection and delivery — lots of phone coordination."
+    },
+    {
+      "name": "GVB Motor Services Ltd",
+      "category": "car_repair",
+      "town": "Cheshunt",
+      "website": "https://www.gvbmotorservicesltd.com/",
+      "phone": null,
+      "note": "Servicing, MOTs, brakes, cambelts, tyres."
+    },
+    {
+      "name": "Amwell Street Garage",
+      "category": "car_repair",
+      "town": "Hoddesdon",
+      "website": null,
+      "phone": null,
+      "note": "Friendly local independent, 30+ years. MOTs, servicing, free collection within 10 miles. No website found."
+    },
+    {
+      "name": "Waltham Cross Motorcycles",
+      "category": "motorcycle_repair",
+      "town": "Stevenage",
+      "website": null,
+      "phone": null,
+      "note": "Workshop services, MOTs and repairs most makes of motorcycle, with a Stevenage workshop. Website not confirmed."
+    },
+    {
+      "name": "Hatfield Auto Centre",
+      "category": "car_repair",
+      "town": "Hatfield",
+      "website": "https://www.hatfieldautocentre.co.uk/",
+      "phone": null,
+      "note": "Independent, 25+ years. Covers Hatfield, WGC and St Albans. HTML-era site — likely dated web presence."
+    },
+    {
+      "name": "Autofix Buntingford Ltd",
+      "category": "car_repair",
+      "town": "Buntingford",
+      "website": "https://garagebuntingford.co.uk/",
+      "phone": null,
+      "address": "Aspenden Industrial Estate, Buntingford",
+      "note": "Owner-run (Simon Druce). Does cars AND motorbikes — rare combination, and a one-owner shop cannot answer the phone mid-job."
+    },
+    {
+      "name": "Royston Vehicle Services",
+      "category": "car_repair",
+      "town": "Royston",
+      "website": "https://www.roystonvehicleservices.co.uk/",
+      "phone": null,
+      "note": "Family run, 20+ years. Servicing, MOTs and repairs."
+    },
+    {
+      "name": "A1BN Specialists",
+      "category": "car_repair",
+      "town": "Stevenage",
+      "website": null,
+      "phone": null,
+      "address": "off Gunnels Wood Road, Stevenage",
+      "note": "Specialist servicing and MOT. No own website found in search."
+    },
+    {
+      "name": "Bushey Hall Garage",
+      "category": "car_repair",
+      "town": "Bushey",
+      "website": "https://www.busheyhallgarage.co.uk/",
+      "phone": null,
+      "note": "Independent servicing, repairs, MOT and recovery. Recovery work means the phone matters even more."
+    },
+    {
+      "name": "BHG Motor Group (Bushey Heath Garage)",
+      "category": "car_repair",
+      "town": "Bushey",
+      "website": "https://www.bhgmotorgroup.co.uk/",
+      "phone": null,
+      "note": "Used car sales plus MOT, servicing and repairs. Sales enquiries and workshop bookings compete for the same phone."
+    },
+    {
+      "name": "Ian Thompson Mobile Mechanic",
+      "category": "car_repair",
+      "town": "Bushey",
+      "website": null,
+      "phone": null,
+      "note": "MOBILE mechanic covering Bushey — servicing, repairs, MOTs, clutches, brakes, diagnostics. Cannot answer while under a car. No website found."
+    },
+    {
+      "name": "Autotech Car Services",
+      "category": "car_repair",
+      "town": "Hitchin",
+      "website": null,
+      "phone": null,
+      "note": "Formed 2000, servicing and repair centre in North Hertfordshire. Website not confirmed."
+    }
+  ]
+}

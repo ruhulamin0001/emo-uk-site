@@ -1,0 +1,61 @@
+name: leadgen tests
+
+# The lead pipeline has no dependencies and no network calls in its test
+# suite, so this runs in seconds and catches a broken scorer or analyser
+# before it produces a call list nobody should ring.
+on:
+  # Only main on push — a branch with an open PR would otherwise run this
+  # twice for the same commit, once for the push and once for the PR.
+  push:
+    branches: [main]
+    paths:
+      - 'leadgen/**'
+      - '.github/workflows/leadgen-tests.yml'
+  pull_request:
+    paths:
+      - 'leadgen/**'
+      - '.github/workflows/leadgen-tests.yml'
+  workflow_dispatch:
+
+# A new push supersedes the run still going for the old commit.
+concurrency:
+  group: leadgen-tests-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Validate config and seed JSON
+        run: |
+          node -e "JSON.parse(require('fs').readFileSync('leadgen/config.json','utf8'))"
+          node -e "
+            const d = JSON.parse(require('fs').readFileSync('leadgen/data-seed/hertfordshire-seed.json','utf8'));
+            if (d._meta.count !== d.leads.length) {
+              throw new Error(\`seed _meta.count (\${d._meta.count}) does not match leads length (\${d.leads.length})\`);
+            }
+            const dupes = d.leads.map(l => l.name.toLowerCase())
+              .filter((n, i, a) => a.indexOf(n) !== i);
+            if (dupes.length) throw new Error('duplicate seed names: ' + dupes.join(', '));
+            console.log(d.leads.length + ' seed leads, no duplicates');
+          "
+
+      - name: Run the offline test suite
+        run: node leadgen/test.mjs
+
+      - name: Run the pipeline end to end against the seed list
+        run: |
+          node leadgen/run.mjs collect --source=seed
+          node leadgen/run.mjs score
+          node leadgen/run.mjs outreach
+          node leadgen/run.mjs export
+          node leadgen/run.mjs stats
