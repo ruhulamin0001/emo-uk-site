@@ -10,6 +10,7 @@
  *   node leadgen/run.mjs outreach
  *   node leadgen/run.mjs export
  *   node leadgen/run.mjs stats
+ *   node leadgen/run.mjs doctor                  # what is stopping me sending today?
  *   node leadgen/run.mjs suppress --email=x@y.co.uk | --phone=+4417... | --domain=y.co.uk
  *   node leadgen/run.mjs import-status --file=statuses.json   # merge dashboard edits back
  *
@@ -161,6 +162,68 @@ function cmdStats(config) {
   console.log('');
 }
 
+/**
+ * Answers the only question that matters before a campaign goes out: what is
+ * stopping me sending anything today? A run that reports "0 email-ready,
+ * 0 call-ready" is otherwise silent about why.
+ */
+function cmdDoctor(config) {
+  const leads = loadState(config);
+  const problems = [];
+  const notes = [];
+
+  const s = config.sender || {};
+  const required = ['business', 'email', 'phone', 'website', 'postalAddress'];
+  const missing = required.filter((k) => !s[k] || !String(s[k]).trim());
+  if (missing.length) {
+    problems.push(
+      `config.json → sender is missing: ${missing.join(', ')}.\n` +
+        '     PECR requires you to identify yourself in every message, and the templates read these fields.\n' +
+        '     Until they are filled in, nothing is email-ready.'
+    );
+  }
+
+  if (!leads.length) {
+    problems.push('No leads collected yet — run `node leadgen/run.mjs collect`.');
+  } else {
+    const noContact = leads.filter((l) => !l.phoneE164 && !l.email);
+    if (noContact.length) {
+      notes.push(`${noContact.length} lead(s) have no phone or email yet: ${noContact.map((l) => l.name).join(', ')}`);
+    }
+    const unchecked = leads.filter((l) => l.phoneE164 && !l.ctpsCheckedAt);
+    if (unchecked.length) {
+      problems.push(
+        `${unchecked.length} lead(s) have a phone number but no TPS/CTPS check recorded, so none of them are call-ready.\n` +
+          '     Screen the numbers, then set ctpsCheckedAt on each lead (the dashboard writes this for you).'
+      );
+    }
+    const provisional = leads.filter((l) => l.scoreBasis === 'provisional').length;
+    if (provisional) {
+      notes.push(
+        `${provisional} of ${leads.length} lead(s) are scored provisionally — their website was never read. ` +
+          'Run `node leadgen/run.mjs enrich` from a machine with normal web access to firm the ranking up.'
+      );
+    }
+    if (!process.env.GOOGLE_PLACES_API_KEY) {
+      notes.push('GOOGLE_PLACES_API_KEY is not set, so ratings, opening hours and review signals are unavailable.');
+    }
+  }
+
+  console.log('');
+  if (problems.length) {
+    console.log(`Blocking (${problems.length}):`);
+    problems.forEach((p, i) => console.log(`  ${i + 1}. ${p}`));
+  } else {
+    console.log('Nothing blocking — sender details are complete and every number has been screened.');
+  }
+  if (notes.length) {
+    console.log('\nWorth knowing:');
+    notes.forEach((n) => console.log(`  · ${n}`));
+  }
+  console.log('');
+  return problems.length;
+}
+
 function cmdSuppress(config, args) {
   const file = 'leadgen/data/suppression.json';
   const data = readJSON(file, { emails: [], phones: [], domains: [], names: [] });
@@ -220,6 +283,7 @@ async function main() {
     case 'outreach': cmdOutreach(config); break;
     case 'export': cmdExport(config); break;
     case 'stats': cmdStats(config); break;
+    case 'doctor': cmdDoctor(config); break;
     case 'suppress': cmdSuppress(config, args); break;
     case 'import-status': cmdImportStatus(config, args); break;
     case 'all':

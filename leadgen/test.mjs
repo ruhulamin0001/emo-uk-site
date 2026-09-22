@@ -142,6 +142,56 @@ check('unreachable site is not scored as "no online booking"', () => {
   assert.ok(r.gaps.includes('site-down'));
 });
 
+/* ---------- scoring without enrichment ---------- */
+
+console.log('\nscoreLead — provisional basis');
+
+const unenriched = {
+  id: 'p1', name: 'Phone Only Mobile Mechanic', category: 'car_repair', town: 'Bushey',
+  website: null, phoneE164: '+447956000000',
+  sourceNote: 'Mobile mechanic covering Watford and Bushey, 20+ years.',
+};
+
+check('a lead with no site analysis is marked provisional, not enriched', () => {
+  assert.equal(scoreLead(unenriched, config).basis, 'provisional');
+});
+
+check('a lead whose site was read is marked enriched', () => {
+  const r = scoreLead({ ...hotLead, enrichment: { analysis: phoneOnly } }, config);
+  assert.equal(r.basis, 'enriched');
+});
+
+check('mobile mechanic is recognised from the listing when no site was read', () => {
+  const r = scoreLead(unenriched, config);
+  assert.ok(r.gaps.includes('mobile-mechanic'), 'the listing already says mobile mechanic');
+});
+
+check('provisional leads still reach the call list instead of all landing in tier C', () => {
+  const r = scoreLead(unenriched, config);
+  assert.notEqual(r.tier, 'C', `strongest possible provisional lead scored ${r.score} and still fell to tier C`);
+});
+
+check('the same score is banded more strictly once the site has been read', () => {
+  const provisional = scoreLead(unenriched, config);
+  // Same lead, same points, but now with an analysis attached: the enriched
+  // thresholds are higher, so a score this low must not still read as tier A.
+  const enrichedBands = provisional.score >= config.scoring.tierA;
+  assert.equal(enrichedBands, false, 'sanity: the fixture should not clear the enriched tier A bar');
+  assert.ok(config.scoring.provisional.tierA < config.scoring.tierA, 'provisional bands must be lower');
+  assert.ok(config.scoring.provisional.tierB < config.scoring.tierB, 'provisional bands must be lower');
+});
+
+check('a listing that already advertises online booking is marked down', () => {
+  const booked = { ...unenriched, id: 'p2', sourceNote: 'Bookable through BookMyGarage.' };
+  const r = scoreLead(booked, config);
+  assert.ok(r.score < scoreLead(unenriched, config).score, 'existing online booking must cost points');
+});
+
+check('recovery line counts as a reason to answer the phone', () => {
+  const rec = { id: 'p3', name: 'Recovery Garage', category: 'car_repair', town: 'Bushey', website: 'https://x.co.uk', phoneE164: '+441923000000', sourceNote: 'Runs a 24-hour recovery line alongside the workshop.' };
+  assert.ok(scoreLead(rec, config).gaps.includes('recovery-line'));
+});
+
 /* ---------- outreach + compliance ---------- */
 
 console.log('\nbuildOutreach');
