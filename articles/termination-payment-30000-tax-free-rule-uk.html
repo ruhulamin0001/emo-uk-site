@@ -135,6 +135,18 @@
 </ul>
 
 <p>Your employer does the calculation. You should be able to read the settlement and see which number is which, because "the first &pound;30,000 is tax free" is not a sufficient description of a document you are being asked to sign.</p>
+<p>The formula is not hidden and it is worth checking against your own settlement. It sits in <strong>section 402D of the Income Tax (Earnings and Pensions) Act 2003</strong> as <strong>((BP &times; D) &divide; P) &minus; T</strong>, and HMRC defines each term in its Employment Income Manual at EIM13880. Four inputs, every one of which you can read off a payslip and a notice clause:</p>
+<table>
+<thead><tr><th>Term</th><th>What it means</th><th>Where you read it</th></tr></thead>
+<tbody>
+<tr><td><strong>BP</strong></td><td>Basic pay in the last pay period ending before the trigger date. Basic pay only, so overtime, commission and bonus are left out.</td><td>Your last payslip before notice</td></tr>
+<tr><td><strong>D</strong></td><td>Calendar days in the post-employment notice period, meaning the notice you did not work.</td><td>The notice clause in your contract</td></tr>
+<tr><td><strong>P</strong></td><td>Calendar days in your last pay period. On a monthly payroll that is 30 or 31, not 20 working days.</td><td>Your payroll frequency</td></tr>
+<tr><td><strong>T</strong></td><td>Termination payments already taxable as earnings outside Chapter 3 of Part 6, principally a contractual payment in lieu of notice. It is subtracted, so the same money is not taxed twice.</td><td>The PILON line in the settlement</td></tr>
+</tbody>
+</table>
+<p>Two rules sit on top of that arithmetic and both work in your favour. If the formula produces a negative number, <strong>PENP is nil</strong> rather than a deduction from anything. And if it produces more than the total of the relevant termination awards, it is <strong>capped at that total</strong>, so PENP can never tax you on money you did not actually receive. Both limits are in section 402D itself, not in guidance that could be withdrawn.</p>
+<p>The honest limit of all this: the formula assumes an ordinary monthly salary and a notice period that lands in whole months. Pay in arrears, a change of pay date, a pay rise part way through notice, or anyone paid other than monthly can move <strong>BP</strong> and <strong>P</strong> enough to change the answer materially, and HMRC operates an alternative calculation for some of those cases. If your notice period is not a whole number of months and the sum at stake is four figures, that is the point to buy an hour of advice rather than trust a formula off a web page.</p>
 
 <h2 id="example">4. Worked example: Gareth in Newport</h2>
 
@@ -183,6 +195,8 @@
 <li><a href="https://www.gov.uk/redundancy-your-rights/tax-and-national-insurance" rel="noopener" target="_blank">GOV.UK: Redundancy, tax and National Insurance</a>, statutory redundancy pay under &pound;30,000 is not taxable</li>
 <li><a href="https://www.gov.uk/guidance/rates-and-thresholds-for-employers-2026-to-2027" rel="noopener" target="_blank">GOV.UK: Rates and thresholds for employers 2026 to 2027</a>, Class 1A National Insurance on termination awards above &pound;30,000 at 15% for 2026 to 2027</li>
 <li><a href="https://www.acas.org.uk/your-rights-during-redundancy" rel="noopener" target="_blank">Acas: your rights during redundancy</a>, free guidance on the process and on settlement agreements</li>
+<li><a href="https://www.legislation.gov.uk/ukpga/2003/1/section/402D" rel="noopener" target="_blank">Income Tax (Earnings and Pensions) Act 2003, section 402D</a>, the post-employment notice pay formula in the words of the Act, including the nil floor and the cap</li>
+<li><a href="https://www.gov.uk/hmrc-internal-manuals/employment-income-manual/eim13874" rel="noopener" target="_blank">HMRC Employment Income Manual, EIM13874 and EIM13880</a>, how a relevant termination award is split, and each term in the PENP formula defined</li>
 </ul>
 </div>
 
