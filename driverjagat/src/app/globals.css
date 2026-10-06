@@ -1,0 +1,171 @@
+@import "tailwindcss";
+
+/* Tailwind v4 nije theke source khuje - kintu dev server onno folder
+   theke chalale bhul jaygay khoje, ar kono class i toiri hoy na.
+   Ei line ta sposhto kore bole dey kothay dekhte hobe. */
+@source "../**/*.{ts,tsx}";
+
+/* ─────────────────────────────────────────────────────────────
+   Design tokens - 07-DESIGN-SYSTEM.md
+   next/font er `variable:` nam ebong ekhankar var() nam EK
+   hote HOBE. Na hole Bangla te □□□ ashbe. (CLAUDE.md trap #2)
+   ───────────────────────────────────────────────────────────── */
+
+@theme {
+  /* Brand - Deep Navy (DriverJagat: rasta, bishwas, uniform er rong)
+     Utso: public/logo.svg - "Driver" navy #0F3460 + "Jagat" kalo.
+     Logo bodlale ei ramp o bodlabe. */
+  --color-brand-50: #F1F6FC;
+  --color-brand-100: #E1ECF9;
+  --color-brand-200: #BFD5F0;
+  --color-brand-300: #8FB5E3;
+  --color-brand-400: #5A94D3;
+  --color-brand-500: #2F76C2;
+  --color-brand-600: #1E5FA3;
+  --color-brand-700: #164A80;
+  --color-brand-800: #0F3460;
+  --color-brand-900: #0B274A;
+  --color-brand-950: #061733;
+  --color-brand: #0F3460;
+
+  /* Neutral - ink */
+  --color-ink-50: #F7F8FA;
+  --color-ink-100: #EFF1F5;
+  --color-ink-200: #DCE0E7;
+  --color-ink-400: #8A93A5;
+  --color-ink-600: #4A5262;
+  --color-ink-800: #1F2430;
+  --color-ink-950: #0F1115;
+
+  /* Semantic - status er jonno lock kora, 07 §1.4 */
+  --color-success: #0B6E3D;
+  --color-success-bg: #E7F6EE;
+  --color-warning: #B26A00;
+  --color-warning-bg: #FFF4E0;
+  --color-danger: #C42121;
+  --color-danger-bg: #FDECEC;
+  --color-info: #1668C1;
+  --color-info-bg: #E8F1FC;
+
+  /* Fonts - Latin age, Bangla pore. Prottek glyph nijer font khuje ney:
+     ingreji o sonkha DM Sans e, Bangla Noto Sans Bengali te. */
+  --font-body: var(--font-dm-sans), var(--font-noto-bengali), Arial, sans-serif;
+  --font-bangla: var(--font-noto-bengali), var(--font-dm-sans), Arial, sans-serif;
+  --font-mono: var(--font-dm-mono), ui-monospace, Menlo, monospace;
+
+  /* Radius */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+
+  /* Shadow */
+  --shadow-xs: 0 1px 2px rgba(15, 17, 21, 0.05);
+  --shadow-sm: 0 1px 3px rgba(15, 17, 21, 0.08), 0 1px 2px rgba(15, 17, 21, 0.04);
+  --shadow-md: 0 4px 12px rgba(15, 17, 21, 0.08);
+  --shadow-lg: 0 12px 28px rgba(15, 17, 21, 0.12);
+  --shadow-brand: 0 4px 14px rgba(15, 52, 96, 0.25);
+}
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--color-ink-50);
+    color: var(--color-ink-800);
+  }
+
+  h1,
+  h2 {
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+  }
+
+  h3,
+  h4,
+  h5 {
+    font-weight: 600;
+  }
+
+  /* Bangla-only element e ei class - Noto Sans Bengali age ashbe */
+  .font-bn {
+    font-family: var(--font-bangla);
+  }
+
+  ::selection {
+    background: var(--color-brand-100);
+    color: var(--color-brand-950);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand-800);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Number input er spinner hide - beton er ghor e dorkar */
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    appearance: none;
+    margin: 0;
+  }
+
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
+}
+
+/* Tailwind v4 e @apply sudhu UTILITY class ney - custom class ney na.
+   Tai shared base style @utility diye, @layer components diye na.
+   (CLAUDE.md trap #5) */
+@utility badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border-radius: var(--radius-sm);
+  padding: 0.125rem 0.5rem;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+@layer components {
+  .card {
+    @apply bg-white rounded-lg shadow-sm border border-ink-200 p-4;
+  }
+
+  /* Status colour mapping - 07 §1.4, ekhane lock kora */
+  .badge-verified {
+    @apply badge bg-success-bg text-success;
+  }
+  .badge-pending {
+    @apply badge bg-warning-bg text-warning;
+  }
+  .badge-rejected {
+    @apply badge bg-danger-bg text-danger;
+  }
+  .badge-info {
+    @apply badge bg-info-bg text-info;
+  }
+  .badge-urgent {
+    @apply badge bg-brand-800 text-white;
+  }
+  .badge-featured {
+    @apply badge bg-brand-50 text-brand-800 border border-brand-200;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
